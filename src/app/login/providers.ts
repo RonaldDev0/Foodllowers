@@ -1,23 +1,23 @@
 export type provider = {
   logo: string,
   name: string,
-  login: () => Promise<void>
+  provider: any
 }
 
 export const providers: provider[] = [
   {
     logo: './icons/google.svg',
     name: 'Google',
-    login: async () => {}
+    provider: 'google'
   },
   {
     logo: './icons/facebook.svg',
     name: 'Facebook',
-    login: async () => {}
+    provider: 'facebook'
   },
   {
     logo: './icons/apple.svg',
     name: 'Apple',
-    login: async () => {}
+    provider: 'apple'
   }
 ]
