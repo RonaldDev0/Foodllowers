@@ -1,12 +1,14 @@
 'use client'
 
 import Image from 'next/image'
-import { supabase } from '@/lib'
+import { useSupabase } from '../supabaseProvider'
 
 // Types
 import { provider } from './providers'
 
 export default function LoginButon ({ name, logo, provider }: provider) {
+  const { supabase } = useSupabase()
+
   const Login = async () => {
     await supabase.auth.signInWithOAuth({ provider })
   }
