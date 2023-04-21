@@ -1,14 +1,17 @@
 'use client'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
+
+import { useSupabase } from './supabaseProvider'
+import Link from 'next/link'
 
 export default function Home () {
-  const router = useRouter()
+  const { supabase } = useSupabase()
+
+  const signOut = () => supabase.auth.signOut()
 
   return (
     <div className='flex w-full h-screen items-center justify-center bg-[#2f2f2f]'>
-      <button onClick={() => router.push('/profile')}>Profile</button>
-      <Image src='./foodllowers-logo.svg' alt='logo' width='1000' height='1000' priority className='bg-white rounded-xl' />
+      <Link href='/profile'>Profile</Link>
+      <button onClick={signOut}>signOut</button>
     </div>
   )
 }
