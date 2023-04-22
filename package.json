@@ -11,7 +11,6 @@
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.6.0",
     "@supabase/supabase-js": "^2.19.0",
-    "bootstrap-icons": "^1.10.4",
     "encoding": "^0.1.13",
     "next": "13.3.1-canary.19",
     "react": "18.2.0",

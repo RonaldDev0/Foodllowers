@@ -7,9 +7,6 @@ dependencies:
   '@supabase/supabase-js':
     specifier: ^2.19.0
     version: 2.19.0(encoding@0.1.13)
-  bootstrap-icons:
-    specifier: ^1.10.4
-    version: 1.10.4
   encoding:
     specifier: ^0.1.13
     version: 0.1.13
@@ -622,10 +619,6 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
     dev: true
-
-  /bootstrap-icons@1.10.4:
-    resolution: {integrity: sha512-eI3HyIUmpGKRiRv15FCZccV+2sreGE2NnmH8mtxV/nPOzQVu0sPEj8HhF1MwjJ31IhjF0rgMvtYOX5VqIzcb/A==}
-    dev: false
 
   /brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
