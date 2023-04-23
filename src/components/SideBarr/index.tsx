@@ -37,11 +37,5 @@ export function SideBarrOpen ({ open, setOpen }: props) {
 
 export function SideBarr () {
   const [open, setOpen] = useState<boolean>(true)
-  return (
-    <>
-      {
-        open ? <SideBarrOpen open={open} setOpen={setOpen} /> : <SideBarrClose open={open} setOpen={setOpen} />
-      }
-    </>
-  )
+  return open ? <SideBarrOpen open={open} setOpen={setOpen} /> : <SideBarrClose open={open} setOpen={setOpen} />
 }

@@ -10,12 +10,13 @@ export async function middleware (req: NextRequest) {
   const supabase = createMiddlewareSupabaseClient<Database>({ req, res })
   const { data: { session } }: any = await supabase.auth.getSession()
 
-  if (session === null || session?.user?.role !== 'authenticated') {
+  if (req.url.endsWith('/login') && session?.user?.role === 'authenticated') {
+    return NextResponse.redirect(new URL('/profile', req.url))
+  }
+
+  if (session === null && (req.url.endsWith('/') || req.url.endsWith('/profile'))) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
-  return res
-}
 
-export const config = {
-  matcher: ['/', '/profile']
+  return res
 }

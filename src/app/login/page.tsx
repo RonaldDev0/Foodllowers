@@ -1,8 +1,3 @@
-'use client'
-import { useSupabase } from '../supabaseProvider'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-
 // Components
 import Image from 'next/image'
 import LoginButton from './LoginButton'
@@ -11,13 +6,6 @@ import LoginButton from './LoginButton'
 import { provider, providers } from './providers'
 
 export default function Login () {
-  const { supabase } = useSupabase()
-  const router = useRouter()
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }: any) => session && router.push('/profile'))
-  }, [supabase])
-
   return (
     <div className='flex flex-col w-full h-screen items-center justify-center [@media(min-width:800px)]:-translate-y-20'>
       <Image src='./foodllowers-logo.svg' width='420' height='315' alt='logo' priority className='rounded-2xl bg-white [@media(min-width:800px)]:translate-y-40' />
