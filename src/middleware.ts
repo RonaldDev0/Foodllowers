@@ -11,9 +11,10 @@ export async function middleware (req: NextRequest) {
   const { data: { session } }: any = await supabase.auth.getSession()
 
   if (req.url.endsWith('/login') && session?.user?.role === 'authenticated') {
-    return NextResponse.redirect(new URL('/profile', req.url))
+    return NextResponse.redirect(new URL('/', req.url))
   }
 
+  // TODO: optimizar la segunda validacion del 2 if ( !req.url.endswith(/login) no funciona )
   if (session === null && (req.url.endsWith('/') || req.url.endsWith('/profile'))) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
