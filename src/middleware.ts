@@ -14,7 +14,7 @@ export async function middleware (req: NextRequest) {
     return NextResponse.redirect(new URL('/profile', req.url))
   }
 
-  if (session === null && (req.url.endsWith('/') || req.url.endsWith('/profile'))) {
+  if (session === null && (req.url.endsWith('/') || req.url.endsWith('/profile') || req.url.endsWith('/adresses'))) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
