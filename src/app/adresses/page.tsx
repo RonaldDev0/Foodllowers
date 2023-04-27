@@ -6,7 +6,7 @@ import ListAdresses from './ListAdresses'
 import AddButton from './AddButton'
 
 export default function Adresses () {
-  const [open, setOpen] = useState<boolean>(true)
+  const [open, setOpen] = useState<boolean>(false)
 
   return (
     <div className='w-full h-screen flex flex-col justify-around items-center'>
