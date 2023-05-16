@@ -1,9 +1,11 @@
 'use client'
 import Image from 'next/image'
 import { useSupabase } from '@/app/supabaseProvider'
+import { useUser } from '@/context'
 
-export default function Logout ({ setUser }: { setUser: Function }) {
+export default function Logout () {
   const { supabase } = useSupabase()
+  const { setUser } = useUser()
 
   return (
     <div onClick={() => supabase.auth.signOut().then(() => setUser(null))} className='flex items-center justify-center gap-2 cursor-pointer mb-10'>

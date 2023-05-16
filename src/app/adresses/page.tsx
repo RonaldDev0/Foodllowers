@@ -11,7 +11,7 @@ export default function Adresses () {
   return (
     <div className='w-full h-screen flex flex-col justify-around items-center'>
       {open && <AddModal setOpen={setOpen} />}
-      <ListAdresses />
+      <ListAdresses setOpen={setOpen} />
       <AddButton setOpen={setOpen} />
     </div>
   )

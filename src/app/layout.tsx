@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { SupabaseProvider } from './supabaseProvider'
+import { UserProvider } from '@/context/user'
 
 // Components
 import { SideBarr } from '@/components'
@@ -17,8 +18,10 @@ export default function RootLayout ({ children }: { children: ReactNode }) {
     <html lang='en'>
       <body className='bg-[#2f2f2f] text-white'>
         <SupabaseProvider>
-          <SideBarr />
-          {children}
+          <UserProvider>
+            <SideBarr />
+            {children}
+          </UserProvider>
         </SupabaseProvider>
       </body>
     </html>

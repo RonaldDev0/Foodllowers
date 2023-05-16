@@ -11,7 +11,7 @@ export async function middleware (req: NextRequest) {
   const { data: { session } }: any = await supabase.auth.getSession()
 
   if (req.url.endsWith('/login') && session?.user?.role === 'authenticated') {
-    return NextResponse.redirect(new URL('/profile', req.url))
+    return NextResponse.redirect(new URL('/', req.url))
   }
 
   if (session === null && (req.url.endsWith('/') || req.url.endsWith('/profile') || req.url.endsWith('/adresses') || req.url.endsWith('/currentshipment') || req.url.endsWith('/shipments' || req.url.endsWith('/paymentmethods')))) {

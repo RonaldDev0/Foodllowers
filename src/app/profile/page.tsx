@@ -1,16 +1,9 @@
 'use client'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useSupabase } from '../supabaseProvider'
+import { useUser } from '@/context'
 
 export default function Profile () {
-  const { supabase } = useSupabase()
-  const [user, setUser] = useState<any>(null)
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: { user: { user_metadata: user } } } }: any) => setUser(user))
-  }, [])
-
+  const { user } = useUser()
   return (
     <div className='w-full h-screen flex justify-center items-center'>
       <div className='bg-[#D9D9D9] bg-opacity-10 rounded-xl [@media(min-width:800px)]:w-[1200px] [@media(min-width:800px)]:h-[400px] flex [@media(max-width:800px)]:flex-col items-center gap-44 [@media(min-width:800px)]:p-48 [@media(max-width:800px)]:flex [@media(max-width:800px)]:justify-center [@media(max-width:800px)]:w-full [@media(max-width:800px)]:h-screen'>

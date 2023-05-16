@@ -1,12 +1,12 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 
 // Components
 import Profile from './Profile'
 import Pages from './Pages'
 import Logout from './Logout'
-import { useSupabase } from '@/app/supabaseProvider'
+import { useUser } from '@/context'
 
 // Types
 type propsClose = {
@@ -17,11 +17,6 @@ type propsClose = {
 type props = {
   open: boolean,
   setOpen: Function,
-  user: {
-    avatar_url: string,
-    full_name: string
-  },
-  setUser: Function
 }
 
 export function SideBarrClose ({ open, setOpen }: propsClose) {
@@ -30,7 +25,9 @@ export function SideBarrClose ({ open, setOpen }: propsClose) {
   )
 }
 
-export function SideBarrOpen ({ open, setOpen, user, setUser }: props) {
+export function SideBarrOpen ({ open, setOpen }: props) {
+  const { user } = useUser()
+
   return (
     <div className='fixed w-[300px] bg-[#1f1f1f] top-0 left-0 h-screen'>
       <div className='w-full flex justify-end'>
@@ -39,24 +36,19 @@ export function SideBarrOpen ({ open, setOpen, user, setUser }: props) {
       <div className='h-full w-full flex flex-col justify-around items-center'>
         <Profile user={user} />
         <Pages />
-        <Logout setUser={setUser} />
+        <Logout />
       </div>
     </div>
   )
 }
 
 export function SideBarr () {
-  const { supabase } = useSupabase()
   const [open, setOpen] = useState<boolean>(true)
-  const [user, setUser] = useState<any>(null)
+  const { user } = useUser()
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: { user: { user_metadata: user } } } }: any) => setUser(user))
-  }, [])
-
-  if (user === null) {
+  if (!user) {
     return null
   }
 
-  return open ? <SideBarrOpen open={open} setOpen={setOpen} user={user} setUser={setUser} /> : <SideBarrClose open={open} setOpen={setOpen} />
+  return open ? <SideBarrOpen open={open} setOpen={setOpen} /> : <SideBarrClose open={open} setOpen={setOpen} />
 }

@@ -2,10 +2,11 @@ import Image from 'next/image'
 
 type IAdress = {
   name: string,
-  adress: string
+  adress: string,
+  setOpen: Function
 }
 
-export default function AdressCard ({ name, adress }: IAdress) {
+export default function AdressCard ({ name, adress, setOpen }: IAdress) {
   // const delete = () => {}
   // const edit = () => {}
 
@@ -16,8 +17,8 @@ export default function AdressCard ({ name, adress }: IAdress) {
         <p className='text-lg font-medium'>{adress}</p>
       </div>
       <div className='flex items-center'>
-        <Image className='cursor-pointer' width='25' height='25' src='./icons/edit.svg' alt='edit' priority />
-        <Image className='m-3 cursor-pointer' width='25' height='25' src='./icons/x.svg' alt='close-icon' priority />
+        <Image onClick={() => setOpen(true)} className='cursor-pointer' width='25' height='25' src='./icons/edit.svg' alt='edit' priority />
+        <Image className='m-3 cursor-pointer' width='25' height='25' src='./icons/xdark.svg' alt='close-icon' priority />
       </div>
     </div>
   )

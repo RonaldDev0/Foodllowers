@@ -6,7 +6,7 @@ type IAdress = {
   adress: string
 }
 
-export default function ListAdresses () {
+export default function ListAdresses ({ setOpen }: { setOpen: Function }) {
   const Addresess: IAdress[] = [
     {
       id: '0',
@@ -23,7 +23,7 @@ export default function ListAdresses () {
   return (
     <div>
       {
-        Addresess.map(({ id, name, adress }) => <AdressCard key={id} name={name} adress={adress} />)
+        Addresess.map(({ id, name, adress }) => <AdressCard key={id} name={name} adress={adress} setOpen={setOpen} />)
       }
     </div>
   )
