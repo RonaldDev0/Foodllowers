@@ -29,7 +29,7 @@ export function SideBarrOpen ({ open, setOpen }: props) {
   const { user } = useUser()
 
   return (
-    <div className='fixed w-[300px] bg-[#1f1f1f] top-0 left-0 h-screen'>
+    <div className='fixed w-[300px] bg-dark_bg top-0 left-0 h-screen'>
       <div className='w-full flex justify-end'>
         <Image className='m-3 cursor-pointer text-white' onClick={() => setOpen(!open)} src='./icons/x.svg' alt='close-icon' width='40' height='40' priority />
       </div>
