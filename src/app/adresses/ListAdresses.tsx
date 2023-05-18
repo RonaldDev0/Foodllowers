@@ -1,29 +1,24 @@
+'use client'
 import AdressCard from './AdressCard'
+import { useUser } from '@/context'
 
 type IAdress = {
-  id: string,
-  name: string,
-  adress: string
+  id: any
+  name: string
+  address: string
 }
 
-export default function ListAdresses ({ setOpen }: { setOpen: Function }) {
-  const Addresess: IAdress[] = [
-    {
-      id: '0',
-      name: 'Home',
-      adress: 'Calle Peguelo #4-20'
-    },
-    {
-      id: '1',
-      name: 'work',
-      adress: 'Calle Stefany #4-20'
-    }
-  ]
+export default function ListAdresses () {
+  const { adresses }: { adresses: IAdress[] } = useUser()
+
+  if (adresses === undefined) {
+    return null
+  }
 
   return (
-    <div>
+    <div className='overflow-y-auto h-[600px] mt-10'>
       {
-        Addresess.map(({ id, name, adress }) => <AdressCard key={id} name={name} adress={adress} setOpen={setOpen} />)
+        adresses.map(({ id, name, address }) => <AdressCard key={id} id={id} name={name} address={address} />)
       }
     </div>
   )

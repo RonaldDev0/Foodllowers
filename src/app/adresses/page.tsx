@@ -9,9 +9,9 @@ export default function Adresses () {
   const [open, setOpen] = useState<boolean>(false)
 
   return (
-    <div className='w-full h-screen flex flex-col justify-around items-center'>
+    <div className='w-full h-screen flex flex-col top-12 justify-around items-center'>
       {open && <AddModal setOpen={setOpen} />}
-      <ListAdresses setOpen={setOpen} />
+      <ListAdresses />
       <AddButton setOpen={setOpen} />
     </div>
   )
