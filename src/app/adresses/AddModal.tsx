@@ -25,10 +25,10 @@ export default function AddModal ({ setOpen }: props) {
   const handleChangeAdress = ({ target: { value } }: any) => setAdress(prevState => ({ ...prevState, address: value }))
 
   const addAddress = async () => {
-    setOpen(false)
     await supabase.from('adresses').insert([adress]).then(() => {
-      setAdresses((prev: any[]) => [...prev, adress])
+      supabase.from('adresses').select('*').order('id').then(({ data }) => setAdresses(data))
       setAdress({ user_id: userId, name: '', address: '' })
+      setOpen(false)
     })
   }
 

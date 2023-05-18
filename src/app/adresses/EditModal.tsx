@@ -29,6 +29,7 @@ export default function EditModal ({ setIsEdit, name, address, id }: props) {
   const EditAddress = async () => {
     await supabase.from('adresses').update(adress).eq('id', id).then(() => {
       setAdresses((prevState: any[]) => prevState.map(item => {
+        console.log(item)
         if (item.id === id) {
           return { ...item, name: adress.name, address: adress.address }
         }
