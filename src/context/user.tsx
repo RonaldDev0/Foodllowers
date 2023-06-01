@@ -30,9 +30,11 @@ export function UserProvider ({ children }: { children: ReactNode }) {
   const [cards, setCards] = useState<any>()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: { user } } }: any) => {
-      setUser(user.user_metadata)
-      setUserId(user.id)
+    supabase.auth.getSession().then(({ data: { session } }: any) => {
+      if (session) {
+        setUser(session.user.user_metadata)
+        setUserId(session.user.id)
+      }
     })
 
     supabase.from('adresses').select('*').order('id').then(({ data }) => setAdresses(data))
