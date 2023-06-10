@@ -20,7 +20,6 @@ export function ProductList ({ influencerId }: any) {
   return (
     <div className='flex flex-wrap gap-10'>
       {
-        // eslint-disable-next-line camelcase
         productList && productList.map((product) => <ProductCard key={product.id} product={product} />)
       }
     </div>
