@@ -12,7 +12,7 @@ export type IProductCard = {
 }
 
 export function ProductCard ({ product }: { product: IProductCard}) {
-  const { id, id_influencer: idInfluencer, id_kitchen: idKitchen, category, price, preview, name, description } = product
+  const { price, name, description } = product
 
   return (
     <div className='bg-bg_card rounded-lg p-3 hover:bg-bg_card_hover transition-all cursor-pointer'>
