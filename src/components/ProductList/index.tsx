@@ -10,13 +10,12 @@ export function ProductList ({ influencerId }: any) {
 
   useEffect(() => {
     if (influencerId) {
-      supabase.from('products').select('*').eq('id_influencer', influencerId).order('id').then(({ data }: any) => setProductList(data))
-    } else {
-      supabase.from('products').select('*').order('id').then(({ data }: any) => setProductList(data))
+      const { id } = influencerId
+      supabase.from('products').select('*').eq('id_influencer', id).order('id').then(({ data }: any) => setProductList(data))
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [influencerId])
 
   return (
     <div className='flex flex-wrap gap-10'>
