@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -19,7 +17,7 @@ export function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
 
   return (
     <Link href={path} className='bg-bg_card hover:bg-bg_card_hover transition-all rounded-lg p-3'>
-      <Image src='./img/pato404.svg' width='200' height='200' alt='img preview' />
+      <Image src='./img/pato404.svg' width='200' height='200' alt='img preview' className='w-[350px] h-[150px]' />
       <p className='text-xl'>{fullName}</p>
       <p>⭐{qualification}</p>
     </Link>

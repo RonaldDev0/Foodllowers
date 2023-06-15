@@ -1,5 +1,7 @@
 'use client'
+
 import { useContent } from '@/context'
+import { Banner } from './'
 import { ProductList } from '@/components'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,19 +16,25 @@ function NotFound () {
     </div>
   )
 }
+function Page ({ influencer }: any) {
+  return (
+    <div>
+      <Link href='/' className='bg-dark_df_bg fixed top-5 left-16 rounded-xl'><Image src='./icons/arrow-left-circle-fill.svg' width='35' height='35' alt='image' /></Link>
+      <Banner influencer={influencer} />
+      <ProductList influencerId={influencer} />
+    </div>
+  )
+}
 
 export default function InfluencerPage ({ params: { influencer } }: any) {
   const { influencerList } = useContent()
   const Influencer = influencerList.filter(({ path }) => path === `/${influencer}`)
 
   return (
-    <div>
-      <div className='flex flex-col w-full h-screen items-center justify-center z-0'>
-        <Link href='/' className='bg-dark_df_bg fixed top-5 left-16 rounded-xl'><Image src='./icons/arrow-left-circle-fill.svg' width='35' height='35' alt='image' /></Link>
-        {
-          Influencer.length <= 0 ? <NotFound /> : <ProductList influencerId={Influencer[0]} />
-        }
-      </div>
-    </div>
+    <>
+      {
+        Influencer.length > 0 ? <Page influencer={Influencer[0]} /> : <NotFound />
+      }
+    </>
   )
 }
