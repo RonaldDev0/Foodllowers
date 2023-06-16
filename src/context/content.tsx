@@ -15,24 +15,32 @@ type IInfluencer = {
 
 type IContext = {
   influencerList: IInfluencer[]
+  searchFilter: IInfluencer[] | undefined
+  setSearchFilter: Function
 }
 
 const Context = createContext<IContext>({
-  influencerList: []
+  influencerList: [],
+  searchFilter: [],
+  setSearchFilter: Function
 })
 
 export function ContentProvider ({ children }: { children: ReactNode }) {
   const { supabase } = useSupabase()
   const [influencerList, setInfluencerList] = useState<IInfluencer[]>([])
+  const [searchFilter, setSearchFilter] = useState<IInfluencer[]>([])
 
   useEffect(() => {
-    supabase.from('influencers').select('*').order('id').then(({ data }: any) => setInfluencerList(data))
+    supabase.from('influencers').select('*').order('id').then(({ data }: any) => {
+      setInfluencerList(data)
+      setSearchFilter(data)
+    })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <Context.Provider value={{ influencerList }}>
+    <Context.Provider value={{ influencerList, searchFilter, setSearchFilter }}>
       <>{children}</>
     </Context.Provider>
   )

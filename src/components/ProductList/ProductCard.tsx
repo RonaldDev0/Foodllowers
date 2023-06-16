@@ -19,7 +19,7 @@ export function ProductCard ({ product, setCurrentProduct }: { product: IProduct
       <Image src='./img/pato404.svg' width='200' height='200' alt='preview' />
       <p className='text-xl'>{name}</p>
       <p className='text-dark_gray'>{description}</p>
-      <p className='font-bold'>${price}</p>
+      <p className='font-bold text-green-600'>${price}</p>
     </div>
   )
 }

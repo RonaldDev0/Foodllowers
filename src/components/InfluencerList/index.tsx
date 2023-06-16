@@ -1,15 +1,15 @@
 'use client'
 
-import { useContent } from '@/context'
 import { InfluencerCard } from './InfluencerCard'
+import { useContent } from '@/context'
 
 export function InfluencerList () {
-  const { influencerList } = useContent()
+  const { searchFilter: influencerList } = useContent()
 
   return (
     <div className='flex flex-wrap gap-5 justify-center'>
       {
-        influencerList && influencerList.map((influencer) => <InfluencerCard key={influencer.id} influencer={influencer} />)
+        influencerList && influencerList.map((influencer: any) => <InfluencerCard key={influencer.id} influencer={influencer} />)
       }
     </div>
   )

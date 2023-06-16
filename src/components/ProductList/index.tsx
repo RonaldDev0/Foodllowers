@@ -21,7 +21,7 @@ export function ProductList ({ influencerId }: any) {
 
   return (
     <div className='flex w-full my-10 justify-center'>
-      <div className='flex flex-wrap gap-5 justify-center'>
+      <div className='flex flex-wrap gap-5 justify-center mb-10'>
         {
           productList && productList.map((product) => <ProductCard key={product.id} product={product} setCurrentProduct={setCurrentProduct} />)
         }

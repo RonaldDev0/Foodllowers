@@ -13,11 +13,13 @@ type IInfluencer = {
 
 export function Banner ({ influencer }: { influencer: IInfluencer }) {
   return (
-    <div>
-      <Image src='./img/pato404.svg' width='400' height='200' alt='banner image' className='w-full h-[250px] bg-black' />
-      {
-        influencer && <p className='font-semibold m-3'>{influencer.full_name}</p>
-      }
+    <div className='w-full flex justify-center'>
+      <div className='w-[1000px] my-5 [@media(max-width:800px)]:m-0'>
+        <Image src='./img/pato404.svg' width='400' height='200' alt='banner image' className='w-full h-[300px] bg-black rounded-lg' />
+        {
+          influencer && <p className='font-semibold m-3'>{influencer.full_name}</p>
+        }
+      </div>
     </div>
   )
 }
