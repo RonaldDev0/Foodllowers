@@ -13,11 +13,11 @@ type IInfluencer = {
 }
 
 export function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
-  const { qualification, full_name: fullName, path } = influencer
+  const { qualification, full_name: fullName, path, preview } = influencer
 
   return (
     <Link href={path} className='bg-bg_card hover:bg-bg_card_hover transition-all rounded-lg p-3'>
-      <Image src='./img/pato404.svg' width='200' height='200' alt='img preview' className='w-[350px] h-[150px]' />
+      <Image src={preview} width='200' height='200' alt='img preview' className='w-[350px] h-[200px] rounded-lg' />
       <p className='text-xl'>{fullName}</p>
       <p>⭐{qualification}</p>
     </Link>

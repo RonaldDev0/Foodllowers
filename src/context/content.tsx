@@ -31,15 +31,17 @@ export function ContentProvider ({ children }: { children: ReactNode }) {
   const { supabase } = useSupabase()
   const [influencerList, setInfluencerList] = useState<IInfluencer[]>([])
   const [searchFilter, setSearchFilter] = useState<IInfluencer[]>([])
-  const CDN = 'https://gtsjuxikwdifunrkhpyp.supabase.co/storage/v1/object/public/'
+  const CDN = 'https://gtsjuxikwdifunrkhpyp.supabase.co/storage/v1/object/public/influencers/'
 
   useEffect(() => {
     supabase.from('influencers').select('*').order('id').then(({ data }: any) => {
-      setInfluencerList(data)
-      setSearchFilter(data)
+      const res = data.map((item: IInfluencer) => ({ ...item, preview: `${CDN}${item.id}/banner.jpg` }))
+      setInfluencerList(res)
+      setSearchFilter(res)
     })
 
-    supabase.storage.from('images').list().then(({ data }) => console.log(data))
+    // supabase.storage.from('influencers').list().then(({ data }) => console.log(data))
+    // supabase.storage.getBucket('influencers').then(({ data }) => console.log(data))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
