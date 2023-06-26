@@ -17,18 +17,21 @@ type IContext = {
   influencerList: IInfluencer[]
   searchFilter: IInfluencer[] | undefined
   setSearchFilter: Function
+  CDN: string
 }
 
 const Context = createContext<IContext>({
   influencerList: [],
   searchFilter: [],
-  setSearchFilter: Function
+  setSearchFilter: Function,
+  CDN: ''
 })
 
 export function ContentProvider ({ children }: { children: ReactNode }) {
   const { supabase } = useSupabase()
   const [influencerList, setInfluencerList] = useState<IInfluencer[]>([])
   const [searchFilter, setSearchFilter] = useState<IInfluencer[]>([])
+  const CDN = 'https://gtsjuxikwdifunrkhpyp.supabase.co/storage/v1/object/public/'
 
   useEffect(() => {
     supabase.from('influencers').select('*').order('id').then(({ data }: any) => {
@@ -36,11 +39,13 @@ export function ContentProvider ({ children }: { children: ReactNode }) {
       setSearchFilter(data)
     })
 
+    supabase.storage.from('images').list().then(({ data }) => console.log(data))
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <Context.Provider value={{ influencerList, searchFilter, setSearchFilter }}>
+    <Context.Provider value={{ influencerList, searchFilter, setSearchFilter, CDN }}>
       <>{children}</>
     </Context.Provider>
   )

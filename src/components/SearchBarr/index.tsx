@@ -22,7 +22,6 @@ export function SearchBarr () {
           <Image src='./icons/search.svg' width='30' height='30' alt='search.svg' />
         </button>
       </form>
-      <button onClick={() => setSearchFilter(influencerList)}>reset</button>
     </div>
   )
 }
