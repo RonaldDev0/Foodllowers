@@ -39,9 +39,9 @@ export default function AddModal ({ setOpen }: props) {
           <Image className=' cursor-pointer text-white' onClick={() => setOpen(false)} src='./icons/x.svg' alt='close-icon' width='40' height='40' priority />
         </div>
         <form onSubmit={e => e.preventDefault()} className='flex flex-col gap-5 my-10'>
-          <input onChange={handleChageName} type='text' placeholder='Name' className='bg-gray rounded p-2 text-black outline-none' />
-          <input onChange={handleChangeAdress} type='text' placeholder='Adress' className='bg-gray rounded p-2 text-black outline-none' />
-          <button onClick={addAddress} className='bg-green-600 p-2 mt-5 rounded text-xl w-[300px]'>Add</button>
+          <input onChange={handleChageName} type='text' placeholder='Nombre' className='bg-gray rounded p-2 text-black outline-none' />
+          <input onChange={handleChangeAdress} type='text' placeholder='Direccion' className='bg-gray rounded p-2 text-black outline-none' />
+          <button onClick={addAddress} className='bg-green-600 p-2 mt-5 rounded text-xl w-[300px]'>Agregar</button>
         </form>
       </div>
     </div>

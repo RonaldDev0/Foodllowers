@@ -7,32 +7,32 @@ export type ILink = {
 export const Paths: ILink[] = [
   {
     img: './icons/home.svg',
-    title: 'Home',
+    title: 'Inicio',
     path: '/'
   },
   {
     img: './icons/profile.svg',
-    title: 'Profile',
+    title: 'Perfil',
     path: '/profile'
   },
   {
     img: './icons/geo.svg',
-    title: 'Adresses',
+    title: 'Direcciones',
     path: '/adresses'
   },
   {
     img: './icons/clock.svg',
-    title: 'Current Shipment',
+    title: 'Pedido actual',
     path: '/currentshipment'
   },
   {
     img: './icons/clipboard.svg',
-    title: 'Shipments',
+    title: 'Pedidos',
     path: '/shipments'
   },
   {
     img: './icons/credit-card.svg',
-    title: 'Payment Methods',
+    title: 'Metodos de pago',
     path: '/paymentmethods'
   }
 ]

@@ -40,9 +40,6 @@ export function ContentProvider ({ children }: { children: ReactNode }) {
       setSearchFilter(res)
     })
 
-    // supabase.storage.from('influencers').list().then(({ data }) => console.log(data))
-    // supabase.storage.getBucket('influencers').then(({ data }) => console.log(data))
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -10,7 +10,7 @@ export default function Logout () {
   return (
     <div onClick={() => supabase.auth.signOut().then(() => setUser(null))} className='flex items-center justify-center gap-2 cursor-pointer mb-10'>
       <Image src='./icons/Logout.svg' alt='icon' width='25' height='25' priority />
-      <button>Logout</button>
+      <button>Cerrar sesión</button>
     </div>
   )
 }
