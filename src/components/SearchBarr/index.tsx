@@ -9,7 +9,6 @@ export function SearchBarr () {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    setSearchFilter(influencerList?.filter(item => item.full_name.includes(input)))
   }
 
   return (
