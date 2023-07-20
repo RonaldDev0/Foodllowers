@@ -1,7 +1,7 @@
 {
     "theme_color": "#1f1f1f",
     "background_color": "#2f2f2f",
-    "display": "standalone",
+    "display": "Standalone",
     "scope": "/",
     "start_url": "/",
     "name": "foodllowers",
