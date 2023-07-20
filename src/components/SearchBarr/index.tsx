@@ -10,7 +10,13 @@ export function SearchBarr () {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    setSearchFilter(influencerList?.filter(item => item.full_name.includes(input)))
+    if (input.length > 0) {
+      const normalize = (str: string) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
+      const result = influencerList?.filter(item => normalize(item.full_name).includes(normalize(input)))
+
+      setSearchFilter(result)
+    } else setSearchFilter(influencerList)
   }
 
   return (
