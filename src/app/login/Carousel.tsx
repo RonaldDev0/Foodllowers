@@ -18,6 +18,7 @@ export function Carousel () {
       setIndex(prevIndex => prevIndex === slides.length - 1 ? 0 : prevIndex + 1)
     }, 5000)
     return () => clearInterval(interval)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
