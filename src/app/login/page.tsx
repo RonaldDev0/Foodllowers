@@ -1,19 +1,41 @@
-// Components
 import Image from 'next/image'
-import LoginButton from './LoginButton'
+import { LoginButton } from './LoginButton'
+import { Carousel } from './Carousel'
 
-// Data
-import { provider, providers } from './providers'
+function Left () {
+  return (
+    <div
+      className='[@media(max-width:800px)]:w-[100dvw] w-[50dvw] flex flex-col [@media(max-width:800px)]:justify-start justify-center items-center bg-[#F87979]'
+    >
+      <Image
+        src='./foodllowers-logo.svg'
+        width='350' height='315'
+        alt='logo'
+        priority
+      />
+      <div className='[@media(max-width:800px)]:hidden'>
+        <p className='font-bold text-4xl w-[400px]'>¡Registrate hoy y recibe hasta 15 dias</p>
+        <p className='font-bold text-2xl'>de Envios Gratis pagando con tarjeta!</p>
+      </div>
+    </div>
+  )
+}
+
+function Right () {
+  return (
+    <div className='[@media(max-width:800px)]:fixed [@media(max-width:800px)]:top-56 [@media(max-width:800px)]:w-[100dvw] w-[50dvw] flex flex-col items-center [@media(max-width:800px)]:gap-14 gap-44 mt-28'>
+      <h2 className='[@media(max-width:800px)]:text-white text-black font-bold text-4xl w-96 text-center'>Registrate o ingresa para continuar</h2>
+      <LoginButton />
+      <Carousel />
+    </div>
+  )
+}
 
 export default function Login () {
   return (
-    <div className='flex flex-col w-full h-screen items-center justify-center [@media(min-width:800px)]:-translate-y-20'>
-      <Image src='./foodllowers-logo.svg' width='350' height='315' alt='logo' priority className='[@media(max-width:800px)]:w-[400px] [@media(min-width:800px)]:translate-y-40' />
-      <div className='h-96 flex flex-col justify-around mb-28 mt-14 [@media(min-width:800px)]:bg-dark_gray [@media(min-width:800px)]:m-0 [@media(min-width:800px)]:w-[650px] [@media(min-width:800px)]:h-[650px] [@media(min-width:800px)]:pt-56 [@media(min-width:800px)]:rounded-xl [@media(min-width:800px)]:justify-normal [@media(min-width:800px)]:gap-10'>
-        {
-          providers.map(({ name, logo, provider }: provider) => <LoginButton key={name} name={name} logo={logo} provider={provider} />)
-        }
-      </div>
-    </div>
+    <main className='flex h-[100dvh]'>
+      <Left />
+      <Right />
+    </main>
   )
 }

@@ -1,3 +1,9 @@
+import { useSupabase } from '@/app/supabaseProvider'
+
 export async function GET (request: Request) {
-  return new Response('Hello, Next.js!')
+  const { supabase } = useSupabase()
+  const [adresses] = await Promise.all([
+    supabase.from('adresses').select('*').order('id').then(({ data }) => data)
+  ])
+  return new Response(JSON.stringify(adresses))
 }
