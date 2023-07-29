@@ -1,6 +1,6 @@
 'use client'
 import AdressCard from './AdressCard'
-import { useUser } from '@/context'
+import { useUser } from '@/store'
 
 type IAdress = {
   id: any

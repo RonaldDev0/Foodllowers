@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useSupabase } from '../supabaseProvider'
 
 import Image from 'next/image'
-import { useUser } from '@/context'
+import { useUser } from '@/store'
 
 type props = {
   setIsEdit: Function

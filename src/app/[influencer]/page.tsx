@@ -1,6 +1,6 @@
 'use client'
 
-import { useContent } from '@/context'
+import { useContent } from '@/store'
 import { Banner } from './'
 import { ProductList } from '@/components'
 import Link from 'next/link'

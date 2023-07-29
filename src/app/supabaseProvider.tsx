@@ -5,7 +5,18 @@ import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
-import type { Database } from '@/lib/database.types'
+
+type Database = {
+  public: {
+    Tables: {
+      movies: {
+        Row: {} // The data expected to be returned from a "select" statement.
+        Insert: {} // The data expected passed to an "insert" statement.
+        Update: {} // The data expected passed to an "update" statement.
+      }
+    }
+  }
+}
 
 type SupabaseContext = {
   supabase: SupabaseClient<Database>

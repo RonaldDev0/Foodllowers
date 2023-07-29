@@ -1,6 +1,6 @@
 'use client'
 import Card from './Card'
-import { useUser } from '@/context'
+import { useUser } from '@/store'
 
 export type ICard = {
   id: any

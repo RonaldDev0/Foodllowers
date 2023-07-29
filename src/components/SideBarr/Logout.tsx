@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useSupabase } from '@/app/supabaseProvider'
-import { useUser } from '@/context'
+import { useUser } from '@/store'
 
 export default function Logout () {
   const { supabase } = useSupabase()

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { useContent } from '@/context'
+import { useContent } from '@/store'
 
 export function SearchBarr () {
   const { influencerList, setSearchFilter } = useContent()

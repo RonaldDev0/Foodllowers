@@ -23,6 +23,6 @@
 }
 
 body {
-  background-color: #F4F4F4;
+  background-color: #2F2F2F /* TODO: remove this line */;
   color: white; /* TODO: remove this line */
 }

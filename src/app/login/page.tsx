@@ -34,7 +34,7 @@ function Right () {
 
 export default function Login () {
   return (
-    <main className='flex h-[100dvh]'>
+    <main className='flex h-[100dvh] bg-[#F4F4F4]'>
       <Left />
       <Right />
     </main>

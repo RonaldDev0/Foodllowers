@@ -35,7 +35,7 @@ export function ContentProvider ({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     supabase.from('influencers').select('*').order('id').then(({ data }: any) => {
-      const res = data.map((item: IInfluencer) => ({ ...item, preview: `${CDN}${item.id}/banner.jpg` }))
+      const res = data.map((item: IInfluencer) => ({ ...item, preview: `${CDN}${item.id}/banner.webp` }))
       setInfluencerList(res)
       setSearchFilter(res)
     })

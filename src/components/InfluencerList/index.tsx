@@ -1,7 +1,7 @@
 'use client'
 
 import { InfluencerCard } from './InfluencerCard'
-import { useContent } from '@/context'
+import { useContent } from '@/store'
 
 export function InfluencerList () {
   const { searchFilter: influencerList } = useContent()
