@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Profile from './Profile'
 import Pages from './Pages'
 import Logout from './Logout'
-import { useUser } from '@/store'
+import { useUser } from '@/context'
 
 // Types
 type propsClose = {

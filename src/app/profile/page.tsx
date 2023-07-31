@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { useUser } from '@/store'
+import { useUser } from '@/context'
 
 export default function Profile () {
   const { user } = useUser()

@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useSupabase } from '../supabaseProvider'
-import { useUser } from '@/store'
+import { useUser } from '@/context'
 import { useState } from 'react'
 
 import EditModal from './EditModal'

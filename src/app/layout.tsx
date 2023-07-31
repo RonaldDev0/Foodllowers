@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { SupabaseProvider } from './supabaseProvider'
-import { UserProvider, ContentProvider } from '@/store'
+import { UserProvider, ContentProvider } from '@/context'
 
 // Components
 import { SideBarr } from '@/components'

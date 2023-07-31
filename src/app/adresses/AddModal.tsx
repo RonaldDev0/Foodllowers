@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useSupabase } from '../supabaseProvider'
 
 import Image from 'next/image'
-import { useUser } from '@/store'
+import { useUser } from '@/context'
 
 type props = {
   setOpen: Function
