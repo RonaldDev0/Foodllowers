@@ -1,4 +1,4 @@
-export default function PaymentMethods () {
+export function CardElement () {
   return (
     <div>
       {}

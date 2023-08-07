@@ -5,7 +5,7 @@ import { Carousel } from './Carousel'
 function Left () {
   return (
     <div
-      className='[@media(max-width:800px)]:w-[100dvw] w-[50dvw] flex flex-col [@media(max-width:800px)]:justify-start justify-center items-center bg-[#F87979]'
+      className='[@media(max-width:800px)]:w-[100vw] w-[50vw] flex flex-col [@media(max-width:800px)]:justify-start justify-center items-center bg-[#F87979]'
     >
       <Image
         src='./foodllowers-logo.svg'
@@ -24,7 +24,7 @@ function Left () {
 
 function Right () {
   return (
-    <div className='[@media(max-width:800px)]:fixed [@media(max-width:800px)]:top-56 [@media(max-width:800px)]:w-[100dvw] w-[50dvw] flex flex-col items-center [@media(max-width:800px)]:gap-12 gap-44 mt-28'>
+    <div className='[@media(max-width:800px)]:fixed [@media(max-width:800px)]:top-56 [@media(max-width:800px)]:w-[100vw] w-[50vw] flex flex-col items-center [@media(max-width:800px)]:gap-12 gap-44 mt-28'>
       <h2 className='[@media(max-width:800px)]:text-white text-black font-bold text-4xl w-96 text-center'>Registrate o ingresa para continuar</h2>
       <LoginButton />
       <Carousel />
@@ -34,7 +34,7 @@ function Right () {
 
 export default function Login () {
   return (
-    <main className='flex h-[100dvh] bg-[#F4F4F4]'>
+    <main className='flex h-[100vh] bg-[#F4F4F4]'>
       <Left />
       <Right />
     </main>

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import type { IShipment } from './index'
+import type { IShipment } from './ShipmentList'
 
 export function ShipmentCard ({ shipment }: { shipment: IShipment }) {
   const { preview, productName, description } = shipment

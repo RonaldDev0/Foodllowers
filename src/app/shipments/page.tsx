@@ -1,8 +1,8 @@
-import { ShipmentList } from '@/components'
+import { ShipmentList } from './ShipmentList'
 
 export default function Shipments () {
   return (
-    <div className='w-full h-screen flex justify-center items-center'>
+    <div className='w-full h-screen flex flex-col top-12 justify-around items-center'>
       <ShipmentList />
     </div>
   )

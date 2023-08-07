@@ -1,8 +1,8 @@
 'use client'
 
 import { useContent } from '@/context'
-import { Banner } from './'
-import { ProductList } from '@/components'
+import { Banner } from './Banner'
+import { ProductList } from './ProductList'
 import Link from 'next/link'
 import Image from 'next/image'
 
