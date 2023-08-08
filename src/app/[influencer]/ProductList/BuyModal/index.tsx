@@ -20,7 +20,7 @@ export function BuyModal ({ currentProduct }: any) {
 
     if (address.complete) {
       setButton('Loading...')
-      const clientSecret = await fetch('http://localhost:3000/api/create-payment-intent', {
+      const clientSecret = await fetch('https://foodllowers.vercel.app/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(currentProduct)
