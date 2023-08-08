@@ -1,11 +1,14 @@
+'use client'
+
+import { useUserPayment } from '@/store'
 import { List } from './List'
 import { Form } from './Form'
 
 export function AddressElement () {
-  const AddressList = []
+  const { addressList } = useUserPayment()
   return (
     <>
-      {AddressList.length === 0 ? <Form /> : <List />}
+      {addressList.length === 0 ? <Form /> : <List />}
     </>
   )
 }

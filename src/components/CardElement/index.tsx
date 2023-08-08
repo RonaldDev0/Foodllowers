@@ -1,7 +1,12 @@
+import { useUserPayment } from '@/store'
+import { List } from './List'
+import { Form } from './Form'
+
 export function CardElement () {
+  const { cardList } = useUserPayment()
   return (
-    <div>
-      {}
-    </div>
+    <>
+      {cardList.length === 0 ? <Form /> : <List />}
+    </>
   )
 }

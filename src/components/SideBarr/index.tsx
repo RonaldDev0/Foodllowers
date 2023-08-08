@@ -21,7 +21,7 @@ type props = {
 
 export function SideBarrClose ({ open, setOpen }: propsClose) {
   return (
-    <Image className='m-3 cursor-pointer fixed' onClick={() => setOpen(!open)} src='./icons/menu.svg' alt='menu-icon' width='50' height='50' priority />
+    <Image className='m-3 cursor-pointer fixed left-0' onClick={() => setOpen(!open)} src='./icons/menu.svg' alt='menu-icon' width='50' height='50' priority />
   )
 }
 

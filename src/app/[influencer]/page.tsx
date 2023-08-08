@@ -19,7 +19,6 @@ function NotFound () {
 function Page ({ influencer }: any) {
   return (
     <div>
-      <Link href='/' className='bg-dark_df_bg fixed top-5 left-16 rounded-xl'><Image src='./icons/arrow-left-circle-fill.svg' width='35' height='35' alt='image' /></Link>
       <Banner influencer={influencer} />
       <ProductList influencerId={influencer} />
     </div>
