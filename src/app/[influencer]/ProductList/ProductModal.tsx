@@ -31,7 +31,7 @@ export function ProductModal ({ currentProduct, setCurrentProduct }: { currentPr
           </div>
         </div>
       </div>
-      {buyModal && <BuyModal />}
+      {buyModal && <BuyModal currentProduct={currentProduct} />}
     </>
   )
 }
