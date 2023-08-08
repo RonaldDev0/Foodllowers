@@ -19,7 +19,7 @@ type IInfluencer = {
   path: string
 }
 
-export function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
+function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
   const { qualification, full_name: fullName, path, preview } = influencer
 
   return (
@@ -31,7 +31,7 @@ export function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
   )
 }
 
-export function InfluencerList () {
+function InfluencerList () {
   const { searchFilter: influencerList } = useContent()
 
   return (

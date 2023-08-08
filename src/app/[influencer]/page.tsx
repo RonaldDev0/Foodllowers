@@ -5,6 +5,10 @@ import { Banner } from './Banner'
 import { ProductList } from './ProductList'
 import Link from 'next/link'
 import Image from 'next/image'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 function NotFound () {
   return (
@@ -30,10 +34,10 @@ export default function InfluencerPage ({ params: { influencer } }: any) {
   const Influencer = influencerList.filter(({ path }) => path === `/${influencer}`)
 
   return (
-    <>
+    <Elements stripe={stripePromise} options={{ appearance: { theme: 'night' } }}>
       {
         Influencer.length > 0 ? <Page influencer={Influencer[0]} /> : <NotFound />
       }
-    </>
+    </Elements>
   )
 }
