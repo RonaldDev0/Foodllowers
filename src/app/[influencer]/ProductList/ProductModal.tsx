@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { IProductCard } from './ProductCard'
 import { useCart, useUserPayment } from '@/store'
-import { BuyModal } from './BuyModal/index'
+import { BuyModal } from './BuyModal'
 
 export function ProductModal ({ currentProduct, setCurrentProduct }: { currentProduct: IProductCard, setCurrentProduct: Function }) {
   const { name, description, price } = currentProduct
