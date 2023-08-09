@@ -3,11 +3,13 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useState } from 'react'
 import { useUserPayment } from '@/store'
+import { useRouter } from 'next/navigation'
 
 export function Form ({ currentProduct, setToggleComponent }: any) {
   const elements = useElements()
   const stripe = useStripe()
   const { addressSelect: address } = useUserPayment()
+  const router = useRouter()
 
   const [button, setButton] = useState<string>('Buy')
   const [error, setError] = useState<string | null>(null)
@@ -31,10 +33,10 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
       const clientSecret = await fetch('http://localhost:3000/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentProduct)
+        body: JSON.stringify(currentProduct.price)
       }).then(res => res.json())
 
-      const { error, paymentIntent }: any = await stripe?.confirmCardPayment(clientSecret, {
+      const { error }: any = await stripe?.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements?.getElement(CardElement)!,
           billing_details: address.value
@@ -43,11 +45,11 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
 
       if (!error) {
         setError(null)
-        console.log(paymentIntent)
         setButton('Success!')
+        router.push('/')
       } else {
         setButton('Try again')
-        setError(error.message)
+        setError(error?.message)
       }
     }
   }

@@ -2,7 +2,7 @@
 import { useUserPayment } from '@/store'
 
 function Card ({ item }: any) {
-  const { address } = item
+  const { value: { address } } = item
   return (
     <div className='rounded-md p-4 bg-zinc-900'>
       <h1>{address.line1}</h1>
@@ -16,7 +16,7 @@ export function List ({ setToggleComponent, setToggleComponentContainer }: { set
   return (
     <>
       <form onSubmit={e => e.preventDefault()} className='flex flex-col gap-4'>
-        {addressList.map(item => <Card key={item.address.line1} item={item} />)}
+        {addressList.map(item => <Card key={item.value.address} item={item} />)}
         <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponentContainer('Cards')}>Seleccionar</button>
       </form>
       <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponent('Form')}>Agregar una direccion</button>

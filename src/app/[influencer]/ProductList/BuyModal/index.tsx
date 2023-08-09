@@ -9,8 +9,7 @@ export function BuyModal ({ currentProduct }: any) {
   const [toggleComponenetContainer, setToggleComponentContainer] = useState<string>('Address')
   return (
     <Modal>
-      {/* <AddressElement setToggleComponent={setToggleComponent} currentProduct={currentProduct} /> */}
-      {toggleComponenetContainer === 'Address' ? <AddressElement setToggleComponentContainer={setToggleComponentContainer} currentProduct={currentProduct} /> : <CardElement currentProduct={currentProduct}/>}
+      {toggleComponenetContainer === 'Address' ? <AddressElement setToggleComponentContainer={setToggleComponentContainer} currentProduct={currentProduct} /> : <CardElement currentProduct={currentProduct} />}
     </Modal>
   )
 }

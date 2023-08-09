@@ -8,7 +8,7 @@ export function CardElement ({ currentProduct }: any) {
   const [toggleComponenet, setToggleComponent] = useState<string>('Form')
   return (
     <>
-      {toggleComponenet === 'Form' ? <Form currentProduct={currentProduct} /> : <List setToggleComponent={setToggleComponent} setToggleComponentContainer={setToggleComponentContainer} />}
+      {toggleComponenet === 'Form' ? <Form currentProduct={currentProduct} setToggleComponent={setToggleComponent} /> : <List />}
     </>
   )
 }
