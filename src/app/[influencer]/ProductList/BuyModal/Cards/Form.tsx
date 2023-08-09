@@ -3,13 +3,13 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useState } from 'react'
 import { useUserPayment } from '@/store'
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export function Form ({ currentProduct, setToggleComponent }: any) {
   const elements = useElements()
   const stripe = useStripe()
   const { addressSelect: address } = useUserPayment()
-  // const router = useRouter()
+  const router = useRouter()
 
   const [button, setButton] = useState<string>('Buy')
   const [error, setError] = useState<string | null>(null)
@@ -46,8 +46,8 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
       if (!error) {
         setError(null)
         setButton('Success!')
-        // router.push('/')
         console.log(paymentIntent)
+        router.push('/')
       } else {
         setButton('Try again')
         setError(error?.message)
