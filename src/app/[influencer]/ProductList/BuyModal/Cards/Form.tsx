@@ -3,13 +3,13 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useState } from 'react'
 import { useUserPayment } from '@/store'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
 export function Form ({ currentProduct, setToggleComponent }: any) {
   const elements = useElements()
   const stripe = useStripe()
   const { addressSelect: address } = useUserPayment()
-  const router = useRouter()
+  // const router = useRouter()
 
   const [button, setButton] = useState<string>('Buy')
   const [error, setError] = useState<string | null>(null)
@@ -30,13 +30,13 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
 
     if (address?.complete) {
       setButton('Loading...')
-      const clientSecret = await fetch('https://foodllowers.vercel.app/api/create-payment-intent', {
+      const clientSecret = await fetch(process.env.NEXT_PUBLIC_STRIPE_FETCH_PATH!, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(currentProduct.price)
       }).then(res => res.json())
 
-      const { error }: any = await stripe?.confirmCardPayment(clientSecret, {
+      const { error, paymentIntent }: any = await stripe?.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements?.getElement(CardElement)!,
           billing_details: address.value
@@ -46,7 +46,8 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
       if (!error) {
         setError(null)
         setButton('Success!')
-        router.push('/')
+        // router.push('/')
+        console.log(paymentIntent)
       } else {
         setButton('Try again')
         setError(error?.message)

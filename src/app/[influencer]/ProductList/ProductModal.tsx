@@ -23,7 +23,7 @@ export function ProductModal ({ currentProduct, setCurrentProduct }: { currentPr
           <div className='m-5'>
             <p>{name}</p>
             <p className='text-dark_gray'>{description}</p>
-            <p className='text-green-600'>${price}</p>
+            <p className='text-green-600'>${price.toLocaleString()}</p>
           </div>
           <div className='flex w-full justify-center gap-5'>
             <button className='bg-bg hover:bg-dark_bg transition-all mb-5 px-2 py-1 rounded-lg text-2xl' onClick={() => setStore('Product', currentProduct)}>Añadir al carrito</button>
