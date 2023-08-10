@@ -18,7 +18,6 @@ type Address = {
 }
 
 type Card = {
-  id: string,
   number: string,
   cvv: string,
   expiration: string
@@ -29,6 +28,7 @@ type State = {
   phone: string | null,
   addressSelect: Address | null,
   addressList: Address[],
+  cardSelect: any,
   cardList: Card[]
 }
 
@@ -41,6 +41,7 @@ export const useUserPayment = create<State & Actions>(set => ({
   phone: null,
   addressSelect: null,
   addressList: [],
+  cardSelect: null,
   cardList: [],
   setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value }))
 }))

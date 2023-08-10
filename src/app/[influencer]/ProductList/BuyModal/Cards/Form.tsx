@@ -13,6 +13,7 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
 
   const [button, setButton] = useState<string>('Buy')
   const [error, setError] = useState<string | null>(null)
+  const [cardComplete, setCardComplete] = useState<boolean>(false)
 
   const options: any = {
     hidePostalCode: true,
@@ -28,7 +29,7 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    if (address?.complete) {
+    if (address?.complete && cardComplete) {
       setButton('Loading...')
       const clientSecret = await fetch(process.env.NEXT_PUBLIC_STRIPE_FETCH_PATH!, {
         method: 'POST',
@@ -57,7 +58,7 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
   return (
     <>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-96'>
-        <CardElement className='bg-zinc-900 p-4 rounded-md' options={options} />
+        <CardElement className='bg-zinc-900 p-4 rounded-md' options={options} onChange={e => setCardComplete(e.complete)} />
         <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl'>{button}</button>
         <p>{error}</p>
       </form>
