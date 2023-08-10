@@ -30,13 +30,13 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
 
     if (address?.complete) {
       setButton('Loading...')
-      const clientSecret = await fetch('http://localhost:3000/api/create-payment-intent', {
+      const clientSecret = await fetch(process.env.NEXT_PUBLIC_STRIPE_FETCH_PATH!, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(currentProduct.price)
       }).then(res => res.json())
 
-      const { error }: any = await stripe?.confirmCardPayment(clientSecret, {
+      const { error, paymentIntent }: any = await stripe?.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements?.getElement(CardElement)!,
           billing_details: address.value
@@ -46,6 +46,7 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
       if (!error) {
         setError(null)
         setButton('Success!')
+        console.log(paymentIntent)
         router.push('/')
       } else {
         setButton('Try again')
