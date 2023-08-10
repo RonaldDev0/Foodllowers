@@ -48,7 +48,7 @@ export function Form ({ setToggleComponent, setToggleComponentContainer }: { set
         />
         <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl'>Siguiente</button>
       </form>
-      <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponent('List')}>Ya tienes una direccion?</button>
+      <button className='bg-slate-900 hover:bg-slate-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponent('List')}>Ya tienes una direccion?</button>
     </>
   )
 }
