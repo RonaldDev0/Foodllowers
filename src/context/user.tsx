@@ -5,7 +5,7 @@ import { useSupabase } from '@/app/supabaseProvider'
 type IContext = {
   user: any
   setUser: Function
-  adresses: any
+  addresses: any
   setAdresses: Function
   userId: any
   cards: any
@@ -15,7 +15,7 @@ type IContext = {
 const Context = createContext<IContext>({
   user: undefined,
   setUser: Function,
-  adresses: undefined,
+  addresses: undefined,
   setAdresses: Function,
   userId: '',
   cards: undefined,
@@ -26,7 +26,7 @@ export function UserProvider ({ children }: { children: ReactNode }) {
   const { supabase } = useSupabase()
   const [user, setUser] = useState()
   const [userId, setUserId] = useState()
-  const [adresses, setAdresses] = useState<any>()
+  const [addresses, setAdresses] = useState<any>()
   const [cards, setCards] = useState<any>()
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export function UserProvider ({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <Context.Provider value={{ user, setUser, adresses, setAdresses, userId, cards, setCards }}>
+    <Context.Provider value={{ user, setUser, addresses, setAdresses, userId, cards, setCards }}>
       <>{children}</>
     </Context.Provider>
   )

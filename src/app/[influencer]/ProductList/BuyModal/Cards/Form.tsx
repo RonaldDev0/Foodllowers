@@ -43,10 +43,9 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
         }
       })
 
-      if (!error) {
+      if (!error && paymentIntent.status === 'succeeded') {
         setError(null)
         setButton('Success!')
-        console.log(paymentIntent)
         router.push('/')
       } else {
         setButton('Try again')

@@ -2,20 +2,24 @@
 import { useUser } from '@/context'
 import { AddressElement, useElements } from '@stripe/react-stripe-js'
 import { useUserPayment } from '@/store'
+import { useSupabase } from '@/app/supabaseProvider'
 
 export function Form ({ setToggleComponent, setToggleComponentContainer }: { setToggleComponent: Function, setToggleComponentContainer: Function }) {
-  const { user } = useUser()
+  const { user, userId } = useUser()
   const { addressList, setStore } = useUserPayment()
   const elements = useElements()
+  const { supabase } = useSupabase()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     const address = await elements?.getElement(AddressElement)?.getValue() as any
 
     if (address.complete) {
-      setStore('addressList', [...addressList, address])
-      setStore('addressSelect', address)
-      setToggleComponentContainer('Cards')
+      supabase.from('adresses').insert({ user_id: userId, address: JSON.stringify(address) }).then(() => {
+        setStore('addressList', [...addressList, address])
+        setStore('addressSelect', address)
+        setToggleComponentContainer('Cards')
+      })
     }
   }
   return (
