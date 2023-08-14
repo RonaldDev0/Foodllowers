@@ -38,7 +38,7 @@ export function UserProvider ({ children }: { children: ReactNode }) {
     })
 
     supabase.from('adresses').select('*').order('id').then(({ data }) => setAdresses(data))
-    supabase.from('cards').select('*').order('id').then(({ data }) => setCards(data))
+    // supabase.from('cards').select('*').order('id').then(({ data }) => setCards(data))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
