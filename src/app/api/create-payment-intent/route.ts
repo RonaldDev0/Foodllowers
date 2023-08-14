@@ -6,16 +6,17 @@ import { Stripe } from 'stripe'
 // }
 
 async function conversion (price: any) {
-  const { rates } = await fetch(`https://openexchangerates.org/api/latest.json?app_id=${process.env.OPENEXCHANGERATE_ID}`, { next: { revalidate: 60 * 60 } }).then(res => res.json())
-  return Math.floor((price / rates.COP) * 100)
+  const { rates: { COP } } = await fetch(`https://openexchangerates.org/api/latest.json?app_id=${process.env.OPENEXCHANGERATE_ID}`, { next: { revalidate: 60 * 60 } }).then(res => res.json())
+  return Math.floor((price / COP) * 100)
 }
 
 export async function POST (req: NextRequest) {
-  const price = await req.json()
+  const res = await req.json()
+  console.log(res)
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2022-11-15' })
 
   const paimentIntent = await stripe.paymentIntents.create({
-    amount: await conversion(price),
+    amount: await conversion(res.product.price),
     currency: 'USD',
     automatic_payment_methods: { enabled: true }
   })

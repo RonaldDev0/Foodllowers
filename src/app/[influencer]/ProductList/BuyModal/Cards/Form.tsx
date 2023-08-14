@@ -34,7 +34,7 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
       const clientSecret = await fetch(process.env.NEXT_PUBLIC_STRIPE_FETCH_PATH!, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentProduct.price)
+        body: JSON.stringify({ product: currentProduct, address: address.value })
       }).then(res => res.json())
 
       const { error, paymentIntent }: any = await stripe?.confirmCardPayment(clientSecret, {
