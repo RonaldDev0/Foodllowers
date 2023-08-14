@@ -23,7 +23,7 @@ export function Form ({ setToggleComponent, setToggleComponentContainer }: { set
     }
   }
   return (
-    <>
+    <div className='text-center flex flex-col gap-4'>
       <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
         <AddressElement
           className='bg-zinc-900 p-4 rounded-md'
@@ -50,9 +50,9 @@ export function Form ({ setToggleComponent, setToggleComponentContainer }: { set
             }
           }}
         />
-        <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl'>Siguiente</button>
+        <button className='bg-green-900 hover:bg-green-700 transition-all p-2 rounded-md text-2xl'>Siguiente</button>
       </form>
-      <button className='bg-slate-900 hover:bg-slate-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponent('List')}>Ya tienes una direccion?</button>
-    </>
+      <p className='cursor-pointer' onClick={() => setToggleComponent('List')}>Ya tienes una direccion?</p>
+    </div>
   )
 }

@@ -63,7 +63,7 @@ export function List ({ setToggleComponent, currentProduct }: any) {
         {cardList.length === 0 ? <p className='text-xl w-56 m-10'>No tienes ninguna targeta registrada </p> : <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl' onClick={fetchWithOutForm}>{button}</button>}
         {error && <p>{error}</p>}
       </form>
-      <button className='bg-slate-900 hover:bg-slate-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponent('Form')}>Agregar una targeta</button>
+      <button className='bg-green-900 hover:bg-green-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponent('Form')}>Agregar una targeta</button>
     </>
   )
 }

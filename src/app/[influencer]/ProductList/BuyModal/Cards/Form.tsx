@@ -56,13 +56,13 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
   }
 
   return (
-    <>
+    <div className='text-center'>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-96'>
         <CardElement className='bg-zinc-900 p-4 rounded-md' options={options} onChange={e => setCardComplete(e.complete)} />
-        <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl'>{button}</button>
+        <button className='bg-green-900 hover:bg-green-700 transition-all p-2 rounded-md text-2xl'>{button}</button>
         <p>{error}</p>
       </form>
-      <button onClick={() => setToggleComponent('List')} className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl'>Ya tienes una targeta?</button>
-    </>
+      <p onClick={() => setToggleComponent('List')} className='cursor-pointer'>Ya tienes una targeta?</p>
+    </div>
   )
 }

@@ -5,14 +5,15 @@ function Card ({ item }: any) {
   const { value } = item
   const { setStore, addressSelect } = useUserPayment()
 
-  const handleClick = () => {
-    setStore('addressSelect', item)
-  }
+  const isSelected = addressSelect?.value === value
 
   return (
-    <div className={`${addressSelect?.value === value && 'border border-green-500 bg-zinc-900'} rounded-md p-4 bg-zinc-900 cursor-pointer transition-all`} onClick={handleClick}>
-      <h1>{value.address.line1}</h1>
-      <p>{value.address.city}</p>
+    <div className={`${isSelected && 'border border-green-500 bg-zinc-900'} flex  items-center justify-between rounded-md p-4 bg-zinc-900 cursor-pointer transition-all`} onClick={() => setStore('addressSelect', item)}>
+      <div>
+        <h1>{value.address.line1}</h1>
+        <p>{value.address.city}</p>
+      </div>
+      {isSelected && <div className='w-5 h-5 rounded-xl bg-green-700'>{}</div>}
     </div>
   )
 }
@@ -20,12 +21,12 @@ function Card ({ item }: any) {
 export function List ({ setToggleComponent, setToggleComponentContainer }: { setToggleComponent: Function, setToggleComponentContainer: Function }) {
   const { addressList } = useUserPayment()
   return (
-    <>
-      <form onSubmit={e => e.preventDefault()} className='flex flex-col gap-4 text-center'>
+    <div className='text-center flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 w-96 text-left'>
         {addressList.map(item => <Card key={item.value.address.line1} item={item} />)}
-        {addressList.length === 0 ? <p className='text-xl w-56 m-10'>No tienes ninguna direccion registrada </p> : <button className='bg-zinc-900 hover:bg-zinc-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponentContainer('Cards')}>Seleccionar</button>}
-      </form>
-      <button className='bg-slate-900 hover:bg-slate-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponent('Form')}>Agregar una direccion</button>
-    </>
+        {addressList.length === 0 ? <p className='text-xl w-56 m-10'>No tienes ninguna direccion registrada </p> : <button className='bg-green-900 hover:bg-green-700 transition-all p-2 rounded-md text-2xl' onClick={() => setToggleComponentContainer('Cards')}>Seleccionar</button>}
+      </div>
+      <p className='cursor-pointer' onClick={() => setToggleComponent('Form')}>Agregar una direccion</p>
+    </div>
   )
 }
