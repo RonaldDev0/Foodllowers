@@ -1,33 +1,25 @@
 'use client'
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useSupabase } from '@/app/supabaseProvider'
+import { useUserPayment } from '@/store'
 
 type IContext = {
   user: any
   setUser: Function
-  addresses: any
-  setAdresses: Function
   userId: any
-  cards: any
-  setCards: Function
 }
 
 const Context = createContext<IContext>({
   user: undefined,
   setUser: Function,
-  addresses: undefined,
-  setAdresses: Function,
-  userId: '',
-  cards: undefined,
-  setCards: Function
+  userId: ''
 })
 
 export function UserProvider ({ children }: { children: ReactNode }) {
   const { supabase } = useSupabase()
   const [user, setUser] = useState()
   const [userId, setUserId] = useState()
-  const [addresses, setAdresses] = useState<any>()
-  const [cards, setCards] = useState<any>()
+  const { setStore } = useUserPayment()
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }: any) => {
@@ -37,14 +29,16 @@ export function UserProvider ({ children }: { children: ReactNode }) {
       }
     })
 
-    supabase.from('adresses').select('*').order('id').then(({ data }) => setAdresses(data))
+    supabase.from('adresses').select('*').order('id').then(({ data }) => {
+      setStore('addressList', data?.map(({ address, id }: any) => ({ ...JSON.parse(address), id })))
+    })
     // supabase.from('cards').select('*').order('id').then(({ data }) => setCards(data))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <Context.Provider value={{ user, setUser, addresses, setAdresses, userId, cards, setCards }}>
+    <Context.Provider value={{ user, setUser, userId }}>
       <>{children}</>
     </Context.Provider>
   )

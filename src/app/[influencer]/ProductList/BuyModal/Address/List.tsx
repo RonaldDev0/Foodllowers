@@ -8,7 +8,7 @@ function Card ({ item }: any) {
   const isSelected = addressSelect?.value === value
 
   return (
-    <div className={`${isSelected && 'border border-green-500 bg-zinc-900'} flex  items-center justify-between rounded-md p-4 bg-zinc-900 cursor-pointer transition-all`} onClick={() => setStore('addressSelect', item)}>
+    <div className={`${isSelected && 'border border-green-500 bg-zinc-900'} flex  items-center justify-between rounded-md p-4 bg-zinc-900 cursor-pointer`} onClick={() => setStore('addressSelect', item)}>
       <div>
         <h1>{value.address.line1}</h1>
         <p>{value.address.city}</p>

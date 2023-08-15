@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
 type Address = {
+  id: number,
   complete: boolean,
   isNewAddress: boolean,
   value: {
@@ -34,6 +35,7 @@ type State = {
 
 type Actions = {
   setStore: (property: keyof State, value: any) => void
+  filter: (property: keyof State, value: any) => void
 }
 
 export const useUserPayment = create<State & Actions>(set => ({
@@ -43,5 +45,6 @@ export const useUserPayment = create<State & Actions>(set => ({
   addressList: [],
   cardSelect: null,
   cardList: [],
-  setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value }))
+  setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value })),
+  filter: (property, value) => set(() => ({ [property]: value }))
 }))

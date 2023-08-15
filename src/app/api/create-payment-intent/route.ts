@@ -12,7 +12,6 @@ async function conversion (price: any) {
 
 export async function POST (req: NextRequest) {
   const res = await req.json()
-  console.log(res)
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2022-11-15' })
 
   const paimentIntent = await stripe.paymentIntents.create({
