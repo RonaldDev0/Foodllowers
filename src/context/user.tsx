@@ -29,10 +29,13 @@ export function UserProvider ({ children }: { children: ReactNode }) {
       }
     })
 
+    supabase.from('shipments').select('*').order('id').then(({ data }) => {
+      setStore('shipmentList', data)
+    })
+
     supabase.from('adresses').select('*').order('id').then(({ data }) => {
       setStore('addressList', data?.map(({ address, id }: any) => ({ ...JSON.parse(address), id })))
     })
-    // supabase.from('cards').select('*').order('id').then(({ data }) => setCards(data))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

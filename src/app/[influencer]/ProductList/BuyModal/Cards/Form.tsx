@@ -4,12 +4,16 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useState } from 'react'
 import { useUserPayment } from '@/store'
 import { useRouter } from 'next/navigation'
+import { useSupabase } from '@/app/supabaseProvider'
+import { useUser } from '@/context'
 
 export function Form ({ currentProduct, setToggleComponent }: any) {
   const elements = useElements()
   const stripe = useStripe()
-  const { addressSelect: address } = useUserPayment()
+  const { addressSelect: address, setStore } = useUserPayment()
   const router = useRouter()
+  const { supabase } = useSupabase()
+  const { userId } = useUser()
 
   const [button, setButton] = useState<string>('Buy')
   const [error, setError] = useState<string | null>(null)
@@ -45,9 +49,14 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
       })
 
       if (!error && paymentIntent.status === 'succeeded') {
-        setError(null)
-        setButton('Success!')
-        router.push('/')
+        supabase.from('shipments').insert({ user_id: userId, product: currentProduct }).then(() => {
+          supabase.from('shipments').select('*').order('id').then(({ data }) => {
+            setStore('shipmentList', data)
+            setError(null)
+            setButton('Success!')
+            router.push('/')
+          })
+        })
       } else {
         setButton('Try again')
         setError(error?.message)

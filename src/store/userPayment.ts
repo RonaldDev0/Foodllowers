@@ -24,13 +24,29 @@ type Card = {
   expiration: string
 }
 
+type Shipment = {
+  id: number,
+  user_id: string,
+  product: {
+    id: number,
+    id_kitchen: number,
+    id_influencer: number,
+    category: string,
+    preview: string,
+    name: string,
+    description: string,
+    price: string
+  }
+}
+
 type State = {
   buyModal: boolean,
   phone: string | null,
   addressSelect: Address | null,
   addressList: Address[],
   cardSelect: any,
-  cardList: Card[]
+  cardList: Card[],
+  shipmentList: Shipment[]
 }
 
 type Actions = {
@@ -45,6 +61,7 @@ export const useUserPayment = create<State & Actions>(set => ({
   addressList: [],
   cardSelect: null,
   cardList: [],
+  shipmentList: [],
   setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value })),
   filter: (property, value) => set(() => ({ [property]: value }))
 }))
