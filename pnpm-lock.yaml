@@ -9,10 +9,10 @@ dependencies:
     specifier: ^9.7.0
     version: 9.7.0(next@13.4.7)(webpack@5.88.2)
   '@stripe/react-stripe-js':
-    specifier: ^2.3.0
+    specifier: ^2.1.1
     version: 2.3.0(@stripe/stripe-js@2.1.6)(react-dom@18.2.0)(react@18.2.0)
   '@stripe/stripe-js':
-    specifier: ^2.1.6
+    specifier: ^2.0.0
     version: 2.1.6
   '@supabase/auth-helpers-nextjs':
     specifier: ^0.7.4
@@ -36,8 +36,8 @@ dependencies:
     specifier: ^0.32.6
     version: 0.32.6
   stripe:
-    specifier: ^13.6.0
-    version: 13.6.0
+    specifier: ^12.17.0
+    version: 12.18.0
   zustand:
     specifier: ^4.4.1
     version: 4.4.1(@types/react@18.2.13)(react@18.2.0)
@@ -4898,8 +4898,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /stripe@13.6.0:
-    resolution: {integrity: sha512-0VSzva12onR75i708y2CB+UCeQKfPeLRkOCaGZYzHXiXiubB0C3pLKq+MPNfnajzfOeO6EVBita6rEAFGj0ZGA==}
+  /stripe@12.18.0:
+    resolution: {integrity: sha512-cYjgBM2SY/dTm8Lr6eMyyONaHTZHA/QjHxFUIW5WH8FevSRIGAVtXEmBkUXF1fsqe7QvvRgQSGSJZmjDacegGg==}
     engines: {node: '>=12.*'}
     dependencies:
       '@types/node': 20.3.1
