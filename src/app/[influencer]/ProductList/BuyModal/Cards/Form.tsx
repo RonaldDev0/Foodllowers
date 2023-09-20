@@ -10,7 +10,7 @@ import { useUser } from '@/context'
 export function Form ({ currentProduct, setToggleComponent }: any) {
   const elements = useElements()
   const stripe = useStripe()
-  const { addressSelect: address, setStore } = useUserPayment()
+  const { addressSelect: address } = useUserPayment()
   const router = useRouter()
   const { supabase } = useSupabase()
   const { userId } = useUser()
@@ -49,13 +49,10 @@ export function Form ({ currentProduct, setToggleComponent }: any) {
       })
 
       if (!error && paymentIntent.status === 'succeeded') {
-        supabase.from('shipments').insert({ user_id: userId, product: currentProduct }).then(() => {
-          supabase.from('shipments').select('*').order('id').then(({ data }) => {
-            setStore('shipmentList', data)
-            setError(null)
-            setButton('Success!')
-            router.push('/')
-          })
+        supabase.from('orders').insert({ user_id: userId, kitchen_id: currentProduct.id_kitchen, product: currentProduct, order_state: true }).then(() => {
+          setError(null)
+          setButton('Success!')
+          router.push('/')
         })
       } else {
         setButton('Try again')
