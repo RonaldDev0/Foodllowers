@@ -13,7 +13,7 @@ export function ProductModal ({ currentProduct, setCurrentProduct }: { currentPr
   return (
     <>
       <div className='flex items-center justify-center fixed z-0 w-full h-screen bg-black bg-opacity-30 left-0 top-0'>
-        <div className='[@media(max-width:400px)]:w-full w-96 bg-bg_card rounded-lg'>
+        <div className='[@media(max-width:400px)]:w-full w-96 rounded-lg'>
           <div className='w-full flex justify-end'>
             <Image className='m-3 cursor-pointer text-white' onClick={() => setCurrentProduct(undefined)} src='./icons/x.svg' alt='close-icon' width='40' height='40' priority />
           </div>
@@ -26,7 +26,7 @@ export function ProductModal ({ currentProduct, setCurrentProduct }: { currentPr
             <p className='text-green-600'>${price.toLocaleString()}</p>
           </div>
           <div className='flex w-full justify-center gap-5'>
-            <button className='bg-bg hover:bg-dark_bg transition-all mb-5 px-2 py-1 rounded-lg text-2xl' onClick={() => setStore('Product', currentProduct)}>Añadir al carrito</button>
+            <button className='transition-all mb-5 px-2 py-1 rounded-lg text-2xl' onClick={() => setStore('Product', currentProduct)}>Añadir al carrito</button>
             <button className='bg-green-600 mb-5 px-2 py-1 rounded-lg text-2xl' onClick={() => updateStore('buyModal', true)}>Comprar</button>
           </div>
         </div>

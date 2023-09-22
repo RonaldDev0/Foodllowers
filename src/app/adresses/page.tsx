@@ -4,6 +4,7 @@ import { CardAddress } from './CardAddress'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { useState } from 'react'
+import { Button } from '@nextui-org/react'
 
 import { AddressForm } from './AddressForm'
 
@@ -18,7 +19,7 @@ export default function Adresses () {
     <Elements stripe={stripePromise} options={{ appearance: { theme: 'night' } }}>
       <div className='w-full h-screen flex flex-col top-12 justify-center items-center gap-8'>
         {addressList.length > 0 && addressList.map(item => <CardAddress key={item.id} item={item} />)}
-        <button onClick={() => setAddModal(true)} className='bg-green-900 hover:bg-green-700 transition-all p-2 rounded-md text-2xl'>Agregar direccion</button>
+        <Button color='primary' onClick={() => setAddModal(true)}>Agregar direccion</Button>
         {addModal && <AddressForm setAddModal={setAddModal} />}
       </div>
     </Elements>

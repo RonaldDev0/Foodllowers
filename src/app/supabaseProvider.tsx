@@ -1,5 +1,5 @@
 'use client'
-
+import { NextUIProvider } from '@nextui-org/react'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
@@ -36,7 +36,9 @@ export function SupabaseProvider ({ children }: { children: ReactNode }) {
 
   return (
     <Context.Provider value={{ supabase }}>
-      <>{children}</>
+      <NextUIProvider>
+        {children}
+      </NextUIProvider>
     </Context.Provider>
   )
 }

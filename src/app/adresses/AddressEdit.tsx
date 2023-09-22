@@ -27,7 +27,7 @@ export function AddressEdit ({ setEditModal, item }: { setEditModal: Function, i
 
   return (
     <div className='fixed top-0 left-0 z-50 flex justify-center items-center h-screen w-screen bg-black bg-opacity-30'>
-      <form onSubmit={handleSubmit} className='bg-bg p-8 rounded-md flex flex-col gap-4'>
+      <form onSubmit={handleSubmit} className='p-8 rounded-md flex flex-col gap-4'>
         <div className='w-full flex justify-end'>
           <Image className='cursor-pointer' src='icons/x.svg' alt='close' width={40} height={40} onClick={() => setEditModal(false)} />
         </div>

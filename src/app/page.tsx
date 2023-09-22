@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { Card, CardBody } from '@nextui-org/react'
+
 import { SearchBarr } from '@/components'
 import { useContent } from '@/context'
 
@@ -23,10 +25,16 @@ function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
   const { qualification, full_name: fullName, path, preview } = influencer
 
   return (
-    <Link href={path} className='bg-bg_card hover:bg-bg_card_hover transition-all rounded-lg p-3'>
-      <Image src={preview} width='200' height='200' alt='img preview' className='w-[350px] h-[200px] rounded-lg' />
-      <p className='text-xl'>{fullName}</p>
-      <p>⭐{qualification}</p>
+    <Link href={path}>
+      <Card>
+        <CardBody className='p-0'>
+          <Image src={preview} width='200' height='200' alt='img preview' className='w-[350px] h-[200px] rounded-lg' />
+          <div className='px-4 pb-1'>
+            <p className='text-xl'>{fullName}</p>
+            <p>⭐{qualification}</p>
+          </div>
+        </CardBody>
+      </Card>
     </Link>
   )
 }
@@ -55,7 +63,7 @@ export default function Home () {
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-screen items-center  bg-bg gap-12'>
+    <div className='flex flex-col w-full h-screen items-center gap-12'>
       <SearchBarr />
       <InfluencerList />
     </div>

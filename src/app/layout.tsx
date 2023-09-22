@@ -16,8 +16,8 @@ export const metadata = {
 
 export default function RootLayout ({ children }: { children: ReactNode }) {
   return (
-    <html lang='en'>
-      <body className='w-full h-screen flex flex-col top-12 items-center'>
+    <html lang='en' className='dark'>
+      <body className='w-full h-screen flex flex-col top-12 items-center dark:bg-gradient-to-r dark:from-blue-950 dark:to-black'>
         <SupabaseProvider>
           <UserProvider>
             <ContentProvider>

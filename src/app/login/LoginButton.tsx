@@ -6,9 +6,7 @@ import { useSupabase } from '../supabaseProvider'
 export function LoginButton () {
   const { supabase } = useSupabase()
 
-  const Login = async () => {
-    await supabase.auth.signInWithOAuth({ provider: 'google' })
-  }
+  const Login = async () => await supabase.auth.signInWithOAuth({ provider: 'google' })
 
   return (
     <button
