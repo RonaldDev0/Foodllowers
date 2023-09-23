@@ -10,12 +10,9 @@ export function CardAddress ({ item }: any) {
   const { filter, addressList } = useUserPayment()
   const { supabase } = useSupabase()
   const [editModal, setEditModal] = useState<boolean>(false)
-
   const { id, value: { name, phone, address: { line1, city } } } = item
 
-  const remove = () => {
-    supabase.from('adresses').delete().eq('id', id).then(({ error }) => error === null && filter('addressList', addressList.filter((item: any) => item.id !== id)))
-  }
+  const remove = () => supabase.from('adresses').delete().eq('id', id).then(({ error }) => error === null && filter('addressList', addressList.filter((item: any) => item.id !== id)))
 
   return (
     <>
@@ -26,26 +23,16 @@ export function CardAddress ({ item }: any) {
               <p className='font-bold'>{name}</p>
               <p>{phone.slice(3)}</p>
             </div>
-            <div className='w-full gap-2 justify-between'>
+            <div className='flex w-full gap-2 justify-between'>
               <div>
                 <p>{city}</p>
                 <p>{line1}</p>
               </div>
-              <div className='flex gap-2 h-8'>
-                <Button color='danger' onClick={remove}>Borrar</Button>
-                <Button color='secondary' onClick={() => setEditModal(true)}>Editar</Button>
-              </div>
               <Dropdown>
-                <DropdownTrigger>
-                  <Button variant='bordered'>Open Menu</Button>
-                </DropdownTrigger>
+                <DropdownTrigger><Button color='secondary'>Opciones</Button></DropdownTrigger>
                 <DropdownMenu aria-label='Static Actions'>
-                  <DropdownItem key='new'>New file</DropdownItem>
-                  <DropdownItem key='copy'>Copy link</DropdownItem>
-                  <DropdownItem key='edit'>Edit file</DropdownItem>
-                  <DropdownItem key='delete' className='text-danger' color='danger'>
-                    Delete file
-                  </DropdownItem>
+                  <DropdownItem key='edit' onClick={() => setEditModal(true)}>Editar direccion</DropdownItem>
+                  <DropdownItem key='delete' onClick={remove} className='text-danger' color='danger'>Borrar direccion</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
