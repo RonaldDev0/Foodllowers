@@ -1,42 +1,42 @@
+'use client'
 import Image from 'next/image'
-import { LoginButton } from './LoginButton'
-import { Carousel } from './Carousel'
-
-function Left () {
-  return (
-    <div
-      className='[@media(max-width:800px)]:w-[100vw] w-[50vw] flex flex-col [@media(max-width:800px)]:justify-start justify-center items-center bg-[#F87979]'
-    >
-      <Image
-        src='./foodllowers-logo.svg'
-        width='350' height='350'
-        alt='logo'
-        priority
-        className='[@media(max-width:800px)]:w-[300px]'
-      />
-      <div className='[@media(max-width:800px)]:hidden'>
-        <p className='font-bold text-4xl w-[400px]'>¡Registrate hoy y recibe hasta 15 dias</p>
-        <p className='font-bold text-2xl'>de Envios Gratis pagando con tarjeta!</p>
-      </div>
-    </div>
-  )
-}
-
-function Right () {
-  return (
-    <div className='[@media(max-width:800px)]:fixed [@media(max-width:800px)]:top-56 [@media(max-width:800px)]:w-[100vw] w-[50vw] flex flex-col items-center [@media(max-width:800px)]:gap-12 gap-44 mt-28'>
-      <h2 className='[@media(max-width:800px)]:text-white text-black font-bold text-4xl w-96 text-center'>Registrate o ingresa para continuar</h2>
-      <LoginButton />
-      <Carousel />
-    </div>
-  )
-}
+import { Button, Card, CardHeader, CardBody, CardFooter, Divider, Input } from '@nextui-org/react'
+import { useSupabase } from '../Providers'
+import { useRef } from 'react'
+import Link from 'next/link'
 
 export default function Login () {
+  const { supabase } = useSupabase()
+  const email = useRef<any>()
+  const password = useRef<any>()
+
+  const Login = async () => await supabase.auth.signInWithOAuth({ provider: 'google' })
+
+  const handleSubmit = async () => {
+    await supabase.auth.signInWithPassword({
+      email: email.current.value,
+      password: password.current.value
+    })
+  }
+
   return (
-    <main className='flex h-[100vh] bg-[#F4F4F4]'>
-      <Left />
-      <Right />
+    <main className='h-screen flex justify-center items-center'>
+      <Card className='p-10' shadow='lg'>
+        <CardHeader className='justify-center text-2xl'>Iniciar sesión</CardHeader>
+        <CardBody className='justify-center items-center flex flex-col gap-6'>
+          <Input ref={email} isRequired type='email' label='Email' defaultValue='test@foodllowers.com' className='max-w-xs' />
+          <Input ref={password} isRequired type='password' label='Password' className='max-w-xs' />
+          <Button className='w-full' onPress={handleSubmit} color='secondary'>Ingresar</Button>
+          <Link href='/register' className='text-purple-500'>No tienes una cuenta?</Link>
+        </CardBody>
+        <CardFooter className='flex flex-col justify-center'>
+          <Divider className='mb-8' />
+          <Button color='primary' onPress={() => Login()} className='flex justify-center items-center gap-2 w-80 py-6 text-lg'>
+            <Image src='./icons/google.svg' alt='Google' width='45' height='45' />
+            <p>Inicar sesión con Google</p>
+          </Button>
+        </CardFooter>
+      </Card>
     </main>
   )
 }
