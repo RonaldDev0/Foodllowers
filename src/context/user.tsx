@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { useSupabase } from '@/app/supabaseProvider'
+import { useSupabase } from '@/app/Providers'
 import { useUserPayment } from '@/store'
 
 type IContext = {
@@ -29,9 +29,7 @@ export function UserProvider ({ children }: { children: ReactNode }) {
       }
     })
 
-    supabase.from('shipments').select('*').order('id').then(({ data }) => {
-      setStore('shipmentList', data)
-    })
+    supabase.from('shipments').select('*').order('id').then(({ data }) => setStore('shipmentList', data))
 
     supabase.from('adresses').select('*').order('id').then(({ data }) => {
       setStore('addressList', data?.map(({ address, id }: any) => ({ ...JSON.parse(address), id })))

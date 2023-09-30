@@ -3,6 +3,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
+import { UserProvider, ContentProvider } from '@/context'
 
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
 
@@ -10,9 +11,9 @@ type Database = {
   public: {
     Tables: {
       movies: {
-        Row: {} // The data expected to be returned from a "select" statement.
-        Insert: {} // The data expected passed to an "insert" statement.
-        Update: {} // The data expected passed to an "update" statement.
+        Row: {}
+        Insert: {}
+        Update: {}
       }
     }
   }
@@ -24,7 +25,7 @@ type SupabaseContext = {
 
 const Context = createContext<SupabaseContext | undefined>(undefined)
 
-export function SupabaseProvider ({ children }: { children: ReactNode }) {
+export function Providers ({ children }: { children: ReactNode }) {
   const [supabase] = useState(() => createPagesBrowserClient())
   const router = useRouter()
 
@@ -37,7 +38,11 @@ export function SupabaseProvider ({ children }: { children: ReactNode }) {
   return (
     <Context.Provider value={{ supabase }}>
       <NextUIProvider>
-        {children}
+        <UserProvider>
+          <ContentProvider>
+            {children}
+          </ContentProvider>
+        </UserProvider>
       </NextUIProvider>
     </Context.Provider>
   )

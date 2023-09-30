@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useSupabase } from '../supabaseProvider'
+import { useSupabase } from '../Providers'
 
 export function LoginButton () {
   const { supabase } = useSupabase()

@@ -28,8 +28,8 @@ function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
     <Link href={path}>
       <Card>
         <CardBody className='p-0'>
-          <Image src={preview} width='200' height='200' alt='img preview' className='w-[350px] h-[200px] rounded-lg' />
-          <div className='px-4 pb-1'>
+          <Image src={preview} width='350' height='200' alt='img preview' className='w-[350px] h-[200px]' />
+          <div className='px-4 pb-2 pt-2 flex justify-between'>
             <p className='text-xl'>{fullName}</p>
             <p>⭐{qualification}</p>
           </div>
@@ -40,13 +40,11 @@ function InfluencerCard ({ influencer }: { influencer: IInfluencer }) {
 }
 
 function InfluencerList () {
-  const { searchFilter: influencerList } = useContent()
+  const { influencerList } = useContent()
 
   return (
     <div className='flex flex-wrap gap-5 justify-center'>
-      {
-        influencerList && influencerList.map((influencer: any) => <InfluencerCard key={influencer.id} influencer={influencer} />)
-      }
+      {influencerList?.map((influencer: any) => <InfluencerCard key={influencer.id} influencer={influencer} />)}
     </div>
   )
 }
@@ -63,8 +61,8 @@ export default function Home () {
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-screen items-center gap-12'>
-      <SearchBarr />
+    <div className='flex flex-col w-full mb-16 items-center gap-12'>
+      <SearchBarr message />
       <InfluencerList />
     </div>
   )

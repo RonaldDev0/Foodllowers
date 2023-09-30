@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 // Components
 import Profile from './Profile'
@@ -20,6 +21,11 @@ type props = {
   setOpen: Function,
 }
 
+const sidebarVariants = {
+  open: { x: 0 },
+  closed: { x: '-100%' }
+}
+
 const MoonIcon = (props: any) => (
   <svg aria-hidden='true' focusable='false' height='1em' role='presentation' viewBox='0 0 24 24' width='1em' {...props}>
     <path d='M21.53 15.93c-.16-.27-.61-.69-1.73-.49a8.46 8.46 0 01-1.88.13 8.409 8.409 0 01-5.91-2.82 8.068 8.068 0 01-1.44-8.66c.44-1.01.13-1.54-.09-1.76s-.77-.55-1.83-.11a10.318 10.318 0 00-6.32 10.21 10.475 10.475 0 007.04 8.99 10 10 0 002.89.55c.16.01.32.02.48.02a10.5 10.5 0 008.47-4.27c.67-.93.49-1.519.32-1.79z' fill='currentColor' />
@@ -36,9 +42,7 @@ const SunIcon = (props: any) => (
 )
 
 export function SideBarrClose ({ open, setOpen }: propsClose) {
-  return (
-    <Image className='m-3 cursor-pointer fixed left-0 z-10' onClick={() => setOpen(!open)} src='./icons/menu.svg' alt='menu-icon' width='50' height='50' priority />
-  )
+  return <Image className='m-3 cursor-pointer fixed left-0 z-10' onClick={() => setOpen(!open)} src='./icons/menu.svg' alt='menu-icon' width='50' height='50' priority />
 }
 
 export function SideBarrOpen ({ open, setOpen }: props) {
@@ -48,25 +52,33 @@ export function SideBarrOpen ({ open, setOpen }: props) {
   useEffect(() => !darkMode ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark'), [darkMode])
 
   return (
-    <Card className='fixed z-50 w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'>
-      <CardBody className='p-0'>
-        <div className='w-full flex justify-around'>
-          <Switch
-            onClick={() => setDarkMode(!darkMode)}
-            defaultSelected={!darkMode}
-            size='md'
-            color='secondary'
-            thumbIcon={({ isSelected, className }: any) => isSelected ? <SunIcon className={className} /> : <MoonIcon className={className} />}
-          />
-          <Image className='m-3 cursor-pointer' onClick={() => setOpen(!open)} src='./icons/x.svg' alt='close-icon' width='40' height='40' priority />
-        </div>
-        <div className='h-full w-full flex flex-col justify-around items-center'>
-          <Profile user={user} />
-          <Pages />
-          <Logout />
-        </div>
-      </CardBody>
-    </Card>
+    <motion.div
+      className='fixed z-50 w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'
+      variants={sidebarVariants}
+      initial='closed'
+      animate={open ? 'open' : 'closed'}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className='w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'>
+        <CardBody className='p-0'>
+          <div className='w-full flex justify-around'>
+            <Switch
+              onClick={() => setDarkMode(!darkMode)}
+              defaultSelected={!darkMode}
+              size='md'
+              color='secondary'
+              thumbIcon={({ isSelected, className }: any) => isSelected ? <SunIcon className={className} /> : <MoonIcon className={className} />}
+            />
+            <Image className='m-3 cursor-pointer' onClick={() => setOpen(!open)} src='./icons/x.svg' alt='close-icon' width='40' height='40' priority />
+          </div>
+          <div className='h-full w-full flex flex-col justify-around items-center'>
+            <Profile user={user} />
+            <Pages />
+            <Logout />
+          </div>
+        </CardBody>
+      </Card>
+    </motion.div>
   )
 }
 
@@ -78,5 +90,10 @@ export function SideBarr () {
     return null
   }
 
-  return open ? <SideBarrOpen open={open} setOpen={setOpen} /> : <SideBarrClose open={open} setOpen={setOpen} />
+  return (
+    <>
+      <SideBarrClose open={open} setOpen={setOpen} />
+      <SideBarrOpen open={open} setOpen={setOpen} />
+    </>
+  )
 }

@@ -29,10 +29,5 @@ export const Paths: ILink[] = [
     img: './icons/clipboard.svg',
     title: 'Pedidos',
     path: '/shipments'
-  },
-  {
-    img: './icons/credit-card.svg',
-    title: 'Metodos de pago',
-    path: '/paymentmethods'
   }
 ]

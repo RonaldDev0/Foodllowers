@@ -1,15 +1,13 @@
 'use client'
 import { useUserPayment } from '@/store'
-import { useSupabase } from '../supabaseProvider'
-import { useState } from 'react'
-import { Button, Card, CardBody, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
-
+import { useSupabase } from '../Providers'
+import { Button, Card, CardBody, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDisclosure } from '@nextui-org/react'
 import { AddressEdit } from './AddressEdit'
 
 export function CardAddress ({ item }: any) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { filter, addressList } = useUserPayment()
   const { supabase } = useSupabase()
-  const [editModal, setEditModal] = useState<boolean>(false)
   const { id, value: { name, phone, address: { line1, city } } } = item
 
   const remove = () => supabase.from('adresses').delete().eq('id', id).then(({ error }) => error === null && filter('addressList', addressList.filter((item: any) => item.id !== id)))
@@ -31,7 +29,7 @@ export function CardAddress ({ item }: any) {
               <Dropdown>
                 <DropdownTrigger><Button color='secondary'>Opciones</Button></DropdownTrigger>
                 <DropdownMenu aria-label='Static Actions'>
-                  <DropdownItem key='edit' onClick={() => setEditModal(true)}>Editar direccion</DropdownItem>
+                  <DropdownItem key='edit' onClick={onOpen}>Editar direccion</DropdownItem>
                   <DropdownItem key='delete' onClick={remove} className='text-danger' color='danger'>Borrar direccion</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -39,7 +37,7 @@ export function CardAddress ({ item }: any) {
           </div>
         </CardBody>
       </Card>
-      {editModal && <AddressEdit setEditModal={setEditModal} item={item} />}
+      <AddressEdit isOpen={isOpen} onOpenChange={onOpenChange} item={item} />
     </>
   )
 }

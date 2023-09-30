@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
+import { Divider } from '@nextui-org/react'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -24,6 +25,7 @@ function Page ({ influencer }: any) {
   return (
     <div>
       <Banner influencer={influencer} />
+      <Divider className='my-5' />
       <ProductList influencerId={influencer} />
     </div>
   )
@@ -35,9 +37,7 @@ export default function InfluencerPage ({ params: { influencer } }: any) {
 
   return (
     <Elements stripe={stripePromise} options={{ appearance: { theme: 'night' } }}>
-      {
-        Influencer.length > 0 ? <Page influencer={Influencer[0]} /> : <NotFound />
-      }
+      {Influencer.length > 0 ? <Page influencer={Influencer[0]} /> : <NotFound />}
     </Elements>
   )
 }

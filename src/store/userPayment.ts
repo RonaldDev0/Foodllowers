@@ -40,7 +40,6 @@ type Shipment = {
 }
 
 type State = {
-  buyModal: boolean,
   phone: string | null,
   addressSelect: Address | null,
   addressList: Address[],
@@ -55,7 +54,6 @@ type Actions = {
 }
 
 export const useUserPayment = create<State & Actions>(set => ({
-  buyModal: false,
   phone: null,
   addressSelect: null,
   addressList: [],

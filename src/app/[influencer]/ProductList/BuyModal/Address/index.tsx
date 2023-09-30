@@ -5,7 +5,7 @@ import { Form } from './Form'
 import { List } from './List'
 import { useUserPayment } from '@/store'
 
-export function AddressElement ({ setToggleComponentContainer }: any) {
+export function Address () {
   const { addressList } = useUserPayment()
   const [toggleComponenet, setToggleComponent] = useState<string>('Form')
 
@@ -17,7 +17,11 @@ export function AddressElement ({ setToggleComponentContainer }: any) {
   }, [])
   return (
     <>
-      {toggleComponenet === 'Form' ? <Form setToggleComponent={setToggleComponent} setToggleComponentContainer={setToggleComponentContainer} /> : <List setToggleComponent={setToggleComponent} setToggleComponentContainer={setToggleComponentContainer} />}
+      {
+        toggleComponenet === 'Form'
+          ? <Form setToggleComponent={setToggleComponent} />
+          : <List setToggleComponent={setToggleComponent} />
+      }
     </>
   )
 }
