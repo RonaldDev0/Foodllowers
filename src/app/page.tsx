@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { Card, CardBody } from '@nextui-org/react'
 
 import { SearchBarr } from '@/components'
-import { useContent } from '@/context'
+import { useContent } from '@/store'
 
 type IInfluencer = {
   id: number

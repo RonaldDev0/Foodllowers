@@ -1,49 +1,23 @@
 'use client'
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useEffect, ReactNode } from 'react'
 import { useSupabase } from '@/app/Providers'
+import { useContent } from '@/store'
 
-type IInfluencer = {
-  id: number
-  qualification: number
-  full_name: string
-  document_number: string
-  gender: string
-  preview: string
-  bank: string
-  path: string
-}
-
-type IContext = {
-  influencerList: IInfluencer[]
-  CDN: string
-}
-
-const Context = createContext<IContext>({
-  influencerList: [],
-  CDN: ''
-})
+const Context = createContext({})
 
 export function ContentProvider ({ children }: { children: ReactNode }) {
   const { supabase } = useSupabase()
-  const [influencerList, setInfluencerList] = useState<IInfluencer[]>([])
-  const CDN = 'https://gtsjuxikwdifunrkhpyp.supabase.co/storage/v1/object/public/influencers/'
+  const { setStore } = useContent()
 
   useEffect(() => {
-    supabase.from('influencers').select('*').order('id').then(({ data }: any) => {
-      const res = data.map((item: IInfluencer) => ({ ...item, preview: `${CDN}${item.id}/banner.webp` }))
-      setInfluencerList(res)
-    })
+    supabase.from('influencers').select('*').order('id').then(({ data }: any) => setStore('influencerList', data))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <Context.Provider value={{ influencerList, CDN }}>
+    <Context.Provider value={{ }}>
       <>{children}</>
     </Context.Provider>
   )
-}
-
-export function useContent () {
-  return useContext(Context)
 }

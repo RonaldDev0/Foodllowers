@@ -1,6 +1,6 @@
 'use client'
 
-import { useContent } from '@/context'
+import { useContent } from '@/store'
 import { Banner } from './Banner'
 import { ProductList } from './ProductList'
 import Link from 'next/link'
@@ -33,11 +33,11 @@ function Page ({ influencer }: any) {
 
 export default function InfluencerPage ({ params: { influencer } }: any) {
   const { influencerList } = useContent()
-  const Influencer = influencerList.filter(({ path }) => path === `/${influencer}`)
+  const Influencer = influencerList?.filter(({ path }: any) => path === `/${influencer}`)
 
   return (
     <Elements stripe={stripePromise} options={{ appearance: { theme: 'night' } }}>
-      {Influencer.length > 0 ? <Page influencer={Influencer[0]} /> : <NotFound />}
+      {Influencer?.length > 0 ? <Page influencer={Influencer[0]} /> : <NotFound />}
     </Elements>
   )
 }

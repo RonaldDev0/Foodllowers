@@ -36,7 +36,7 @@ export function BuyModal ({ isOpen, onOpenChange, product }: any) {
       const clientSecret = await fetch(process.env.NEXT_PUBLIC_STRIPE_FETCH_PATH!, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product, address: address.value })
+        body: JSON.stringify({ product })
       }).then(res => res.json())
 
       const { error, paymentIntent }: any = await stripe?.confirmCardPayment(clientSecret, {
@@ -47,7 +47,7 @@ export function BuyModal ({ isOpen, onOpenChange, product }: any) {
       })
 
       if (!error && paymentIntent.status === 'succeeded') {
-        supabase.from('orders').insert({ user_id: userId, kitchen_id: product.id_kitchen, product, order_state: true }).then(() => {
+        supabase.from('orders').insert({ user_id: userId, kitchen_id: product.id_kitchen, product, order_state: true, user_address: address?.value }).then(() => {
           setError(null)
           onClose()
           router.push('/')
