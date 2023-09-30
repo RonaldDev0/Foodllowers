@@ -21,7 +21,7 @@ export default function Login () {
 
   return (
     <main className='h-screen flex justify-center items-center'>
-      <Card className='p-10' shadow='lg'>
+      <Card className='p-10 [@media(max-width:800px)]:p-2'>
         <CardHeader className='justify-center text-2xl'>Iniciar sesión</CardHeader>
         <CardBody className='justify-center items-center flex flex-col gap-6'>
           <Input ref={email} isRequired type='email' label='Email' defaultValue='test@foodllowers.com' className='max-w-xs' />
