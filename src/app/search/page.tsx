@@ -3,8 +3,7 @@ import { useSearchParams } from 'next/navigation'
 import { SearchBarr } from '@/components'
 
 export default function SearchPage () {
-  const searchParams = useSearchParams()
-  const query = searchParams.get('query')
+  const query = useSearchParams().get('query')
 
   // TODO: supabase get products/influencers with query filter
 

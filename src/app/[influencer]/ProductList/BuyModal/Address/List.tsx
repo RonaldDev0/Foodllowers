@@ -33,7 +33,7 @@ export function List ({ setToggleComponent }: { setToggleComponent: Function }) 
 
   return (
     <div className='text-center flex flex-col gap-4'>
-      <div className='flex flex-col gap-4 w-96 text-left'>
+      <div className='flex flex-col gap-4 [@media(min-width:800px)]:w-96 [@media(max-width:800px)]:w-92 text-left'>
         {addressList.map(item => <CardAddress key={item.value.address.line1} item={item} />)}
         {addressList.length === 0 && <p className='text-xl w-56 m-10'>No tienes ninguna direccion registrada </p>}
       </div>

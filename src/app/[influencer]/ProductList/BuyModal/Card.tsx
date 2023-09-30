@@ -15,7 +15,7 @@ export function CardForm ({ setCardComplete, error }: any) {
   }
 
   return (
-    <div className='text-center flex flex-col gap-4 w-96 my-10'>
+    <div className='text-center flex flex-col gap-4 [@media(min-width:800px)]:w-96 [@media(max-width:800px)]:w-92 my-10'>
       <Card shadow='lg'>
         <CardBody>
           <CardElement options={options} onChange={e => setCardComplete(e.complete)} />
