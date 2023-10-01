@@ -13,10 +13,10 @@ export default function Login () {
   const Login = async () => await supabase.auth.signInWithOAuth({ provider: 'google' })
 
   const handleSubmit = async () => {
-    await supabase.auth.signInWithPassword({
-      email: email.current.value,
-      password: password.current.value
-    })
+    // await supabase.auth.signInWithPassword({
+    //   email: email.current.value,
+    //   password: password.current.value
+    // })
   }
 
   return (
