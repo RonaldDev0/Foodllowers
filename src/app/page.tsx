@@ -1,12 +1,9 @@
 'use client'
-
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-
 import { Card, CardBody } from '@nextui-org/react'
-
 import { SearchBarr } from '@/components'
 import { useContent } from '@/store'
 
@@ -51,12 +48,14 @@ function InfluencerList () {
 
 export default function Home () {
   const router = useRouter()
+  const loginCode = useSearchParams().get('code')
 
   useEffect(() => {
-    setTimeout(() => {
-      router.push('/')
-    }, 200)
-
+    if (loginCode) {
+      setTimeout(() => {
+        router.push('/')
+      }, 200)
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
