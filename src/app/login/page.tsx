@@ -12,13 +12,6 @@ export default function Login () {
 
   const Login = async () => await supabase.auth.signInWithOAuth({ provider: 'google' })
 
-  const handleSubmit = async () => {
-    // await supabase.auth.signInWithPassword({
-    //   email: email.current.value,
-    //   password: password.current.value
-    // })
-  }
-
   return (
     <main className='h-screen flex justify-center items-center'>
       <Card className='p-10 [@media(max-width:800px)]:p-2'>
@@ -26,7 +19,7 @@ export default function Login () {
         <CardBody className='justify-center items-center flex flex-col gap-6'>
           <Input ref={email} isRequired type='email' label='Email' defaultValue='test@foodllowers.com' className='max-w-xs' />
           <Input ref={password} isRequired type='password' label='Password' className='max-w-xs' />
-          <Button className='w-full' onPress={handleSubmit} color='secondary'>Ingresar</Button>
+          <Button className='w-full' color='secondary'>Ingresar</Button>
           <Link href='/register' className='text-purple-500'>No tienes una cuenta?</Link>
         </CardBody>
         <CardFooter className='flex flex-col justify-center'>

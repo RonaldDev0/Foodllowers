@@ -10,7 +10,7 @@ export function SearchBarr ({ message }: { message: boolean }) {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    router.push(`/search?query=${input}`)
+    router.push(`/search?q=${input}`)
   }
 
   return (

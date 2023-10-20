@@ -1,24 +1,31 @@
 'use client'
-import { useUserPayment } from '@/store'
 import { CardAddress } from './CardAddress'
-import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
-import { Button, useDisclosure } from '@nextui-org/react'
 import { AddressForm } from './AddressForm'
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+import { useEffect } from 'react'
+import { useSupabase } from '../Providers'
+import { useUser } from '@/store'
 
 export default function Adresses () {
-  const { addressList } = useUserPayment()
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { supabase } = useSupabase()
+  const { addressList, setStore } = useUser()
+
+  useEffect(() => {
+    !addressList && (
+      supabase
+        .from('adresses')
+        .select('id, address')
+        .then(({ data }) => {
+          setStore('addressList', data?.map(({ address, id }: any) => ({ ...JSON.parse(address), id })))
+        })
+    )
+  }, [])
 
   return (
-    <Elements stripe={stripePromise} options={{ appearance: { theme: 'night' } }}>
-      <div className='w-full h-screen flex flex-col top-12 justify-center items-center gap-8'>
-        {addressList.length > 0 && addressList.map(item => <CardAddress key={item.id} item={item} />)}
-        <Button color='primary' onPress={onOpen}>Agregar direccion</Button>
-        <AddressForm isOpen={isOpen} onOpenChange={onOpenChange} />
-      </div>
-    </Elements>
+    <div className='w-full h-screen flex flex-col top-12 justify-center items-center gap-8'>
+      {addressList?.map((item: any) => (
+        <CardAddress key={item.id} item={item} />
+      ))}
+      <AddressForm />
+    </div>
   )
 }

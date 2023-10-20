@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import Profile from './Profile'
 import Pages from './Pages'
 import Logout from './Logout'
-import { useUser } from '@/context'
+import { useUser } from '@/store'
 import { Card, CardBody, Switch } from '@nextui-org/react'
 
 // Types

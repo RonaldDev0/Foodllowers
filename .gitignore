@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -14,7 +12,7 @@
 
 # production
 /build
-sw.js
+public/sw.js
 workbox-01ae76d0.js
 
 # misc

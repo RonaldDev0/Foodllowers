@@ -25,27 +25,29 @@ type Card = {
 }
 
 type Shipment = {
-  id: number,
-  user_id: string,
+  id: string
+  user_id: string
   product: {
-    id: number,
-    id_kitchen: number,
-    id_influencer: number,
-    category: string,
-    preview: string,
-    name: string,
-    description: string,
-    price: string
+    id: string
+    influencerId: string
+    kitchenId: string
+    productId: string
+    productName: string
+    preview: string
+    description: string
+    name: string
+    price: number
   }
 }
-
 type State = {
+  user: any,
+  userId: any,
   phone: string | null,
   addressSelect: Address | null,
-  addressList: Address[],
+  addressList: Address[]| null,
   cardSelect: any,
   cardList: Card[],
-  shipmentList: Shipment[]
+  shipmentList: Shipment[]| null,
 }
 
 type Actions = {
@@ -53,13 +55,15 @@ type Actions = {
   filter: (property: keyof State, value: any) => void
 }
 
-export const useUserPayment = create<State & Actions>(set => ({
+export const useUser = create<State & Actions>(set => ({
+  user: null,
+  userId: null,
   phone: null,
   addressSelect: null,
-  addressList: [],
+  addressList: null,
   cardSelect: null,
   cardList: [],
-  shipmentList: [],
+  shipmentList: null,
   setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value })),
   filter: (property, value) => set(() => ({ [property]: value }))
 }))
