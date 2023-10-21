@@ -1,21 +1,21 @@
 import { create } from 'zustand'
 
-type Address = {
-  id: number,
-  complete: boolean,
-  isNewAddress: boolean,
-  value: {
-    name: string,
-    phone: string,
-    address: {
-      city: string,
-      country: string,
-      line1: string,
-      line2: string,
-      postal_code: string,
-      state: string
-    }
-  }
+type IAddress = {
+  [key: string]: any
+  id: string,
+  user: string,
+  number: string,
+  numberPrefix: string,
+  country: string,
+  city: string,
+  localidad: string,
+  address: {
+    streetType: string
+    value1: string,
+    value2: string,
+    value3?: string
+  },
+  aditionalInfo?: string
 }
 
 type Card = {
@@ -43,8 +43,8 @@ type State = {
   user: any,
   userId: any,
   phone: string | null,
-  addressSelect: Address | null,
-  addressList: Address[]| null,
+  addressSelect: IAddress | null,
+  addressList: IAddress[]| null,
   cardSelect: any,
   cardList: Card[],
   shipmentList: Shipment[]| null,

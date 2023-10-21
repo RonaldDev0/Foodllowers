@@ -6,6 +6,24 @@ import { useSupabase } from '../Providers'
 import { useUser } from '@/store'
 import { useDisclosure } from '@nextui-org/react'
 
+export type IAddress = {
+  [key: string]: any
+  id: string,
+  user: string,
+  number: string,
+  numberPrefix: string,
+  country: string,
+  city: string,
+  localidad: string,
+  address: {
+    streetType: string
+    value1: string,
+    value2: string,
+    value3?: string
+  },
+  aditionalInfo?: string
+}
+
 export default function Adresses () {
   const { supabase } = useSupabase()
   const { addressList, setStore } = useUser()
@@ -14,19 +32,17 @@ export default function Adresses () {
   useEffect(() => {
     !addressList && (
       supabase
-        .from('adresses')
-        .select('id, address')
-        .then(({ data }) => {
-          setStore('addressList', data?.map(({ address, id }: any) => ({ ...JSON.parse(address), id })))
-        })
+        .from('addresses')
+        .select('id, user, number, numberPrefix, country, city, localidad, address, aditionalInfo')
+        .then(({ data }) => setStore('addressList', data))
     )
   }, [])
 
   return (
     <div className='w-full h-screen flex flex-col top-12 justify-center items-center gap-8'>
       {
-        addressList?.map((item: any) => (
-          <CardAddress key={item.id} item={item} />
+        addressList?.map((address: IAddress) => (
+          <CardAddress key={address.id} address={address} />
         ))
       }
       <AddressForm

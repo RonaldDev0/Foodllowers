@@ -3,22 +3,24 @@ import { useUser } from '@/store'
 import { useSupabase } from '../Providers'
 import { Button, Card, CardBody, Dropdown, DropdownTrigger, DropdownMenu, useDisclosure, DropdownItem } from '@nextui-org/react'
 import { AddressForm } from './AddressForm'
+import type { IAddress } from './page'
 
-export function CardAddress ({ item }: any) {
+export function CardAddress ({ address }: { address: IAddress }) {
   const { setStore, addressList } = useUser()
   const { supabase } = useSupabase()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const { id, value: { name, phone, address: { line1, city } } } = item
+
+  const addressComplete = address.address.streetType + ' ' + address.address.value1 + ' ' + address.address.value2 + ' ' + address.address.value3
 
   const remove = () => {
     supabase
-      .from('adresses')
+      .from('addresses')
       .delete()
-      .eq('id', id)
+      .eq('id', address.id)
       .then(({ error }) => !error && (
         setStore('addressList',
           addressList
-            ?.filter((item: any) => item.id !== id)
+            ?.filter((item: any) => item.id !== address.id)
         )
       ))
   }
@@ -30,14 +32,16 @@ export function CardAddress ({ item }: any) {
           <div className='rounded-lg w-72 flex flex-col gap-5'>
             <div className='flex w-full justify-between'>
               <p className='font-bold'>
-                {name}
+                {address.user}
               </p>
-              <p>{phone.slice(3)}</p>
+              <p>
+                {address.numberPrefix + ' ' + address.number}
+              </p>
             </div>
             <div className='flex w-full gap-2 justify-between'>
               <div>
-                <p>{city}</p>
-                <p>{line1}</p>
+                <p>{address.city}</p>
+                <p>{addressComplete}</p>
               </div>
               <Dropdown>
                 <DropdownTrigger>
@@ -66,6 +70,7 @@ export function CardAddress ({ item }: any) {
       <AddressForm
         HeadLabel='Editar dirección de envio'
         isEdit
+        value={address}
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}

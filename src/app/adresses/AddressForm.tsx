@@ -1,7 +1,9 @@
 'use client'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { useState, useEffect } from 'react'
+import { useSupabase } from '../Providers'
 import { z } from 'zod'
+import { useUser } from '@/store'
 
 type IAddress = {
   [key: string]: any
@@ -83,7 +85,9 @@ const streetTypes = [
 ]
 
 export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenChange }: IProps) {
-  console.log({ isEdit, value })
+  const { supabase } = useSupabase()
+  const { userId, setStore, addressList } = useUser()
+
   const [address, setAddress] = useState<IAddress>({
     user: '',
     number: '',
@@ -164,8 +168,27 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       aditionalInfo: null
     })
 
-    // supabase.then(() => onClose())
-    onClose()
+    supabase
+      .from('addresses')
+      .insert([{ ...address, user_id: userId }])
+      .select()
+      .then(res => setStore('addressList', res.data && { ...addressList, ...res.data[0] }))
+      .then(() => setAddress({
+        user: '',
+        number: '',
+        numberPrefix: '+57',
+        country: 'Colombia',
+        city: 'Bogotá',
+        localidad: '',
+        address: {
+          streetType: 'Calle',
+          value1: '',
+          value2: '',
+          value3: ''
+        },
+        aditionalInfo: ''
+      }))
+      .then(() => onClose())
   }
 
   useEffect(() => {
