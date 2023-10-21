@@ -120,6 +120,22 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     aditionalInfo: null
   })
 
+  const cleanAddress = () => setAddress({
+    user: '',
+    number: '',
+    numberPrefix: '+57',
+    country: 'Colombia',
+    city: 'Bogotá',
+    localidad: '',
+    address: {
+      streetType: 'Calle',
+      value1: '',
+      value2: '',
+      value3: ''
+    },
+    aditionalInfo: ''
+  })
+
   const handleChange = (field: string, event: any) => {
     const value = event.target.value
 
@@ -168,26 +184,24 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       aditionalInfo: null
     })
 
+    if (isEdit && value) {
+      supabase
+        .from('addresses')
+        .update(address)
+        .eq('id', value.id)
+        .select()
+        .then(({ data }) => setStore('addressList', (data && addressList) && [...addressList, ...data]))
+        .then(cleanAddress)
+        .then(() => onClose())
+      return
+    }
+
     supabase
       .from('addresses')
       .insert([{ ...address, user_id: userId }])
       .select()
-      .then(res => setStore('addressList', res.data && { ...addressList, ...res.data[0] }))
-      .then(() => setAddress({
-        user: '',
-        number: '',
-        numberPrefix: '+57',
-        country: 'Colombia',
-        city: 'Bogotá',
-        localidad: '',
-        address: {
-          streetType: 'Calle',
-          value1: '',
-          value2: '',
-          value3: ''
-        },
-        aditionalInfo: ''
-      }))
+      .then(({ data }) => setStore('addressList', (data && addressList) && [...addressList, ...data]))
+      .then(cleanAddress)
       .then(() => onClose())
   }
 
