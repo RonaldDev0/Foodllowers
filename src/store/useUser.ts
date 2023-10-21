@@ -52,7 +52,6 @@ type State = {
 
 type Actions = {
   setStore: (property: keyof State, value: any) => void
-  filter: (property: keyof State, value: any) => void
 }
 
 export const useUser = create<State & Actions>(set => ({
@@ -64,6 +63,5 @@ export const useUser = create<State & Actions>(set => ({
   cardSelect: null,
   cardList: [],
   shipmentList: null,
-  setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value })),
-  filter: (property, value) => set(() => ({ [property]: value }))
+  setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value }))
 }))
