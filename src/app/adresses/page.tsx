@@ -41,7 +41,7 @@ export default function Adresses () {
   return (
     <div className='w-full h-screen flex flex-col top-12 justify-center items-center gap-8'>
       {
-        addressList?.length && addressList?.map((address: IAddress) => (
+        addressList?.map((address: IAddress) => (
           <CardAddress key={address.id} address={address} />
         ))
       }

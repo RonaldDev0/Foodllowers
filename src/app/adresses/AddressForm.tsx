@@ -159,9 +159,10 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     if (!result.success) {
       const formattedErrors = Object.entries(result.error.formErrors.fieldErrors).reduce((acc: any, [key, value]) => {
         if (value.length === 1) {
+          console.log(value, 'es este!')
           acc[key] = value[0]
         } else if (value.length > 1) {
-          acc[key] = { streetType: null, value1: value[0], value2: value[1], value3: value[2] }
+          acc[key] = { streetType: ' ', value1: value[0], value2: value[1], value3: value[2] }
         }
         return acc
       }, {})
@@ -190,7 +191,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
         .update(address)
         .eq('id', value.id)
         .select()
-        .then(({ data }) => setStore('addressList', (data && addressList) && [...addressList, ...data]))
+        .then(({ data }) => setStore('addressList', (data && addressList) && [...addressList.filter(({ id }) => id !== value.id), ...data]))
         .then(cleanAddress)
         .then(() => onClose())
       return
