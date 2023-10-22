@@ -1,24 +1,39 @@
 import Link from 'next/link'
-import Image from 'next/image'
-
-// Components
-import { ILink, Paths } from './Links'
-
-function Links ({ img, title, path }: ILink) {
-  return (
-    <Link href={path} className='flex items-center gap-2'>
-      <Image src={img} alt='icon' width='25' height='25' />
-      <span>{title}</span>
-    </Link>
-  )
-}
+import { Home, User, MapPin, Clock, Clipboard } from 'lucide-react'
 
 export default function Pages () {
   return (
     <div className='flex flex-col gap-5'>
-      {
-        Paths.map(({ img, title, path }: ILink) => <Links key={path} img={img} title={title} path={path} />)
-      }
+      <Link href='/' className='flex items-center gap-2'>
+        <Home />
+        <span>
+          Inicio
+        </span>
+      </Link>
+      <Link href='/profile' className='flex items-center gap-2'>
+        <User />
+        <span>
+          Perfil
+        </span>
+      </Link>
+      <Link href='/adresses' className='flex items-center gap-2'>
+        <MapPin />
+        <span>
+          Direcciones
+        </span>
+      </Link>
+      <Link href='/currentshipment' className='flex items-center gap-2'>
+        <Clock />
+        <span>
+          Pedido actual
+        </span>
+      </Link>
+      <Link href='/shipments' className='flex items-center gap-2'>
+        <Clipboard />
+        <span>
+          Pedidos
+        </span>
+      </Link>
     </div>
   )
 }

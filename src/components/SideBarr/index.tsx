@@ -1,25 +1,12 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
-
-// Components
+import { Menu, X } from 'lucide-react'
 import Profile from './Profile'
 import Pages from './Pages'
 import Logout from './Logout'
 import { useUser } from '@/store'
 import { Card, CardBody, Switch } from '@nextui-org/react'
-
-// Types
-type propsClose = {
-  open: boolean,
-  setOpen: Function
-}
-
-type props = {
-  open: boolean,
-  setOpen: Function,
-}
 
 const sidebarVariants = {
   open: { x: 0 },
@@ -41,49 +28,11 @@ const SunIcon = (props: any) => (
   </svg>
 )
 
-export function SideBarrClose ({ open, setOpen }: propsClose) {
-  return <Image className='m-3 cursor-pointer fixed left-0 z-10' onClick={() => setOpen(!open)} src='./icons/menu.svg' alt='menu-icon' width='50' height='50' priority />
-}
-
-export function SideBarrOpen ({ open, setOpen }: props) {
+export function SideBarr () {
+  const [open, setOpen] = useState<boolean>(true)
   const { user, darkMode, setStore } = useUser()
 
   useEffect(() => !darkMode ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark'), [darkMode])
-
-  return (
-    <motion.div
-      className='fixed z-50 w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'
-      variants={sidebarVariants}
-      initial='closed'
-      animate={open ? 'open' : 'closed'}
-      transition={{ duration: 0.5 }}
-    >
-      <Card className='w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'>
-        <CardBody className='p-0'>
-          <div className='w-full flex justify-around'>
-            <Switch
-              onClick={() => setStore('darkMode', !darkMode)}
-              defaultSelected={!darkMode}
-              size='md'
-              color='secondary'
-              thumbIcon={({ isSelected, className }: any) => isSelected ? <SunIcon className={className} /> : <MoonIcon className={className} />}
-            />
-            <Image className='m-3 cursor-pointer' onClick={() => setOpen(!open)} src='./icons/x.svg' alt='close-icon' width='40' height='40' priority />
-          </div>
-          <div className='h-full w-full flex flex-col justify-around items-center'>
-            <Profile user={user} />
-            <Pages />
-            <Logout />
-          </div>
-        </CardBody>
-      </Card>
-    </motion.div>
-  )
-}
-
-export function SideBarr () {
-  const [open, setOpen] = useState<boolean>(true)
-  const { user } = useUser()
 
   if (!user) {
     return null
@@ -91,8 +40,46 @@ export function SideBarr () {
 
   return (
     <>
-      <SideBarrClose open={open} setOpen={setOpen} />
-      <SideBarrOpen open={open} setOpen={setOpen} />
+      <Menu
+        size={40}
+        className='m-3 cursor-pointer fixed left-0 z-10'
+        onClick={() => setOpen(!open)}
+      />
+      <motion.div
+        className='fixed z-50 w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'
+        variants={sidebarVariants}
+        initial='closed'
+        animate={open ? 'open' : 'closed'}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className='w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'>
+          <CardBody className='p-0'>
+            <div className='w-full flex justify-around mt-3'>
+              <Switch
+                onClick={() => setStore('darkMode', !darkMode)}
+                defaultSelected={!darkMode}
+                size='md'
+                color='secondary'
+                thumbIcon={({ isSelected, className }: any) => (
+                  isSelected
+                    ? <SunIcon className={className} />
+                    : <MoonIcon className={className} />
+                )}
+              />
+              <X
+                size={40}
+                className='cursor-pointer'
+                onClick={() => setOpen(!open)}
+              />
+            </div>
+            <div className='h-full w-full flex flex-col justify-around items-center'>
+              <Profile user={user} />
+              <Pages />
+              <Logout />
+            </div>
+          </CardBody>
+        </Card>
+      </motion.div>
     </>
   )
 }

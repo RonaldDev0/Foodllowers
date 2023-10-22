@@ -17,7 +17,7 @@ export default function Login () {
       <Card className='p-10 [@media(max-width:800px)]:p-2'>
         <CardHeader className='justify-center text-2xl'>Iniciar sesión</CardHeader>
         <CardBody className='justify-center items-center flex flex-col gap-6'>
-          <Input ref={email} isRequired type='email' label='Email' defaultValue='test@foodllowers.com' className='max-w-xs' />
+          <Input ref={email} isRequired type='email' label='Email' className='max-w-xs' />
           <Input ref={password} isRequired type='password' label='Password' className='max-w-xs' />
           <Button className='w-full' color='secondary'>Ingresar</Button>
           <Link href='/register' className='text-purple-500'>No tienes una cuenta?</Link>

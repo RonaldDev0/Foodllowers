@@ -3,6 +3,7 @@ import { Button, Divider } from '@nextui-org/react'
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 type IInfluencer = {
   id: number
@@ -22,7 +23,9 @@ export function Banner ({ influencer }: { influencer: IInfluencer }) {
     <>
       <div className='w-[1000px] [@media(max-width:800px)]:w-full my-5 [@media(max-width:800px)]:m-0'>
         <Image src={influencer.preview} width='400' height='200' alt='banner image' className='w-full h-[300px] bg-black rounded-lg' />
-        <Link href='/' className='bg-white fixed top-5 [@media(max-width:800px)]:top-12 m-4 rounded-3xl'><Image src='./icons/arrow-left-circle-fill.svg' width='35' height='35' alt='image' /></Link>
+        <Link href='/' className='bg-white fixed top-5 [@media(max-width:800px)]:top-12 m-4 rounded-3xl'>
+          <ArrowLeft size={38} color='#595959' />
+        </Link>
         <div className='flex items-center mt-5 w-full justify-center gap-16'>
           <p className='font-semibold m-3'>{influencer?.full_name}</p>
           <Button className='transition-all' color={follow ? 'secondary' : 'primary'} onPress={() => setFollow(!follow)}>{follow ? 'Following' : 'Follow'}</Button>
