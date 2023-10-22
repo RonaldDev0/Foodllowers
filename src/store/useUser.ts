@@ -48,6 +48,7 @@ type State = {
   cardSelect: any,
   cardList: Card[],
   shipmentList: Shipment[]| null,
+  darkMode: boolean
 }
 
 type Actions = {
@@ -55,6 +56,7 @@ type Actions = {
 }
 
 export const useUser = create<State & Actions>(set => ({
+  darkMode: true,
   user: null,
   userId: null,
   phone: null,

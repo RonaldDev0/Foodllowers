@@ -46,8 +46,7 @@ export function SideBarrClose ({ open, setOpen }: propsClose) {
 }
 
 export function SideBarrOpen ({ open, setOpen }: props) {
-  const { user } = useUser()
-  const [darkMode, setDarkMode] = useState<boolean>(true)
+  const { user, darkMode, setStore } = useUser()
 
   useEffect(() => !darkMode ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark'), [darkMode])
 
@@ -63,7 +62,7 @@ export function SideBarrOpen ({ open, setOpen }: props) {
         <CardBody className='p-0'>
           <div className='w-full flex justify-around'>
             <Switch
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={() => setStore('darkMode', !darkMode)}
               defaultSelected={!darkMode}
               size='md'
               color='secondary'

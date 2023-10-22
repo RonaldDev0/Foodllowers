@@ -4,6 +4,7 @@ import { useSupabase } from '../Providers'
 import { useState, useEffect } from 'react'
 import { Card, CardBody } from '@nextui-org/react'
 import Image from 'next/image'
+import { PaymentForm } from './PaymentForm'
 
 export default function Checkout () {
   const query = useSearchParams().get('q')
@@ -23,14 +24,17 @@ export default function Checkout () {
     <>
       {
         product && (
-          <Card>
-            <CardBody className='p-3 cursor-pointer'>
-              <Image src='./img/pato404.svg' width='200' height='200' alt='preview' />
-              <p className='text-xl'>{product.name}</p>
-              <p className='text-dark_gray'>{product.description}</p>
-              <p className='font-bold text-green-600'>${product.price.toLocaleString()}</p>
-            </CardBody>
-          </Card>
+          <div className='flex items-center gap-10 mt-24'>
+            <Card>
+              <CardBody className='p-3'>
+                <Image src='./img/pato404.svg' width='200' height='200' alt='preview' />
+                <p className='text-xl'>{product.name}</p>
+                <p className='text-dark_gray'>{product.description}</p>
+                <p className='font-bold text-green-600'>${product.price.toLocaleString()}</p>
+              </CardBody>
+            </Card>
+            <PaymentForm amount={product.price} description={product} />
+          </div>
         )
       }
     </>

@@ -159,7 +159,6 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     if (!result.success) {
       const formattedErrors = Object.entries(result.error.formErrors.fieldErrors).reduce((acc: any, [key, value]) => {
         if (value.length === 1) {
-          console.log(value, 'es este!')
           acc[key] = value[0]
         } else if (value.length > 1) {
           acc[key] = { streetType: ' ', value1: value[0], value2: value[1], value3: value[2] }

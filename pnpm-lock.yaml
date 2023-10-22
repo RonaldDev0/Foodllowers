@@ -8,6 +8,9 @@ dependencies:
   '@ducanh2912/next-pwa':
     specifier: ^9.7.2
     version: 9.7.2(next@13.5.2)(webpack@5.89.0)
+  '@mercadopago/sdk-react':
+    specifier: ^0.0.15
+    version: 0.0.15(react-dom@18.2.0)(react@18.2.0)
   '@nextui-org/react':
     specifier: ^2.1.13
     version: 2.1.13(@types/react@18.2.13)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.3)
@@ -23,6 +26,9 @@ dependencies:
   framer-motion:
     specifier: ^10.16.4
     version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+  mercadopago:
+    specifier: ^2.0.1
+    version: 2.0.1(encoding@0.1.13)
   next:
     specifier: 13.5.2
     version: 13.5.2(@babel/core@7.23.2)(react-dom@18.2.0)(react@18.2.0)
@@ -1446,6 +1452,21 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  /@mercadopago/sdk-js@0.0.3:
+    resolution: {integrity: sha512-kO48DNLHdfFAp3on12nuKdqNlEmw1x3+nM6wLd04BdWOXoFcAhkNMQV3AyUIanXdO/bB/dENakdacLT29297EQ==}
+    dev: false
+
+  /@mercadopago/sdk-react@0.0.15(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ju0+p9nglNVBhnYSkmHGa8BEqqpaC9rWIcY7PrgvfevpSRf82w3tICWxbYm00l+cEfqF/RZSvOBJwuVHW3Diww==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@mercadopago/sdk-js': 0.0.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@next/env@13.5.2:
     resolution: {integrity: sha512-dUseBIQVax+XtdJPzhwww4GetTjlkRSsXeQnisIJWBaHsnxYcN2RGzsPHi58D6qnkATjnhuAtQTJmR1hKYQQPg==}
@@ -5965,6 +5986,15 @@ packages:
       sourcemap-codec: 1.4.8
     dev: false
 
+  /mercadopago@2.0.1(encoding@0.1.13):
+    resolution: {integrity: sha512-nfeRIsOPzPFCvYDXoJRV2ZFN2AVdlllIbgweR0/FFrlsWO8NZgyQO2uYTQxKB/li7CXFKnEw7BjjsfJv1wC7uQ==}
+    dependencies:
+      node-fetch: 2.7.0(encoding@0.1.13)
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
     dev: false
@@ -6104,6 +6134,19 @@ packages:
 
   /node-addon-api@6.1.0:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
+    dev: false
+
+  /node-fetch@2.7.0(encoding@0.1.13):
+    resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
+    dependencies:
+      encoding: 0.1.13
+      whatwg-url: 5.0.0
     dev: false
 
   /node-gyp-build@4.6.1:
@@ -7511,6 +7554,11 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  /uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    hasBin: true
+    dev: false
 
   /version-guard@1.1.1:
     resolution: {integrity: sha512-MGQLX89UxmYHgDvcXyjBI0cbmoW+t/dANDppNPrno64rYr8nH4SHSuElQuSYdXGEs0mUzdQe1BY+FhVPNsAmJQ==}
