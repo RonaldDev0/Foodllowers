@@ -33,7 +33,7 @@ export default function Checkout () {
                 <p className='font-bold text-green-600'>${product.price.toLocaleString()}</p>
               </CardBody>
             </Card>
-            <PaymentForm amount={product.price} description={product} />
+            <PaymentForm amount={product.price} description={product.name} />
           </div>
         )
       }
