@@ -30,12 +30,13 @@ export function Providers ({ children }: { children: ReactNode }) {
   const { setStore } = useUser()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }: any) => {
-      if (session) {
-        setStore('user', session.user.user_metadata)
-        setStore('userId', session.user.id)
-      }
-    })
+    supabase.auth.getSession()
+      .then(({ data: { session } }: any) => {
+        if (session) {
+          setStore('user', session.user.user_metadata)
+          setStore('userId', session.user.id)
+        }
+      })
   }, [])
 
   useEffect(() => {

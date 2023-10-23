@@ -24,16 +24,30 @@ export default function Checkout () {
     <>
       {
         product && (
-          <div className='flex items-center gap-10 mt-24'>
+          <div className='flex flex-col items-center gap-10 mt-24'>
             <Card>
               <CardBody className='p-3'>
-                <Image src='./img/pato404.svg' width='200' height='200' alt='preview' />
-                <p className='text-xl'>{product.name}</p>
-                <p className='text-dark_gray'>{product.description}</p>
-                <p className='font-bold text-green-600'>${product.price.toLocaleString()}</p>
+                <Image
+                  src='./img/pato404.svg'
+                  width='200'
+                  height='200'
+                  alt='preview'
+                />
+                <p className='text-xl'>
+                  {product.name}
+                </p>
+                <p className='text-dark_gray'>
+                  {product.description}
+                </p>
+                <p className='font-bold text-green-600'>
+                  ${product.price.toLocaleString()}
+                </p>
               </CardBody>
             </Card>
-            <PaymentForm amount={product.price} description={product.name} />
+            <PaymentForm
+              amount={product.price}
+              description={product.name}
+            />
           </div>
         )
       }

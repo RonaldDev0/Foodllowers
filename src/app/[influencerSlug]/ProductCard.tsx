@@ -18,10 +18,21 @@ export function ProductCard ({ product }: { product: IProductCard }) {
     <Link href={`/checkout?q=${product.id}`}>
       <Card>
         <CardBody className='p-3 cursor-pointer'>
-          <Image src='./img/pato404.svg' width='200' height='200' alt='preview' />
-          <p className='text-xl'>{product.name}</p>
-          <p className='text-dark_gray'>{product.description}</p>
-          <p className='font-bold text-green-600'>${product.price.toLocaleString()}</p>
+          <Image
+            src='./img/pato404.svg'
+            width='200'
+            height='200'
+            alt='preview'
+          />
+          <p className='text-xl'>
+            {product.name}
+          </p>
+          <p className='text-dark_gray'>
+            {product.description}
+          </p>
+          <p className='font-bold text-green-600'>
+            ${product.price.toLocaleString()}
+          </p>
         </CardBody>
       </Card>
     </Link>

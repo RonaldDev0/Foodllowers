@@ -8,12 +8,18 @@ export default function Logout () {
   const { setStore } = useUser()
 
   const handleLogout = () => {
-    setStore('user', null)
-    setStore('userId', null)
+    supabase.auth.signOut()
+      .then(() => {
+        setStore('user', null)
+        setStore('userId', null)
+      })
   }
 
   return (
-    <div onClick={() => supabase.auth.signOut().then(handleLogout)} className='flex items-center justify-center gap-2 cursor-pointer mb-10'>
+    <div
+      onClick={handleLogout}
+      className='flex items-center justify-center gap-2 cursor-pointer mb-10'
+    >
       <LogOut size={25} />
       <p>
         Cerrar sesión

@@ -25,7 +25,10 @@ export default function InfluencerPage ({ params: { influencerSlug } }: any) {
             <Banner influencer={influencer} />
             <div className='flex w-full my-10 justify-center flex-wrap gap-5 mb-10'>
               {influencer.products?.map((product: IProductCard) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                />
               ))}
             </div>
           </>

@@ -9,7 +9,8 @@ export function PaymentForm ({ amount, description }: { amount: number, descript
   const { darkMode } = useUser()
   const router = useRouter()
   const onSubmit = async ({ formData }: any) => {
-    const { ip }: any = await fetch('https://api.ipify.org?format=json').then(res => res.json())
+    const { ip }: any = await fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
 
     fetch('/api/process_payment', {
       cache: 'no-store',
@@ -23,38 +24,34 @@ export function PaymentForm ({ amount, description }: { amount: number, descript
       })
     })
       .then(res => res.json())
-      .then(data => router.push(data.transaction_details?.external_resource_url))
+      .then(data => router
+        .push(data.transaction_details?.external_resource_url)
+      )
       .catch(console.error)
   }
 
   return (
     <Card className='w-96'>
       <CardBody className='p-0'>
-        {
-          darkMode
-            ? (
-              <Payment
-                onSubmit={onSubmit}
-                locale='es-CO'
-                initialization={{ amount }}
-                customization={{
-                  visual: { style: { theme: 'dark' } },
-                  paymentMethods: { mercadoPago: 'all', ticket: 'all', bankTransfer: 'all', creditCard: 'all', debitCard: 'all' }
-                }}
-              />
-              )
-            : (
-              <Payment
-                onSubmit={onSubmit}
-                locale='es-CO'
-                initialization={{ amount }}
-                customization={{
-                  visual: { style: { theme: 'flat' } },
-                  paymentMethods: { mercadoPago: 'all', ticket: 'all', bankTransfer: 'all', creditCard: 'all', debitCard: 'all' }
-                }}
-              />
-              )
-        }
+        <Payment
+          onSubmit={onSubmit}
+          locale='es-CO'
+          initialization={{ amount }}
+          customization={{
+            visual: {
+              style: {
+                theme: darkMode ? 'dark' : 'flat'
+              }
+            },
+            paymentMethods: {
+              mercadoPago: 'all',
+              ticket: 'all',
+              bankTransfer: 'all',
+              creditCard: 'all',
+              debitCard: 'all'
+            }
+          }}
+        />
       </CardBody>
     </Card>
   )

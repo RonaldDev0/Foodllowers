@@ -142,29 +142,47 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     if (field.includes('.')) {
       const [parent, child] = field.split('.')
       if (error[parent] && error[parent][child]) {
-        setError((prev: any) => ({ ...prev, [parent]: { ...prev[parent], [child]: null } }))
+        setError((prev: any) => ({
+          ...prev,
+          [parent]: {
+            ...prev[parent], [child]: null
+          }
+        }))
       }
-      setAddress(prev => ({ ...prev, [parent]: { ...prev[parent], [child]: value } }))
+      setAddress(prev => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent], [child]: value
+        }
+      }))
       return
     } else if (error[field]) {
-      setError((prev: any) => ({ ...prev, [field]: null }))
+      setError((prev: any) => ({
+        ...prev, [field]: null
+      }))
     }
 
-    setAddress(prev => ({ ...prev, [field]: value }))
+    setAddress(prev => ({
+      ...prev, [field]: value
+    }))
   }
 
   const handleSubmit = (onClose: any) => {
     const result = addressSchema.safeParse(address)
 
     if (!result.success) {
-      const formattedErrors = Object.entries(result.error.formErrors.fieldErrors).reduce((acc: any, [key, value]) => {
-        if (value.length === 1) {
-          acc[key] = value[0]
-        } else if (value.length > 1) {
-          acc[key] = { streetType: ' ', value1: value[0], value2: value[1], value3: value[2] }
-        }
-        return acc
-      }, {})
+      const formattedErrors = Object
+        .entries(result.error.formErrors.fieldErrors)
+        .reduce((acc: any, [key, value]) => {
+          if (value.length === 1) {
+            acc[key] = value[0]
+          } else if (value.length > 1) {
+            acc[key] = {
+              streetType: ' ', value1: value[0], value2: value[1], value3: value[2]
+            }
+          }
+          return acc
+        }, {})
       setError(formattedErrors)
       return
     }
@@ -190,7 +208,16 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
         .update(address)
         .eq('id', value.id)
         .select()
-        .then(({ data }) => setStore('addressList', (data && addressList) && [...addressList.filter(({ id }) => id !== value.id), ...data]))
+        .then(({ data }) => (
+          setStore(
+            'addressList',
+            (data && addressList) && [
+              ...addressList
+                .filter(({ id }) => id !== value.id),
+              ...data
+            ]
+          )
+        ))
         .then(cleanAddress)
         .then(() => onClose())
       return
@@ -200,7 +227,10 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       .from('addresses')
       .insert([{ ...address, user_id: userId }])
       .select()
-      .then(({ data }) => setStore('addressList', (data && addressList) && [...addressList, ...data]))
+      .then(({ data }) => setStore(
+        'addressList',
+        (data && addressList) && [...addressList, ...data]
+      ))
       .then(cleanAddress)
       .then(() => onClose())
   }
@@ -213,7 +243,10 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     <>
       {
         !isEdit && (
-          <Button color='primary' onPress={onOpen}>
+          <Button
+            color='primary'
+            onPress={onOpen}
+          >
             Agregar direccion
           </Button>
         )

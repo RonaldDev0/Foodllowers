@@ -40,8 +40,12 @@ export function CardAddress ({ address }: { address: IAddress }) {
             </div>
             <div className='flex w-full gap-2 justify-between'>
               <div>
-                <p>{address.city}</p>
-                <p>{addressComplete}</p>
+                <p>
+                  {address.city}
+                </p>
+                <p>
+                  {addressComplete}
+                </p>
               </div>
               <Dropdown>
                 <DropdownTrigger>

@@ -16,9 +16,13 @@ export function SearchBarr ({ message }: { message: boolean }) {
   }
 
   return (
-    <div className={`${message ? 'mt-24' : 'my-10 [@media(max-width:800px)]:mt-16'} flex flex-col items-center`}>
+    <div className={`flex flex-col items-center
+      ${message ? 'mt-24' : 'my-10 [@media(max-width:800px)]:mt-16'}`}
+    >
       {message && (
-        <p className='text-xl m-2'>¿Cuál es tu influenciador favorito?</p>
+        <p className='text-xl m-2'>
+          ¿Cuál es tu influenciador favorito?
+        </p>
       )}
       <form onSubmit={handleSubmit}>
         <Card className='[@media(max-width:800px)]:w-96'>

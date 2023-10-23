@@ -31,10 +31,19 @@ export default function SearchPage () {
             <Card>
               <CardBody className='p-0 w-96'>
                 <div className='flex'>
-                  <Image alt='img' src={item.preview} width='250' height='250' />
+                  <Image
+                    alt='img'
+                    src={item.preview}
+                    width='250'
+                    height='250'
+                  />
                   <div className='p-4'>
-                    <h1>{item.full_name}</h1>
-                    <p>⭐{item.qualification}</p>
+                    <h2>
+                      {item.full_name}
+                    </h2>
+                    <p>
+                      ⭐{item.qualification}
+                    </p>
                   </div>
                 </div>
               </CardBody>

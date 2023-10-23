@@ -32,7 +32,11 @@ export function SideBarr () {
   const [open, setOpen] = useState<boolean>(true)
   const { user, darkMode, setStore } = useUser()
 
-  useEffect(() => !darkMode ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark'), [darkMode])
+  useEffect(() => (
+    !darkMode
+      ? document.documentElement.classList.remove('dark')
+      : document.documentElement.classList.add('dark')
+  ), [darkMode])
 
   if (!user) {
     return null
