@@ -21,7 +21,8 @@ export type IAddress = {
     value2: string,
     value3?: string
   },
-  aditionalInfo?: string
+  aditionalInfo?: string,
+  complete: string
 }
 
 export default function Adresses () {
@@ -30,12 +31,12 @@ export default function Adresses () {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
-    !addressList && (
+    if (!addressList) {
       supabase
         .from('addresses')
-        .select('id, user, number, numberPrefix, country, city, localidad, address, aditionalInfo')
+        .select('id, user, number, numberPrefix, country, city, localidad, address, aditionalInfo, complete')
         .then(({ data }) => setStore('addressList', data))
-    )
+    }
   }, [])
 
   return (

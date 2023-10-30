@@ -27,7 +27,7 @@ export function ProductCard ({ product }: { product: IProductCard }) {
           <p className='text-xl'>
             {product.name}
           </p>
-          <p className='text-dark_gray'>
+          <p>
             {product.description}
           </p>
           <p className='font-bold text-green-600'>

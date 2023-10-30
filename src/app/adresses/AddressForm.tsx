@@ -19,7 +19,8 @@ type IAddress = {
     value2: string,
     value3?: string
   },
-  aditionalInfo?: string
+  aditionalInfo?: string,
+  complete: string
 }
 
 type IProps = {
@@ -44,7 +45,8 @@ const addressSchema = z.object({
     value2: z.string().min(1, 'Completa este campo.'),
     value3: z.string().min(1, 'Completa este campo.')
   }),
-  aditionalInfo: z.string()
+  aditionalInfo: z.string(),
+  complete: z.string()
 })
 
 const localidades = [
@@ -101,7 +103,8 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       value2: '',
       value3: ''
     },
-    aditionalInfo: ''
+    aditionalInfo: '',
+    complete: ''
   })
 
   const [error, setError] = useState<any>({
@@ -117,7 +120,8 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       value2: null,
       value3: null
     },
-    aditionalInfo: null
+    aditionalInfo: null,
+    complete: null
   })
 
   const cleanAddress = () => setAddress({
@@ -133,7 +137,8 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       value2: '',
       value3: ''
     },
-    aditionalInfo: ''
+    aditionalInfo: '',
+    complete: ''
   })
 
   const handleChange = (field: string, event: any) => {
@@ -205,7 +210,10 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     if (isEdit && value) {
       supabase
         .from('addresses')
-        .update(address)
+        .update({
+          ...address,
+          complete: address.address.streetType + ' ' + address.address.value1 + ' #' + address.address.value2 + '-' + address.address.value3
+        })
         .eq('id', value.id)
         .select()
         .then(({ data }) => (
@@ -225,7 +233,11 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
 
     supabase
       .from('addresses')
-      .insert([{ ...address, user_id: userId }])
+      .insert([{
+        ...address,
+        user_id: userId,
+        complete: address.address.streetType + ' ' + address.address.value1 + ' #' + address.address.value2 + '-' + address.address.value3
+      }])
       .select()
       .then(({ data }) => setStore(
         'addressList',
@@ -266,7 +278,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                 <Input
                   label='Nombre y apellido'
                   value={address.user}
-                  onChange={e => handleChange('user', e)}
+                  onChange={(e: any) => handleChange('user', e)}
                   isInvalid={!!error.user}
                   errorMessage={error.user}
                 />
@@ -275,7 +287,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                   startContent='+57'
                   type='number'
                   value={address.number}
-                  onChange={e => handleChange('number', e)}
+                  onChange={(e: any) => handleChange('number', e)}
                   isInvalid={!!error.number}
                   errorMessage={error.number}
                 />
@@ -284,7 +296,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                     label='País'
                     placeholder='Selecciona tu país'
                     selectedKeys={['Colombia']}
-                    onChange={e => handleChange('country', e)}
+                    onChange={(e: any) => handleChange('country', e)}
                     isInvalid={!!error.country}
                     errorMessage={error.country}
                   >
@@ -296,7 +308,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                     label='Ciudad'
                     placeholder='Selecciona tu ciudad'
                     selectedKeys={['Bogotá']}
-                    onChange={e => handleChange('city', e)}
+                    onChange={(e: any) => handleChange('city', e)}
                     isInvalid={!!error.city}
                     errorMessage={error.city}
                   >
@@ -309,7 +321,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                   label='Localidad'
                   placeholder='Selecciona tu Localidad'
                   selectedKeys={address.localidad ? [`${address.localidad}`] : []}
-                  onChange={e => handleChange('localidad', e)}
+                  onChange={(e: any) => handleChange('localidad', e)}
                   isInvalid={!!error.localidad}
                   errorMessage={error.localidad}
                 >
@@ -326,7 +338,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                     label='Tipo de calle'
                     placeholder='Selecciona tu calle'
                     defaultSelectedKeys={[`${address.address.streetType}`]}
-                    onChange={e => handleChange('address.streetType', e)}
+                    onChange={(e: any) => handleChange('address.streetType', e)}
                     isInvalid={!!error.address.streetType}
                     errorMessage={error.address.streetType}
                   >
@@ -341,7 +353,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                   <Input
                     label={address.address.streetType}
                     value={address.address.value1}
-                    onChange={e => handleChange('address.value1', e)}
+                    onChange={(e: any) => handleChange('address.value1', e)}
                     isInvalid={!!error.address.value1}
                     errorMessage={error.address.value1}
                   />
@@ -351,7 +363,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                     label='Número'
                     startContent='#'
                     value={address.address.value2}
-                    onChange={e => handleChange('address.value2', e)}
+                    onChange={(e: any) => handleChange('address.value2', e)}
                     isInvalid={!!error.address.value2}
                     errorMessage={error.address.value2}
                   />
@@ -359,7 +371,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                     label='Guion'
                     startContent='-'
                     value={address.address.value3}
-                    onChange={e => handleChange('address.value3', e)}
+                    onChange={(e: any) => handleChange('address.value3', e)}
                     isInvalid={!!error.address.value3}
                     errorMessage={error.address.value3}
                   />
@@ -367,7 +379,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                 <Input
                   label='Referencias adicionales de esta dirección'
                   value={address.aditionalInfo}
-                  onChange={e => handleChange('aditionalInfo', e)}
+                  onChange={(e: any) => handleChange('aditionalInfo', e)}
                   isInvalid={!!error.aditionalInfo}
                   errorMessage={error.aditionalInfo}
                 />

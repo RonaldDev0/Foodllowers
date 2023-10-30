@@ -10,8 +10,6 @@ export function CardAddress ({ address }: { address: IAddress }) {
   const { supabase } = useSupabase()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-  const addressComplete = address.address.streetType + ' ' + address.address.value1 + ' ' + address.address.value2 + ' ' + address.address.value3
-
   const remove = () => {
     supabase
       .from('addresses')
@@ -44,7 +42,7 @@ export function CardAddress ({ address }: { address: IAddress }) {
                   {address.city}
                 </p>
                 <p>
-                  {addressComplete}
+                  {address.complete}
                 </p>
               </div>
               <Dropdown>

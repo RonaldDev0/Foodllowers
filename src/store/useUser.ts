@@ -15,7 +15,8 @@ type IAddress = {
     value2: string,
     value3?: string
   },
-  aditionalInfo?: string
+  aditionalInfo?: string,
+  complete: string
 }
 
 type Card = {
@@ -39,6 +40,7 @@ type Shipment = {
     price: number
   }
 }
+
 type State = {
   user: any,
   userId: any,

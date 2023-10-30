@@ -5,12 +5,25 @@ import { Card, CardBody } from '@nextui-org/react'
 import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
 initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY!)
 
-export function PaymentForm ({ amount, description }: { amount: number, description: string }) {
+type props = {
+  amount: number
+  description: string
+  error: Boolean
+}
+
+export function PaymentForm ({ amount, description, error }: props) {
   const { darkMode } = useUser()
   const router = useRouter()
+
   const onSubmit = async ({ formData }: any) => {
     const { ip }: any = await fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
+
+    if (error) {
+      alert(JSON.stringify(error, null, 2))
+      router.refresh()
+      return
+    }
 
     fetch('/api/process_payment', {
       cache: 'no-store',
@@ -24,16 +37,17 @@ export function PaymentForm ({ amount, description }: { amount: number, descript
       })
     })
       .then(res => res.json())
-      .then(data => router
-        .push(data.transaction_details?.external_resource_url)
-      )
+      .then(data => {
+        router.push(data.transaction_details?.external_resource_url)
+      })
       .catch(console.error)
   }
 
   return (
-    <Card className='w-96'>
-      <CardBody className='p-0'>
+    <Card>
+      <CardBody className='p-0 w-96'>
         <Payment
+          key={amount}
           onSubmit={onSubmit}
           locale='es-CO'
           initialization={{ amount }}
