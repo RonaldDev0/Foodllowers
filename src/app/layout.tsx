@@ -17,6 +17,9 @@ export const metadata: Metadata = {
 export default function RootLayout ({ children }: { children: ReactNode }) {
   return (
     <html lang='en' className='dark'>
+      <head>
+        <meta name='theme-color' content='#1f1f1f' />
+      </head>
       <body className='w-full min-h-screen flex flex-col top-12 items-center dark:bg-gradient-to-r from-blue-950 dark:to-neutral-950'>
         <Providers>
           <SideBarr />
