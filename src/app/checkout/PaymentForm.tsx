@@ -9,10 +9,11 @@ type props = {
   amount: number
   description: string
   error: Boolean
+  product: any
 }
 
-export function PaymentForm ({ amount, description, error }: props) {
-  const { darkMode } = useUser()
+export function PaymentForm ({ amount, description, error, product }: props) {
+  const { darkMode, addressSelect, userId } = useUser()
   const router = useRouter()
 
   const onSubmit = async ({ formData }: any) => {
@@ -30,16 +31,21 @@ export function PaymentForm ({ amount, description, error }: props) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        ...formData,
-        callback_url: 'https://foodllowers.vercel.app/currentshipment',
-        description,
-        additional_info: { ip_address: ip }
+        paymentData: {
+          ...formData,
+          callback_url: 'https://foodllowers.vercel.app/currentshipment',
+          description,
+          additional_info: { ip_address: ip }
+        },
+        data: {
+          address: addressSelect,
+          product,
+          userId
+        }
       })
     })
       .then(res => res.json())
-      .then(data => {
-        router.push(data.transaction_details?.external_resource_url)
-      })
+      .then(data => router.push(`/currentshipment?q=${data.id}`))
       .catch(console.error)
   }
 
@@ -58,9 +64,9 @@ export function PaymentForm ({ amount, description, error }: props) {
               }
             },
             paymentMethods: {
-              mercadoPago: 'all',
-              ticket: 'all',
-              bankTransfer: 'all',
+              // mercadoPago: 'all',
+              // ticket: 'all',
+              // bankTransfer: 'all',
               creditCard: 'all',
               debitCard: 'all'
             }

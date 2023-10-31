@@ -73,6 +73,7 @@ export default function Checkout () {
         <PaymentForm
           error={error}
           amount={total}
+          product={product}
           description={'Foodllowers: ' + product.name + ' - ' + product.influencers.full_name}
         />
       </div>

@@ -1,11 +1,15 @@
 'use client'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader } from '@nextui-org/react'
 
 const steps = ['cocinando...', 'recogiendo...', 'entregando...', 'entregado']
 
 export default function CurrentShipment () {
+  const query = useSearchParams().get('q')
   const [activeStep, setActiveStep] = useState(0)
+
+  console.log(query)
 
   return (
     <div className='h-screen flex justify-center items-center'>
