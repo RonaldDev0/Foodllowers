@@ -1,51 +1,40 @@
 'use client'
-import { useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Button } from '@nextui-org/react'
-import { Stepper } from './Stepper'
 import { useSupabase } from '../Providers'
+import { EmptyCard } from './EmptyCard'
+import { CardData } from './CardData'
 
-const steps = ['buscando cocina...', 'cocinando...', 'buscando delivery', 'recogiendo...', 'entregando...', 'entregado']
+const steps = ['buscando cocina...', 'cocinando...', 'buscando delivery...', 'recogiendo...', 'entregando...', 'entregado']
 
 export default function CurrentShipment () {
   const { supabase } = useSupabase()
-  const query = useSearchParams().get('q')
-  const [activeStep, setActiveStep] = useState(0)
-
-  const back = () => {
-    if (activeStep > 0) {
-      setActiveStep(activeStep - 1)
-    }
-  }
-
-  const next = () => {
-    if (activeStep < steps.length - 1) {
-      setActiveStep(activeStep + 1)
-    }
-  }
+  const [activeStep, setActiveStep] = useState(null)
+  const [product, setProduct] = useState(null)
 
   useEffect(() => {
+    supabase
+      .from('orders')
+      .select('*')
+      .then(({ data }: any) => {
+        if (data.length) {
+          setProduct(data[0].product)
+          setActiveStep(data[0].order_state)
+        }
+      })
+
     supabase.channel('orders')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'orders' },
-        payload => console.log({ payload })
+        { event: 'UPDATE', schema: 'public', table: 'orders' },
+        ({ new: { order_state: orderState } }: any) => setActiveStep(orderState)
       ).subscribe()
   }, [])
 
   return (
     <div className='h-screen grid place-content-center'>
-      <p className='text-center'>{query}</p>
-      <Stepper activeStep={activeStep} steps={steps} />
-
-      <div className='flex justify-around'>
-        <Button onPress={back}>
-          Back
-        </Button>
-        <Button color='primary' onPress={next}>
-          Next
-        </Button>
-      </div>
+      {activeStep
+        ? <CardData steps={steps} activeStep={activeStep} product={product} />
+        : <EmptyCard />}
     </div>
   )
 }

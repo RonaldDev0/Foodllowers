@@ -19,12 +19,23 @@ export function PaymentForm ({ amount, description, error, product }: props) {
   const router = useRouter()
 
   const onSubmit = async ({ formData }: any) => {
+    const order = await supabase
+      .from('orders')
+      .select('*')
+      .then(({ data }: any) => data)
+
     const { ip }: any = await fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
 
     if (error) {
       alert(JSON.stringify(error, null, 2))
       router.refresh()
+      return
+    }
+
+    if (order.length) {
+      alert('ya tienes un pedido en camino!, no puedes hacer mas de un pedido al mismo tiempo')
+      router.push('/currentshipment')
       return
     }
 
@@ -52,7 +63,7 @@ export function PaymentForm ({ amount, description, error, product }: props) {
               user_address: addressSelect
             }])
             .select('*')
-            .then(({ data }) => data && router.push(`/currentshipment?q=${data[0]?.id}`))
+            .then(({ data }) => data && router.push('/currentshipment'))
         }
       })
   }
