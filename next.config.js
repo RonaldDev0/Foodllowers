@@ -8,6 +8,11 @@ const withPWA = require('@ducanh2912/next-pwa').default({
 /** @type {import('next').NextConfig} */
 module.exports = withPWA({
   images: {
-    domains: ['lh3.googleusercontent.com', 'gtsjuxikwdifunrkhpyp.supabase.co']
+    remotePatterns: [{
+      hostname: 'lh3.googleusercontent.com'
+    },
+    {
+      hostname: 'gtsjuxikwdifunrkhpyp.supabase.co'
+    }]
   }
 })
