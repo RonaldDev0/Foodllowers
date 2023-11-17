@@ -23,7 +23,7 @@ export function ProductDetails ({ product }: Props) {
       <CardBody className='p-3'>
         <div className='flex'>
           <Image
-            src='./img/pato404.svg'
+            src={product.preview}
             width='200'
             height='200'
             alt='preview'

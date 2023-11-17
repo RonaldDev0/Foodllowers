@@ -12,7 +12,7 @@ export default function InfluencerPage ({ params: { influencerSlug } }: any) {
   useEffect(() => {
     supabase
       .from('influencers')
-      .select('id, full_name, qualification, preview, products(id, price, name, description)')
+      .select('id, full_name, qualification, preview, products(id, price, name, description, preview)')
       .eq('path', '/' + influencerSlug)
       .then(res => setInfluencer(res.data?.length && res.data[0]))
   }, [influencerSlug])

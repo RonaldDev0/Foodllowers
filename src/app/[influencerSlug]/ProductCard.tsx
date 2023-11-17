@@ -14,12 +14,13 @@ export type IProductCard = {
 }
 
 export function ProductCard ({ product }: { product: IProductCard }) {
+  console.log(product)
   return (
     <Link href={`/checkout?q=${product.id}`}>
       <Card>
         <CardBody className='p-3 cursor-pointer'>
           <Image
-            src='./img/pato404.svg'
+            src={product.preview}
             width='200'
             height='200'
             alt='preview'
