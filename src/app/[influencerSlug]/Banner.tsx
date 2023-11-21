@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
 type IInfluencer = {
+  description: string
   id: number
   qualification: number
   full_name: string
@@ -48,7 +49,7 @@ export function Banner ({ influencer }: { influencer: IInfluencer }) {
           </Button>
         </div>
         <p className='mt-10 px-10'>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam provident recusandae dolore! Quo culpa nam deserunt obcaecati magnam, placeat suscipit delectus facilis sapiente. Similique, neque ducimus iure debitis voluptatum obcaecati. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates mollitia, officia non corrupti quidem maiores maxime suscipit delectus omnis perferendis repellat perspiciatis officiis minus dolorum magnam repellendus laborum alias tenetur.
+          {influencer.description}
         </p>
       </div>
       <Divider className='my-5' />
