@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/store'
-import { Card, CardBody } from '@nextui-org/react'
+import { Card, CardBody, Button } from '@nextui-org/react'
 import { useSupabase } from '../Providers'
 import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
 initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY!)
@@ -99,6 +99,22 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
           }}
         />
       </CardBody>
+      <Button onClick={() => {
+        supabase
+          .from('orders')
+          .insert([{
+            user_id: userId,
+            product,
+            order_state: 'buscando cocina...',
+            kitchen_id: product.id_kitchen,
+            user_address: addressSelect
+          }])
+          .select('*')
+          .then(({ data }) => data && router.push('/currentshipment'))
+      }}
+      >
+        saltar pago
+      </Button>
     </Card>
   )
 }

@@ -46,7 +46,7 @@ export function SideBarr () {
     <>
       <Menu
         size={40}
-        className='m-3 cursor-pointer fixed left-0 z-10'
+        className='m-3 cursor-pointer fixed left-0 z-40'
         onClick={() => setOpen(!open)}
       />
       <motion.div
