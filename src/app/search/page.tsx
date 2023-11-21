@@ -33,18 +33,18 @@ export default function SearchPage () {
   return (
     <main className='h-screen flex flex-col items-center'>
       <SearchBarr message={false} />
-      <div className='flex flex-col gap-10'>
+      <div className='flex flex-col gap-5'>
         {influencers?.map((item: any) => (
           <Link href={item.path} key={item.id}>
             <Card>
               <CardBody className='p-2'>
-                <div className='grid grid-cols-3 gap-4'>
+                <div className='grid grid-cols-3 gap-4 items-center'>
                   <Image
                     alt='img'
                     src={item.preview}
                     width='250'
                     height='250'
-                    className='w-[150px] h-[150px] rounded-full row-span-2'
+                    className='w-[150px] h-[150px] [@media(max-width:800px)]:h-[120px] rounded-full row-span-2'
                   />
                   <div className='pt-4 flex flex-col'>
                     <h2>{item.full_name}</h2>
@@ -52,13 +52,13 @@ export default function SearchPage () {
                   </div>
                   <Link href='#' className='pt-4'>
                     <Button
-                      color={follow ? 'secondary' : 'primary'}
+                      color={follow ? 'primary' : 'secondary'}
                       onPress={() => setFollow(!follow)}
                     >
-                      Follow
+                      {follow ? 'dejar de seguir' : 'seguir'}
                     </Button>
                   </Link>
-                  <p className='opacity-60 w-72 max-h-14 text-small col-span-2 overflow-hidden'>
+                  <p className='opacity-60 w-72 [@media(max-width:800px)]:w-60 h-14 text-small col-span-2 overflow-hidden'>
                     {item.description}
                   </p>
                 </div>
@@ -70,24 +70,26 @@ export default function SearchPage () {
           <Link href={`/checkout?q=${item.id}`} key={item.id}>
             <Card>
               <CardBody className='p-0'>
-                <div className='flex'>
+                <div className='[@media(min-width:800px)]:flex'>
                   <Image
                     alt='img'
                     src={item.preview}
                     width='250'
                     height='250'
-                    className='w-[300px] h-[200px]'
+                    className='w-[300px] h-[200px] [@media(max-width:800px)]:w-full'
                   />
-                  <div className='p-4'>
-                    <h2>
-                      {item.name}
-                    </h2>
-                    <p className='opacity-60'>
-                      {item.description}
-                    </p>
-                    <p className='font-bold text-green-600'>
-                      ${item.price.toLocaleString()}
-                    </p>
+                  <div className='p-4 [@media(max-width:800px)]:flex [@media(max-width:800px)]:justify-between'>
+                    <div>
+                      <h2>
+                        {item.name}
+                      </h2>
+                      <p className='opacity-60'>
+                        {item.description}
+                      </p>
+                      <p className='font-bold text-green-600'>
+                        ${item.price.toLocaleString()}
+                      </p>
+                    </div>
                     <Link href={item.influencers.path} className='flex items-center'>
                       <Avatar className='mt-5' src={item.influencers.preview} />
                       <p className='opacity-60 mt-5 ml-2 hover:opacity-100 transition-all'>{item.influencers.full_name}</p>
