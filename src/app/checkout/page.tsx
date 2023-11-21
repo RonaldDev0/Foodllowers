@@ -7,6 +7,7 @@ import { ProductDetails } from './ProductDetails'
 import { PaymentForm } from './PaymentForm'
 import { Tip } from './Tip'
 import { Summary } from './Summary'
+import { Alert } from '@/components/Alert'
 
 export default function Checkout () {
   const query = useSearchParams().get('q')
@@ -23,7 +24,7 @@ export default function Checkout () {
   useEffect(() => {
     supabase
       .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, influencers( full_name )')
+      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, influencers( full_name, preview, path ), kitchens(open)')
       .eq('id', query)
       .then((res: any) => {
         if (res.data) {
@@ -55,9 +56,10 @@ export default function Checkout () {
         className='flex flex-col gap-5
           [@media(min-width:800px)]:w-[522px]'
       >
+        {!product?.kitchens.open && <Alert />}
         <AddressSelect setError={setError} />
         <ProductDetails product={product} />
-        <Tip setTip={setTip} amount={product.price} />
+        <Tip setTip={setTip} amount={product.price} serviceFee={serviceFee} />
       </div>
       <div
         className='flex flex-col gap-5 top-5
@@ -75,6 +77,7 @@ export default function Checkout () {
           amount={total}
           product={product}
           description={'Foodllowers: ' + product.name + ' - ' + product.influencers.full_name}
+          kitchenOpen={product?.kitchens.open}
         />
       </div>
     </main>

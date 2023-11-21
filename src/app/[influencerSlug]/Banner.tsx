@@ -31,7 +31,7 @@ export function Banner ({ influencer }: { influencer: IInfluencer }) {
         />
         <Link
           href='/'
-          className='bg-white fixed top-5 [@media(max-width:800px)]:top-12 m-4 rounded-3xl'
+          className='bg-white absolute top-5 [@media(max-width:800px)]:top-12 m-4 rounded-3xl'
         >
           <ArrowLeft size={38} color='#595959' />
         </Link>

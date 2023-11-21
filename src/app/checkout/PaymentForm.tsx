@@ -11,9 +11,10 @@ type props = {
   description: string
   error: Boolean
   product: any
+  kitchenOpen: boolean
 }
 
-export function PaymentForm ({ amount, description, error, product }: props) {
+export function PaymentForm ({ amount, description, error, product, kitchenOpen }: props) {
   const { supabase } = useSupabase()
   const { darkMode, addressSelect, userId } = useUser()
   const router = useRouter()
@@ -36,6 +37,12 @@ export function PaymentForm ({ amount, description, error, product }: props) {
     if (order.length) {
       alert('ya tienes un pedido en camino!, no puedes hacer mas de un pedido al mismo tiempo')
       router.push('/currentshipment')
+      return
+    }
+
+    if (!kitchenOpen) {
+      alert('Esta cocina esta cerrada!!')
+      router.refresh()
       return
     }
 

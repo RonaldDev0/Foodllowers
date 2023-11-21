@@ -14,26 +14,30 @@ export type IProductCard = {
 }
 
 export function ProductCard ({ product }: { product: IProductCard }) {
-  console.log(product)
   return (
     <Link href={`/checkout?q=${product.id}`}>
       <Card>
-        <CardBody className='p-3 cursor-pointer'>
+        <CardBody className='p-0 cursor-pointer'>
           <Image
             src={product.preview}
             width='200'
             height='200'
             alt='preview'
+            className='w-[350px] h-[200px]'
           />
-          <p className='text-xl'>
-            {product.name}
-          </p>
-          <p>
-            {product.description}
-          </p>
-          <p className='font-bold text-green-600'>
-            ${product.price.toLocaleString()}
-          </p>
+          <div className='p-3 flex justify-between items-center'>
+            <div>
+              <p className='text-xl'>
+                {product.name}
+              </p>
+              <p className='opacity-60'>
+                {product.description}
+              </p>
+            </div>
+            <p className='font-bold text-green-600'>
+              ${product.price.toLocaleString()}
+            </p>
+          </div>
         </CardBody>
       </Card>
     </Link>
