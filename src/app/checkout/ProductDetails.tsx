@@ -1,4 +1,4 @@
-import { Card, CardBody, Avatar } from '@nextui-org/react'
+import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -12,6 +12,7 @@ type Props = {
     name: string,
     description: string,
     price: number,
+    state: boolean,
     influencers: {
       path: string
       preview: string | undefined
@@ -32,6 +33,11 @@ export function ProductDetails ({ product }: Props) {
             alt='preview'
             className='w-[240px] aspect-video [@media(max-width:800px)]:w-full'
           />
+          {!product?.state && (
+            <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>
+              Agotado
+            </Chip>
+          )}
           <div className='flex items-center p-3 gap-4'>
             <Link href={product.influencers?.path}>
               <Avatar src={product.influencers?.preview} />

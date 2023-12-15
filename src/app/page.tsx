@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Card, CardBody, Avatar } from '@nextui-org/react'
+import { Card, CardBody, Avatar, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 import { SearchBarr } from '@/components'
 import { useSupabase } from './Providers'
 import { useContent } from '@/store'
@@ -13,6 +13,7 @@ export default function Home () {
   const loginCode = useSearchParams().get('code')
   const { supabase } = useSupabase()
   const { influencerList, productList, setStore } = useContent()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
     loginCode && setTimeout(() => router.push('/'), 200)
@@ -28,7 +29,7 @@ export default function Home () {
     !productList && (
       supabase
         .from('products')
-        .select('id, preview, name, price, influencers( preview, full_name, path )')
+        .select('id, preview, name, price, state, influencers( preview, full_name, path )')
         .range(0, 10)
         .then(res => setStore('productList', res.data))
     )
@@ -49,9 +50,12 @@ export default function Home () {
       <div className='flex flex-wrap gap-5 justify-center'>
         {
           productList?.map((product: any) => (
-            <Link href={`/checkout?q=${product.id}`} key={product.id}>
+            <Link href={product?.state ? `/checkout?q=${product.id}` : '#'} key={product.id}>
               <Card>
-                <CardBody className='p-0'>
+                <CardBody
+                  className='p-0'
+                  onClick={() => !product?.state && onOpen()}
+                >
                   <Image
                     src={product.preview}
                     width='200'
@@ -59,6 +63,11 @@ export default function Home () {
                     alt='preview'
                     className='w-[350px] h-[200px]'
                   />
+                  {!product?.state && (
+                    <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>
+                      Agotado
+                    </Chip>
+                  )}
                   <div className='p-4 flex justify-between items-center'>
                     <div className='flex gap-3 items-center'>
                       <Link href={product.influencers.path}>
@@ -81,6 +90,25 @@ export default function Home () {
           ))
         }
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {onClose => (
+            <>
+              <ModalHeader>
+                <p>Producto Agotado</p>
+              </ModalHeader>
+              <ModalBody>
+                <p>Este producto se encuentra agotado temporalmente, puedes revisar mas tarde o el dia siguiente</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color='secondary' onPress={onClose}>
+                  Aceptar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   )
 }
