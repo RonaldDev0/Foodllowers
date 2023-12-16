@@ -27,6 +27,7 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
     const order = await supabase
       .from('orders')
       .select('*')
+      .eq('user_id', userId)
       .then(({ data }: any) => data)
 
     const { ip }: any = await fetch('https://api.ipify.org?format=json')
