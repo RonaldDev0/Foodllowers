@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useSupabase } from '../Providers'
 import { EmptyCard } from './EmptyCard'
 import { CardData } from './CardData'
+import { useUser } from '@/store'
 
 const steps = ['buscando cocina...', 'cocinando...', 'buscando delivery...', 'recogiendo...', 'entregando...', 'entregado']
 
@@ -10,11 +11,13 @@ export default function CurrentShipment () {
   const { supabase } = useSupabase()
   const [activeStep, setActiveStep] = useState(null)
   const [product, setProduct] = useState(null)
+  const { userId } = useUser()
 
   useEffect(() => {
     supabase
       .from('orders')
       .select('*')
+      .eq('user_id', userId)
       .then(({ data }: any) => {
         if (data.length) {
           setProduct(data[0].product)
