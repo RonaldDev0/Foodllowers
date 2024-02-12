@@ -68,7 +68,7 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
       })
     })
       .then(res => res.json())
-      .then(({ status }) => {
+      .then(({ id, status }) => {
         if (status === 'approved') {
           supabase
             .from('orders')
@@ -77,9 +77,11 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
               product,
               order_state: 'buscando cocina...',
               kitchen_id: product.id_kitchen,
-              user_address: addressSelect
+              user_address: addressSelect,
+              kitchen_logo: product.kitchens.logo,
+              invoice_id: id
             }])
-            .select('*')
+            .select('id')
             .then(({ data }) => data && router.push('/currentshipment'))
         }
       })

@@ -19,7 +19,7 @@ export default function CurrentShipment () {
       .select('*')
       .eq('user_id', userId)
       .then(({ data }: any) => {
-        if (data.length) {
+        if (data?.length) {
           setProduct(data[0].product)
           setActiveStep(data[0].order_state)
         }
