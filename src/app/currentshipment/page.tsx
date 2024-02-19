@@ -28,7 +28,7 @@ export default function CurrentShipment () {
     supabase.channel('orders')
       .on(
         'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'orders' },
+        { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${userId}` },
         ({ new: { order_state: orderState } }: any) => setActiveStep(orderState)
       ).subscribe()
   }, [])

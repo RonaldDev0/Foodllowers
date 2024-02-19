@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -109,9 +110,9 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
                 }
               },
               paymentMethods: {
-                // mercadoPago: 'all',
+                mercadoPago: 'all',
                 // ticket: 'all',
-                // bankTransfer: 'all',
+                bankTransfer: 'all',
                 creditCard: 'all',
                 debitCard: 'all'
               }
