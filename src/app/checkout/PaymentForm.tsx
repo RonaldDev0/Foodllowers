@@ -79,7 +79,7 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
               order_state: 'buscando cocina...',
               kitchen_id: product.id_kitchen,
               user_address: addressSelect,
-              kitchen_address: product.kitchens.address.address,
+              kitchen_address: product.kitchens.address,
               kitchen_logo: product.kitchens.logo,
               invoice_id: id,
               user_email: user.email
