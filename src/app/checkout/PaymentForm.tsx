@@ -18,7 +18,7 @@ type props = {
 
 export function PaymentForm ({ amount, description, error, product, kitchenOpen }: props) {
   const { supabase } = useSupabase()
-  const { darkMode, addressSelect, userId } = useUser()
+  const { darkMode, addressSelect, userId, user } = useUser()
   const router = useRouter()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -80,7 +80,8 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
               kitchen_id: product.id_kitchen,
               user_address: addressSelect,
               kitchen_logo: product.kitchens.logo,
-              invoice_id: id
+              invoice_id: id,
+              user_email: user.email
             }])
             .select('id')
             .then(({ data }) => data && router.push('/currentshipment'))
