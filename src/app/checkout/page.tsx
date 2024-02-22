@@ -24,7 +24,7 @@ export default function Checkout () {
   useEffect(() => {
     supabase
       .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, preview, path ), kitchens( open, logo )')
+      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, preview, path ), kitchens( open, logo, address )')
       .eq('id', query)
       .then((res: any) => {
         if (res.data) {
