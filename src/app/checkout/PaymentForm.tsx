@@ -69,12 +69,13 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
       })
     })
       .then(res => res.json())
-      .then(({ id, status }) => {
+      .then(({ id, status, transaction_amount }) => {
         if (status === 'approved') {
           supabase
             .from('orders')
             .insert([{
               user_id: userId,
+              user_name: user.name,
               product,
               order_state: 'buscando cocina...',
               kitchen_id: product.id_kitchen,
@@ -82,7 +83,8 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen 
               kitchen_address: product.kitchens.address,
               kitchen_logo: product.kitchens.logo,
               invoice_id: id,
-              user_email: user.email
+              user_email: user.email,
+              transaction_amount
             }])
             .select('id')
             .then(({ data }) => data && router.push('/currentshipment'))

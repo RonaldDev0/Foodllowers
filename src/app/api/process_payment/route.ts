@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { NextRequest, NextResponse } from 'next/server'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 
@@ -13,7 +14,7 @@ export async function POST (req: NextRequest) {
   })
 
   const payment = new Payment(client)
-  const response = await payment.create({ body })
+  const { id, status, transaction_amount } = await payment.create({ body })
 
-  return NextResponse.json(response)
+  return NextResponse.json({ id, status, transaction_amount })
 }
