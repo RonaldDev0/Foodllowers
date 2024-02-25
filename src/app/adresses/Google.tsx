@@ -111,7 +111,7 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
         )}
       </form>
 
-      <div className='h-96 w-full' onClick={() => setOpenAutoComplete(false)}>
+      <div className='h-80 w-full' onClick={() => setOpenAutoComplete(false)}>
         <Map
           center={mapCenter}
           onCenterChanged={res => setMapCenter(res.detail.center)}
