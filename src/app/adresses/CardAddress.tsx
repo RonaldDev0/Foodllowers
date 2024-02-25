@@ -39,10 +39,7 @@ export function CardAddress ({ address }: { address: IAddress }) {
             <div className='flex w-full gap-2 justify-between'>
               <div>
                 <p>
-                  {address.city}
-                </p>
-                <p>
-                  {address.complete}
+                  {address.formatted_address}
                 </p>
               </div>
               <Dropdown>

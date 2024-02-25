@@ -34,7 +34,7 @@ export default function Adresses () {
     if (!addressList) {
       supabase
         .from('addresses')
-        .select('id, user, number, numberPrefix, country, city, localidad, address, aditionalInfo, complete')
+        .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
         .then(({ data }) => setStore('addressList', data))
     }
   }, [])
