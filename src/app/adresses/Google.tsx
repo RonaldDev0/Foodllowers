@@ -33,9 +33,13 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
 
   function handleMapClick (latLng: any) {
     setMarkerPosition(latLng)
-    const { lat, lng } = latLng
 
-    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat + ',' + lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}`)
+    fetch('/api/maps_geo', {
+      cache: 'no-cache',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(latLng)
+    })
       .then(res => res.json())
       .then(data => {
         setInput(data.results[0].formatted_address)
