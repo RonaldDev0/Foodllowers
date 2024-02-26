@@ -2,14 +2,7 @@ const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
-  cacheOnFrontEndNav: false,
-  aggressiveFrontEndNavCaching: false,
-  workboxOptions: {
-    disableDevLogs: true,
-    maximumFileSizeToCacheInBytes: 1,
-    navigationPreload: false
-  }
+  disable: process.env.NODE_ENV === 'development'
 })
 
 /** @type {import('next').NextConfig} */
