@@ -4,9 +4,12 @@ const withPWA = require('@ducanh2912/next-pwa').default({
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
   cacheOnFrontEndNav: false,
-  // cacheStartUrl: false,
-  // extendDefaultRuntimeCaching: false,
-  aggressiveFrontEndNavCaching: false
+  aggressiveFrontEndNavCaching: false,
+  workboxOptions: {
+    disableDevLogs: true,
+    maximumFileSizeToCacheInBytes: 1,
+    navigationPreload: false
+  }
 })
 
 /** @type {import('next').NextConfig} */
