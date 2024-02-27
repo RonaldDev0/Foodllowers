@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { APIProvider, Map, AdvancedMarker } from '@vis.gl/react-google-maps'
-import { Input, Card } from '@nextui-org/react'
+import { Input, Card, CircularProgress } from '@nextui-org/react'
 import { MapPin } from 'lucide-react'
 
 interface IProps {
@@ -30,6 +30,8 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
   const [predictionss, setPredictions] = useState<any>([])
   const [openAutoComplete, setOpenAutoComplete] = useState(false)
   const [mapZoom, setMapZoom] = useState(13)
+  const [timeoutId, setTimeoutId] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
   function handleMapClick (latLng: any) {
     setMarkerPosition(latLng)
@@ -56,9 +58,7 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
     setMapZoom(18)
   }
 
-  function handleSubmit (e: any) {
-    e.preventDefault()
-
+  function handleSubmit () {
     fetch('/api/maps_auto_complete', {
       cache: 'no-cache',
       method: 'POST',
@@ -70,30 +70,48 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
         if (res.error_message) {
           return
         }
-        setOpenAutoComplete(res.results.length)
+        setLoading(false)
         setPredictions(res.results)
       })
   }
 
+  function handleChange () {
+    if (timeoutId) clearTimeout(timeoutId)
+    const newTimeoutId = setTimeout(() => {
+      handleSubmit()
+    }, 1000)
+    setTimeoutId(newTimeoutId)
+  }
+
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}>
-      <form className='w-full rounded relative' onSubmit={e => handleSubmit(e)}>
+      <div className='w-full rounded relative'>
         <Input
           autoComplete='off'
           placeholder='Escribe tu ubicación'
           value={input}
           isInvalid={addressError}
-          errorMessage={addressError && 'Ingresa tu ubicación'}
+          errorMessage={addressError && 'Selecciona una sugerencia o usa el marcador en el mapa.'}
           onChange={e => {
-            setAddress(null)
+            handleChange()
             setAddressError(false)
             setInput(e.target.value)
+            setLoading(true)
+            setOpenAutoComplete(true)
+            setMarkerPosition(null)
+            setAddress(null)
+            setPredictions([])
           }}
         />
 
         {openAutoComplete && (
-          <Card className='absolute z-50 shadow-lg rounded mt-2 w-full'>
+          <Card className='absolute z-50 rounded mt-2 w-full bg-neutral-800 transition-all'>
             <div>
+              {loading && (
+                 <div className='w-full my-2 flex justify-center items-center'>
+                    <CircularProgress color='secondary' aria-label='Loading...'/>
+                 </div>
+              )}
               {predictionss.map((prediction: any, index: number) => (
                 <div
                   key={index}
@@ -109,10 +127,11 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
             </div>
           </Card>
         )}
-      </form>
+      </div>
 
-      <div className='h-80 w-full' onClick={() => setOpenAutoComplete(false)}>
+      <div className='h-72 w-full' onClick={() => setOpenAutoComplete(false)}>
         <Map
+          fullscreenControl
           center={mapCenter}
           onCenterChanged={res => setMapCenter(res.detail.center)}
           minZoom={11}

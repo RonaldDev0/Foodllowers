@@ -5,6 +5,7 @@ import { useSupabase } from '../Providers'
 import { z } from 'zod'
 import { useUser } from '@/store'
 import { Google } from './Google'
+import { Info } from 'lucide-react'
 
 type IUser = {
   [key: string]: any
@@ -173,6 +174,12 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                 {HeadLabel}
               </ModalHeader>
               <ModalBody>
+                <div className='flex text-sm gap-2'>
+                  <div>
+                    <Info size={25} />
+                  </div>
+                  <p>Actualmente solo tenemos cobertura en la ciudad de bogota, colombia</p>
+                </div>
                 <Input
                   label='Nombre y apellido'
                   value={user.user}
