@@ -108,9 +108,9 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
           <Card className='absolute z-50 rounded mt-2 w-full bg-neutral-800 transition-all'>
             <div>
               {loading && (
-                 <div className='w-full my-2 flex justify-center items-center'>
-                    <CircularProgress color='secondary' aria-label='Loading...'/>
-                 </div>
+                <div className='w-full my-2 flex justify-center items-center'>
+                  <CircularProgress color='secondary' aria-label='Loading...' />
+                </div>
               )}
               {predictionss.map((prediction: any, index: number) => (
                 <div
