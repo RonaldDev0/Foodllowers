@@ -23,7 +23,7 @@ export function AddressSelect ({ setError }: { setError: Function }) {
 
     supabase
       .from('addresses')
-      .select('id, user, number, numberPrefix, country, city, localidad, address, aditionalInfo, complete')
+      .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
       .then(({ data }: any) => {
         if (data.length > 0) {
           setStore('addressSelect', data[0])
@@ -76,10 +76,7 @@ export function AddressSelect ({ setError }: { setError: Function }) {
                   <p>{addressSelect?.numberPrefix + ' ' + addressSelect?.number}</p>
                 </div>
                 <div className='flex w-full gap-2 justify-between'>
-                  <div>
-                    <p>{addressSelect?.city}</p>
-                    <p>{addressSelect?.complete}</p>
-                  </div>
+                  <p>{addressSelect?.formatted_address}</p>
                 </div>
               </>
               )}
