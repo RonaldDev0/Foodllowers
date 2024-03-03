@@ -24,7 +24,7 @@ export default function Checkout () {
   useEffect(() => {
     supabase
       .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, preview, path ), kitchens( open, logo, address )')
+      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, preview, path ), kitchens( open, address )')
       .eq('id', query)
       .then((res: any) => {
         if (res.data) {
@@ -56,7 +56,9 @@ export default function Checkout () {
         className='flex flex-col gap-5
           [@media(min-width:800px)]:w-[522px]'
       >
-        {!product?.kitchens.open && <Alert />}
+        {!product?.kitchens.open && <Alert message='Este restaurante esta cerrado!!' />}
+        {!product?.kitchens.address && <Alert message='Este restaurante aun no esta listo para entregar domicilios' />}
+
         <AddressSelect setError={setError} />
         <ProductDetails product={product} />
         <Tip setTip={setTip} amount={product.price} serviceFee={serviceFee} />
@@ -78,6 +80,7 @@ export default function Checkout () {
           product={product}
           description={'Foodllowers: ' + product.name + ' - ' + product.influencers.full_name}
           kitchenOpen={product?.kitchens.open}
+          kitchenAddress={product?.kitchen_address}
         />
       </div>
     </main>

@@ -21,17 +21,23 @@ export default function Home () {
     !influencerList && (
       supabase
         .from('influencers')
-        .select('id, full_name, qualification, preview, path')
+        .select('id, full_name, qualification, preview, path, products(kitchens( address, open ))')
         .range(0, 10)
-        .then(res => setStore('influencerList', res.data))
+        .then((res: any) => {
+          const influencers = res.data?.filter((item: any) => item.products[0].kitchens.address !== null)
+          setStore('influencerList', influencers)
+        })
     )
 
     !productList && (
       supabase
         .from('products')
-        .select('id, preview, name, price, state, influencers( preview, full_name, path )')
+        .select('id, preview, name, price, state, influencers( preview, full_name, path ), kitchens( address )')
         .range(0, 10)
-        .then(res => setStore('productList', res.data))
+        .then(res => {
+          const products = res.data?.filter((item: any) => item.kitchens.address !== null)
+          setStore('productList', products)
+        })
     )
   }, [])
 

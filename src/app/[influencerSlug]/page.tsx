@@ -13,7 +13,7 @@ export default function InfluencerPage ({ params: { influencerSlug } }: any) {
   useEffect(() => {
     supabase
       .from('influencers')
-      .select('id, full_name, qualification, preview, description, products(id, price, name, description, preview, state, kitchens(open))')
+      .select('id, full_name, qualification, preview, description, products(id, price, name, description, preview, state, kitchens( address, open ))')
       .eq('path', '/' + influencerSlug)
       .then(res => setInfluencer(res.data?.length && res.data[0]))
   }, [influencerSlug])
@@ -24,7 +24,8 @@ export default function InfluencerPage ({ params: { influencerSlug } }: any) {
 
   return (
     <main>
-      {!influencer.products[0]?.kitchens.open && <Alert />}
+      {!influencer.products[0]?.kitchens.open && <Alert message='Este restaurante esta cerrado!!' />}
+      {!influencer.products[0]?.kitchens.address && <Alert message='Este restaurante aun no esta listo para entregar domicilios' />}
       <Banner influencer={influencer} />
       <div className='flex w-full my-10 justify-center flex-wrap gap-5 mb-10'>
         {influencer.products?.map((product: IProductCard) => (
