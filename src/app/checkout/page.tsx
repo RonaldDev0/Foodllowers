@@ -1,6 +1,7 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
 import { useSupabase } from '../Providers'
+import { useUser } from '@/store'
 import { useState, useEffect } from 'react'
 import { AddressSelect } from './AddressSelect'
 import { ProductDetails } from './ProductDetails'
@@ -8,20 +9,31 @@ import { PaymentForm } from './PaymentForm'
 import { Tip } from './Tip'
 import { Summary } from './Summary'
 import { Alert } from '@/components/Alert'
+import { EstimationTime } from './EstimationTime'
+
+const pricePerKm = 1000
+const minima = 3000
+const preparationTime = 20
+const serviceFee = 5000
 
 export default function Checkout () {
   const query = useSearchParams().get('q')
   const { supabase } = useSupabase()
+  const { addressSelect } = useUser()
 
+  const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
-  const serviceFee = 5000
-  const shippingCost = 4000
+  const [shippingCost, setShippingCost] = useState(0)
   const [tip, setTip] = useState(0)
   const [total, setTotal] = useState<any>(null)
 
   const [error, setError] = useState<any>(false)
 
   useEffect(() => {
+    if (!addressSelect) {
+      return
+    }
+
     supabase
       .from('products')
       .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, preview, path ), kitchens( open, address )')
@@ -29,17 +41,36 @@ export default function Checkout () {
       .then((res: any) => {
         if (res.data) {
           setProduct(res.data[0])
+          fetch('/api/maps_distance', {
+            cache: 'no-cache',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              origin: res.data[0].kitchens.address.geometry.location,
+              destination: addressSelect.geometry.location
+            })
+          })
+            .then(res => res.json())
+            .then(data => {
+              const { distance: { text: distance }, duration: { text: duration } } = data.rows[0].elements[0]
+
+              const convertion = parseFloat(distance) * pricePerKm
+              const operation = convertion > minima ? convertion : minima
+              setShippingCost(operation)
+
+              setEstimationTime(parseFloat(duration) + preparationTime)
+            })
           return
         }
         setError({ message: 'Product does not exist' })
       })
-  }, [])
+  }, [addressSelect])
 
   useEffect(() => {
     if (product) {
       setTotal((product.price + serviceFee + shippingCost + tip))
     }
-  }, [product, tip])
+  }, [product, tip, shippingCost])
 
   if (!product || !total) {
     return null
@@ -61,6 +92,7 @@ export default function Checkout () {
 
         <AddressSelect setError={setError} />
         <ProductDetails product={product} />
+        <EstimationTime time={estimationTime} />
         <Tip setTip={setTip} amount={product.price} serviceFee={serviceFee} />
       </div>
       <div

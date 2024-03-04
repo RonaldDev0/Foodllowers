@@ -35,6 +35,15 @@ export function Providers ({ children }: { children: ReactNode }) {
         if (session) {
           setStore('user', session.user.user_metadata)
           setStore('userId', session.user.id)
+          supabase
+            .from('addresses')
+            .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
+            .then(({ data }: any) => {
+              if (data.length > 0) {
+                setStore('addressSelect', data[0])
+                setStore('addressList', data)
+              }
+            })
         }
       })
   }, [])
