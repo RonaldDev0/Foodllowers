@@ -8,6 +8,8 @@ import { SearchBarr } from '@/components'
 import { useSupabase } from './Providers'
 import { useContent } from '@/store'
 
+const serviceFee = 5000
+
 export default function Home () {
   const router = useRouter()
   const loginCode = useSearchParams().get('code')
@@ -87,7 +89,7 @@ export default function Home () {
                       </div>
                     </div>
                     <p className='font-bold text-green-600'>
-                      ${product.price.toLocaleString()}
+                      ${(product.price + serviceFee).toLocaleString()}
                     </p>
                   </div>
                 </CardBody>
