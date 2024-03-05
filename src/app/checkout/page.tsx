@@ -112,7 +112,7 @@ export default function Checkout () {
           product={product}
           description={'Foodllowers: ' + product.name + ' - ' + product.influencers.full_name}
           kitchenOpen={product?.kitchens.open}
-          kitchenAddress={product?.kitchen_address}
+          kitchenAddress={product?.kitchens.address}
         />
       </div>
     </main>

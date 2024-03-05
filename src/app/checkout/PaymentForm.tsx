@@ -88,7 +88,6 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
               kitchen_id: product.id_kitchen,
               user_address: addressSelect,
               kitchen_address: product.kitchens.address,
-              kitchen_logo: product.kitchens.logo,
               invoice_id: id,
               user_email: user.email,
               transaction_amount
