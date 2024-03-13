@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { Providers } from './Providers'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from '@vercel/analytics/react'
 import type { Metadata } from 'next'
 
 // Components
@@ -26,6 +27,7 @@ export default function RootLayout ({ children }: { children: ReactNode }) {
           <SideBarr />
           {children}
           <SpeedInsights />
+          <Analytics />
         </Providers>
       </body>
     </html>
