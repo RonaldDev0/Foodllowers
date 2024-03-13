@@ -14,7 +14,36 @@ import { EstimationTime } from './EstimationTime'
 const pricePerKm = 1000
 const minima = 3000
 const preparationTime = 20
-const serviceFee = 5000
+const serviceFee = 2000
+const influencer = 2000
+
+function calculateMercadoPagoComission (amount: number) {
+  const porcentajeComision = 0.0279
+  const IVA = 0.19
+  const costoFijo = 952.00
+
+  const comision = amount * porcentajeComision
+  const IVAComision = comision * IVA
+  const totalComision = comision + IVAComision + costoFijo
+
+  return Math.floor(totalComision + 155)
+}
+
+// function calculateMercadoPagoComission (amount: number) {
+//   const porcentajeComision = 0.0279
+//   const IVA = 0.19
+//   const costoFijo = 952.00
+//   const tasaICA = 0.0041
+//   const tasaRetencionFuente = 0.015
+
+//   const comision = amount * porcentajeComision
+//   const IVAComision = comision * IVA
+//   const retencionICA = amount * tasaICA
+//   const retencionFuente = amount * tasaRetencionFuente
+//   const totalComision = comision + IVAComision + costoFijo + retencionICA + retencionFuente
+
+//   return Math.floor(totalComision)
+// }
 
 export default function Checkout () {
   const query = useSearchParams().get('q')
@@ -68,7 +97,7 @@ export default function Checkout () {
 
   useEffect(() => {
     if (product) {
-      setTotal((product.price + serviceFee + shippingCost + tip))
+      setTotal((product.price + serviceFee + shippingCost + tip + influencer))
     }
   }, [product, tip, shippingCost])
 
@@ -93,7 +122,12 @@ export default function Checkout () {
         <AddressSelect setError={setError} />
         <ProductDetails product={product} />
         <EstimationTime time={estimationTime} />
-        <Tip setTip={setTip} amount={product.price} serviceFee={serviceFee} />
+        <Tip
+          setTip={setTip}
+          amount={product.price}
+          serviceFee={serviceFee}
+          influencer={influencer}
+        />
       </div>
       <div
         className='flex flex-col gap-5 top-5
@@ -105,6 +139,8 @@ export default function Checkout () {
           shippingCost={shippingCost}
           tip={tip}
           total={total}
+          influencer={influencer}
+          calculateMercadoPagoComission={calculateMercadoPagoComission}
         />
         <PaymentForm
           error={error}
@@ -113,6 +149,10 @@ export default function Checkout () {
           description={'Foodllowers: ' + product.name + ' - ' + product.influencers.full_name}
           kitchenOpen={product?.kitchens.open}
           kitchenAddress={product?.kitchens.address}
+          shippingCost={shippingCost}
+          tip={tip}
+          influencer={influencer}
+          calculateMercadoPagoComission={calculateMercadoPagoComission}
         />
       </div>
     </main>

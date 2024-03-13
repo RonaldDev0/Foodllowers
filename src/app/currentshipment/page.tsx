@@ -14,6 +14,10 @@ export default function CurrentShipment () {
   const { userId } = useUser()
 
   useEffect(() => {
+    if (!userId) {
+      return
+    }
+
     supabase
       .from('orders')
       .select('*')
@@ -31,7 +35,7 @@ export default function CurrentShipment () {
         { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${userId}` },
         ({ new: { order_state: orderState } }: any) => setActiveStep(orderState)
       ).subscribe()
-  }, [])
+  }, [userId])
 
   return (
     <div className='h-screen grid place-content-center'>

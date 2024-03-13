@@ -10,6 +10,9 @@ type props = {
 }
 
 export function CardData ({ steps, activeStep, product }: props) {
+  if (!product) {
+    return
+  }
   return (
     <Card>
       <CardHeader className='p-0'>

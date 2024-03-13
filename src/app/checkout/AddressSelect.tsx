@@ -102,7 +102,7 @@ export function AddressSelect ({ setError }: { setError: Function }) {
                   >
                     <div>
                       <p>{address.user}</p>
-                      <p>{address.complete}</p>
+                      <p>{address.formatted_address}</p>
                     </div>
                     <p>{address.numberPrefix + ' ' + address.number}</p>
                   </div>

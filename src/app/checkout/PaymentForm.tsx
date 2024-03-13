@@ -15,9 +15,13 @@ type props = {
   product: any
   kitchenOpen: boolean
   kitchenAddress: object
+  shippingCost: number
+  tip: number
+  influencer: number
+  calculateMercadoPagoComission: Function
 }
 
-export function PaymentForm ({ amount, description, error, product, kitchenOpen, kitchenAddress }: props) {
+export function PaymentForm ({ amount, description, error, product, kitchenOpen, kitchenAddress, shippingCost, tip, influencer, calculateMercadoPagoComission }: props) {
   const { supabase } = useSupabase()
   const { darkMode, addressSelect, userId, user } = useUser()
   const router = useRouter()
@@ -76,7 +80,10 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
       })
     })
       .then(res => res.json())
-      .then(({ id, status, transaction_amount }) => {
+      .then(({ id, status, fee_details, transaction_amount, external_resource_url }) => {
+        // if (external_resource_url) {
+        //   router.push(external_resource_url)
+        // }
         if (status === 'approved') {
           supabase
             .from('orders')
@@ -90,7 +97,17 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
               kitchen_address: product.kitchens.address,
               invoice_id: id,
               user_email: user.email,
-              transaction_amount
+              transaction_amount: {
+                mercadopago: Math.floor(fee_details[0].amount),
+                influencer,
+                kitchen: product.price,
+                delivery: {
+                  service: shippingCost,
+                  tip
+                },
+                earnings: transaction_amount - Math.floor(fee_details[0].amount) - product.price - shippingCost - tip - influencer,
+                total: transaction_amount
+              }
             }])
             .select('id')
             .then(({ data }) => data && router.push('/currentshipment'))
@@ -112,18 +129,23 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
             key={amount}
             onSubmit={onSubmit}
             locale='es-CO'
-            initialization={{ amount }}
+            initialization={{ amount: amount + calculateMercadoPagoComission(amount) }}
             customization={{
               visual: {
                 style: {
-                  theme: darkMode ? 'dark' : 'flat'
+                  theme: darkMode ? 'dark' : 'flat',
+                  customVariables: {
+                    baseColor: '#8a4af3',
+                    buttonTextColor: '#F8F0EA',
+                    formBackgroundColor: darkMode ? '#18181B' : '#FFFFFF'
+                  }
                 }
               },
               paymentMethods: {
                 mercadoPago: 'all',
                 // ticket: 'all',
-                bankTransfer: 'all',
-                creditCard: 'all',
+                // bankTransfer: 'all',
+                // creditCard: 'all',
                 debitCard: 'all'
               }
             }}

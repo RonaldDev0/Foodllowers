@@ -14,6 +14,9 @@ export type IProductCard = {
   state: boolean
 }
 
+const serviceFee = 2000
+const influencer = 2000
+
 export function ProductCard ({ product }: { product: IProductCard }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -47,7 +50,7 @@ export function ProductCard ({ product }: { product: IProductCard }) {
                 </p>
               </div>
               <p className='font-bold text-green-600'>
-                ${product.price.toLocaleString()}
+                ${(product.price + serviceFee + influencer).toLocaleString()}
               </p>
             </div>
           </CardBody>
