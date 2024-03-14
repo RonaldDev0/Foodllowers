@@ -25,6 +25,7 @@ export default function Home () {
       supabase
         .from('influencers')
         .select('id, full_name, qualification, preview, path, products(kitchens( address, open ))')
+        .neq('bank_account', null)
         .range(0, 10)
         .then((res: any) => {
           const influencers = res.data?.filter((item: any) => item.products[0].kitchens.address !== null)
@@ -35,10 +36,13 @@ export default function Home () {
     !productList && (
       supabase
         .from('products')
-        .select('id, preview, name, price, state, influencers( preview, full_name, path ), kitchens( address )')
+        .select('id, preview, name, price, state, influencers( preview, full_name, path, bank_account ), kitchens( address, bank_account )')
         .range(0, 10)
         .then(res => {
-          const products = res.data?.filter((item: any) => item.kitchens.address !== null)
+          const data: any = res.data?.filter((item: any) => item.kitchens.address !== null)
+          const data2 = data.filter((item: any) => item.kitchens.bank_account !== null)
+          const products = data2.filter((item: any) => item.influencers.bank_account !== null)
+
           setStore('productList', products)
         })
     )

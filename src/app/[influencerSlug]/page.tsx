@@ -14,8 +14,14 @@ export default function InfluencerPage ({ params: { influencerSlug } }: any) {
     supabase
       .from('influencers')
       .select('id, full_name, qualification, preview, description, products(id, price, name, description, preview, state, kitchens( address, open ))')
+      .neq('bank_account', null)
       .eq('path', '/' + influencerSlug)
-      .then(res => setInfluencer(res.data?.length && res.data[0]))
+      .then(res => {
+        if (res.error) {
+          return
+        }
+        setInfluencer(res.data[0])
+      })
   }, [influencerSlug])
 
   if (!influencer) {
