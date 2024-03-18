@@ -3,9 +3,12 @@ import { useSearchParams } from 'next/navigation'
 import { SearchBarr } from '@/components'
 import { useSupabase } from '../Providers'
 import { useEffect, useState } from 'react'
-import { Card, CardBody, Avatar, Button } from '@nextui-org/react'
+import { Card, CardBody, Avatar, Button, Chip } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+const serviceFee = 2000
+const influencer = 2000
 
 export default function SearchPage () {
   const { supabase } = useSupabase()
@@ -18,22 +21,21 @@ export default function SearchPage () {
   useEffect(() => {
     supabase
       .from('influencers')
-      .select('id, full_name, qualification, preview, path, description')
+      .select('id, full_name, avatar, path, description')
       .textSearch('full_name', query, { type: 'websearch' })
-      .order('qualification', { ascending: false })
       .then(res => setInfluencers(res.data))
 
     supabase
       .from('products')
-      .select('id, category, name, description, price, preview, influencers( preview, path, full_name )')
+      .select('id, category, name, price, preview, state, influencers( avatar, path, full_name )')
       .textSearch('name', query, { type: 'websearch' })
       .then(res => setProducts(res.data))
   }, [query])
 
   return (
-    <main className='h-screen flex flex-col items-center'>
+    <main className='flex flex-col items-center'>
       <SearchBarr message={false} />
-      <div className='flex flex-col gap-5'>
+      <div className='flex flex-col gap-5 mb-10'>
         {influencers?.map((item: any) => (
           <Link href={item.path} key={item.id}>
             <Card>
@@ -41,15 +43,12 @@ export default function SearchPage () {
                 <div className='grid grid-cols-3 gap-4 items-center'>
                   <Image
                     alt='img'
-                    src={item.preview}
+                    src={item.avatar}
                     width='250'
                     height='250'
                     className='w-[150px] h-[150px] [@media(max-width:800px)]:h-[120px] rounded-full row-span-2'
                   />
-                  <div className='pt-4 flex flex-col'>
-                    <h2>{item.full_name}</h2>
-                    <p>⭐{item.qualification}</p>
-                  </div>
+                  <p>{item.full_name}</p>
                   <Link href='#' className='pt-4'>
                     <Button
                       color={follow ? 'primary' : 'secondary'}
@@ -66,35 +65,41 @@ export default function SearchPage () {
             </Card>
           </Link>
         ))}
+      </div>
+      <div className='flex flex-wrap gap-5 justify-center max-w-7xl'>
         {products?.map((item: any) => (
           <Link href={`/checkout?q=${item.id}`} key={item.id}>
             <Card>
-              <CardBody className='p-0'>
-                <div className='[@media(min-width:800px)]:flex'>
-                  <Image
-                    alt='img'
-                    src={item.preview}
-                    width='250'
-                    height='250'
-                    className='w-[300px] h-[200px] [@media(max-width:800px)]:w-full'
-                  />
-                  <div className='p-4 [@media(max-width:800px)]:flex [@media(max-width:800px)]:justify-between'>
-                    <div>
-                      <h2>
-                        {item.name}
-                      </h2>
-                      <p className='opacity-60'>
-                        {item.description}
-                      </p>
-                      <p className='font-bold text-green-600'>
-                        ${item.price.toLocaleString()}
-                      </p>
-                    </div>
-                    <Link href={item.influencers.path} className='flex items-center'>
-                      <Avatar className='mt-5' src={item.influencers.preview} />
-                      <p className='opacity-60 mt-5 ml-2 hover:opacity-100 transition-all'>{item.influencers.full_name}</p>
+              <CardBody
+                className='p-0'
+              >
+                <Image
+                  src={item.preview}
+                  width='200'
+                  height='200'
+                  alt='preview'
+                  className='w-[350px] h-[200px]'
+                />
+                {!item?.state && (
+                  <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>
+                    Agotado
+                  </Chip>
+                )}
+                <div className='p-4 flex justify-between items-center'>
+                  <div className='flex gap-3 items-center'>
+                    <Link href={item.influencers.path}>
+                      <Avatar src={item.influencers.avatar} />
                     </Link>
+                    <div>
+                      <p className='text-xl'>
+                        {item.name}
+                      </p>
+                      <p className='opacity-60'>{item.influencers.full_name}</p>
+                    </div>
                   </div>
+                  <p className='font-bold text-green-600'>
+                    ${(item.price + serviceFee + influencer).toLocaleString()}
+                  </p>
                 </div>
               </CardBody>
             </Card>

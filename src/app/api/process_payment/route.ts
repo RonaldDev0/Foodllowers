@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { NextRequest, NextResponse } from 'next/server'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
-import { writeFile } from 'fs'
 
 export async function POST (req: NextRequest) {
   const body = await req.json()
@@ -15,11 +14,7 @@ export async function POST (req: NextRequest) {
   })
 
   const payment = new Payment(client)
-  const data = await payment.create({ body })
-  writeFile('/src/app/api/responses/mercadopagoResponse.json', JSON.stringify(data, null, 2), error => {
-    console.log(error)
-  })
-  const { id, status, transaction_amount, fee_details, transaction_details: { external_resource_url } }: any = data
+  const { id, status, transaction_amount, fee_details, transaction_details: { external_resource_url } }: any = await payment.create({ body })
 
   return NextResponse.json({ id, status, transaction_amount, fee_details, external_resource_url })
 }

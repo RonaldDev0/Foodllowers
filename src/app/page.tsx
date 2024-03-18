@@ -24,9 +24,8 @@ export default function Home () {
     !influencerList && (
       supabase
         .from('influencers')
-        .select('id, full_name, qualification, preview, path, products(kitchens( address, open ))')
+        .select('id, full_name, avatar, path, products(kitchens( address, open ))')
         .neq('bank_account', null)
-        .range(0, 10)
         .then((res: any) => {
           const influencers = res.data?.filter((item: any) => item.products[0].kitchens.address !== null)
           setStore('influencerList', influencers)
@@ -36,8 +35,7 @@ export default function Home () {
     !productList && (
       supabase
         .from('products')
-        .select('id, preview, name, price, state, influencers( preview, full_name, path, bank_account ), kitchens( address, bank_account )')
-        .range(0, 10)
+        .select('id, preview, name, price, state, influencers( avatar, full_name, path, bank_account ), kitchens( address, bank_account )')
         .then(res => {
           const data: any = res.data?.filter((item: any) => item.kitchens.address !== null)
           const data2 = data.filter((item: any) => item.kitchens.bank_account !== null)
@@ -49,18 +47,18 @@ export default function Home () {
   }, [])
 
   return (
-    <div className='flex flex-col w-full mb-16 items-center gap-12'>
+    <main className='flex flex-col w-full mb-16 items-center gap-12'>
       <SearchBarr message />
       <div className='flex flex-wrap gap-5 justify-center'>
         {
           influencerList?.map(item => (
             <Link href={item.path} key={item.id}>
-              <Avatar size='lg' className='w-20 h-20' src={item.preview} />
+              <Avatar size='lg' className='w-20 h-20' src={item.avatar} />
             </Link>
           ))
         }
       </div>
-      <div className='flex flex-wrap gap-5 justify-center'>
+      <div className='flex flex-wrap gap-5 justify-center max-w-7xl'>
         {
           productList?.map((product: any) => (
             <Link href={product?.state ? `/checkout?q=${product.id}` : '#'} key={product.id}>
@@ -84,7 +82,7 @@ export default function Home () {
                   <div className='p-4 flex justify-between items-center'>
                     <div className='flex gap-3 items-center'>
                       <Link href={product.influencers.path}>
-                        <Avatar src={product.influencers.preview} />
+                        <Avatar src={product.influencers.avatar} />
                       </Link>
                       <div>
                         <p className='text-xl'>
@@ -122,6 +120,6 @@ export default function Home () {
           )}
         </ModalContent>
       </Modal>
-    </div>
+    </main>
   )
 }

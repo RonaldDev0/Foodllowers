@@ -1,12 +1,10 @@
 import { create } from 'zustand'
 
-type IInfluencer = {
+export type IInfluencer = {
+  banner: string
+  avatar: string
   id: number
-  qualification: number
   full_name: string
-  document_number: string
-  gender: string
-  preview: string
   bank: string
   path: string
 }

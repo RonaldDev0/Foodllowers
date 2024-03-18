@@ -45,9 +45,9 @@ export function ProductCard ({ product }: { product: IProductCard }) {
                 <p className='text-xl'>
                   {product.name}
                 </p>
-                <p className='opacity-60'>
+                {/* <p className='opacity-60'>
                   {product.description}
-                </p>
+                </p> */}
               </div>
               <p className='font-bold text-green-600'>
                 ${(product.price + serviceFee + influencer).toLocaleString()}

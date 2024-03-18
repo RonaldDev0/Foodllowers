@@ -10,12 +10,11 @@ type Props = {
     category: string,
     preview: string,
     name: string,
-    description: string,
     price: number,
     state: boolean,
     influencers: {
+      avatar: string
       path: string
-      preview: string | undefined
       full_name: string
     }
   }
@@ -31,24 +30,24 @@ export function ProductDetails ({ product }: Props) {
             width='200'
             height='200'
             alt='preview'
-            className='w-[240px] aspect-video [@media(max-width:800px)]:w-full'
+            className='w-72 aspect-video [@media(max-width:800px)]:w-full'
           />
           {!product?.state && (
             <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>
               Agotado
             </Chip>
           )}
-          <div className='flex items-center p-3 gap-4'>
-            <Link href={product.influencers?.path}>
-              <Avatar src={product.influencers?.preview} />
-            </Link>
-            <div className='flex flex-col'>
-              <p className='font-bold'>
-                {product.name}
-              </p>
-              <p>
-                {product.description}
-              </p>
+          <div className='flex flex-col p-4 gap-4'>
+            <p className='font-bold text-lg'>
+              {product.name}
+            </p>
+            <div className='flex gap-4 items-center'>
+              <Link href={product.influencers?.path}>
+                <Avatar
+                  src={product.influencers?.avatar}
+                  className='w-14 h-14'
+                />
+              </Link>
               <p className='opacity-60'>{product.influencers.full_name}</p>
             </div>
           </div>

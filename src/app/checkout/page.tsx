@@ -29,22 +29,6 @@ function calculateMercadoPagoComission (amount: number) {
   return Math.floor(totalComision + 155)
 }
 
-// function calculateMercadoPagoComission (amount: number) {
-//   const porcentajeComision = 0.0279
-//   const IVA = 0.19
-//   const costoFijo = 952.00
-//   const tasaICA = 0.0041
-//   const tasaRetencionFuente = 0.015
-
-//   const comision = amount * porcentajeComision
-//   const IVAComision = comision * IVA
-//   const retencionICA = amount * tasaICA
-//   const retencionFuente = amount * tasaRetencionFuente
-//   const totalComision = comision + IVAComision + costoFijo + retencionICA + retencionFuente
-
-//   return Math.floor(totalComision)
-// }
-
 export default function Checkout () {
   const query = useSearchParams().get('q')
   const { supabase } = useSupabase()
@@ -65,7 +49,7 @@ export default function Checkout () {
 
     supabase
       .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, preview, path ), kitchens( open, address )')
+      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, avatar, path ), kitchens( open, address )')
       .eq('id', query)
       .then((res: any) => {
         if (res.data) {
