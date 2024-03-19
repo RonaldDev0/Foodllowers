@@ -26,14 +26,11 @@ export function CardData ({ steps, activeStep, product }: props) {
           />
           <div className='flex items-center p-3 gap-4'>
             <Link href={product.influencers?.path}>
-              <Avatar src={product.influencers?.preview} />
+              <Avatar src={product.influencers?.avatar} />
             </Link>
             <div className='flex flex-col'>
               <p className='font-bold'>
                 {product.name}
-              </p>
-              <p>
-                {product.description}
               </p>
               <p className='opacity-60'>{product.influencers.full_name}</p>
             </div>
