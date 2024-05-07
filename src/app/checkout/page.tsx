@@ -49,7 +49,7 @@ export default function Checkout () {
 
     supabase
       .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( full_name, avatar, path ), kitchens( open, address )')
+      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( id, full_name, avatar, path ), kitchens( open, address )')
       .eq('id', query)
       .then((res: any) => {
         if (res.data) {
