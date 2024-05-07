@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/store'
 import { Card, CardBody, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
-import { useSupabase } from '../Providers'
+import { useSupabase } from '@/app/Providers'
 import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
 initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY!)
 
@@ -126,7 +126,7 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
       <Card>
         <CardBody className='p-0 w-96'>
           <Payment
-            key={amount}
+            key={product.id}
             onSubmit={onSubmit}
             locale='es-CO'
             initialization={{ amount: amount + calculateMercadoPagoComission(amount) }}
@@ -137,15 +137,12 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
                   customVariables: {
                     baseColor: '#8a4af3',
                     buttonTextColor: '#F8F0EA',
-                    formBackgroundColor: darkMode ? '#18181B' : '#FFFFFF'
+                    formBackgroundColor: darkMode ? '#18181B' : ''
                   }
                 }
               },
               paymentMethods: {
                 mercadoPago: 'all',
-                // ticket: 'all',
-                // bankTransfer: 'all',
-                // creditCard: 'all',
                 debitCard: 'all'
               }
             }}
