@@ -34,7 +34,7 @@ type Shipment = {
     kitchenId: string
     productId: string
     influencers: {
-      preview: string
+      avatar: string
       full_name: string
     }
     productName: string
