@@ -25,7 +25,7 @@ export default function CurrentShipment () {
     })
       .then((res) => res.json())
       .then(({ id, status }) => {
-        console.log({ status })
+        // console.log({ status })
         if (status === 'approved') {
           supabase
             .from('orders')
