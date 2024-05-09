@@ -27,19 +27,13 @@ export default function CurrentShipment () {
       .then(({ id, status }) => {
         console.log({ status })
         if (status === 'approved') {
-          // TODO: check if payment is approved
           supabase
             .from('orders')
             .update({ payment_status: status })
             .eq('user_id', userId)
             .eq('invoice_id', id)
             .select('id')
-            .then(({ error }) => {
-              if (error) {
-                console.log('error', error)
-              }
-              router.push('/currentshipment')
-            })
+            .then(() => router.push('/currentshipment'))
           return
         }
         if (status === 'rejected' || status === 'cancelled') {
