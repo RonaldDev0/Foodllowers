@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 'use client'
 import { useEffect } from 'react'
 import { useSupabase } from '../Providers'
@@ -14,16 +15,16 @@ export default function Shipments () {
       supabase
         .from('shipments')
         .select('id, product')
+        .eq('user_id', userId)
+        .eq('payment_status', 'approved')
         .then(({ data, error }) => {
           if (error) {
-            console.log(error)
             return
           }
           setStore('shipmentList', data)
         })
     }
   }, [userId])
-
 
   return (
     <div className='w-full h-screen flex flex-col top-12 justify-around items-center'>

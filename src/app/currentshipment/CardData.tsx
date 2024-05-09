@@ -4,12 +4,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 type props = {
-  steps: string[]
   activeStep: string
   product: any
 }
 
-export function CardData ({ steps, activeStep, product }: props) {
+const steps = ['buscando cocina...', 'cocinando...', 'buscando delivery...', 'recogiendo...', 'entregando...', 'entregado']
+
+export function CardData ({ activeStep, product }: props) {
   if (!product) {
     return
   }

@@ -52,7 +52,7 @@ export function Tip ({ amount, setTip, serviceFee, influencer }: IProps) {
             ]}
             defaultValue={0.05}
             className='max-w-md'
-            onChange={handleChangeTip}
+            onChangeEnd={handleChangeTip}
           />
         </div>
       </CardBody>

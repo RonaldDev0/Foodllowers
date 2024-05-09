@@ -21,13 +21,43 @@ type props = {
   calculateMercadoPagoComission: Function
 }
 
-export function PaymentForm ({ amount, description, error, product, kitchenOpen, kitchenAddress, shippingCost, tip, influencer, calculateMercadoPagoComission }: props) {
+export function PaymentForm ({
+  amount,
+  description,
+  error,
+  product,
+  kitchenOpen,
+  kitchenAddress,
+  shippingCost,
+  tip,
+  influencer,
+  calculateMercadoPagoComission
+}: props) {
   const { supabase } = useSupabase()
   const { darkMode, addressSelect, userId, user } = useUser()
   const router = useRouter()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const [alert, setAlert] = useState<string | null>(null)
+
+  const custormization: any = {
+    visual: {
+      style: {
+        theme: darkMode ? 'dark' : 'flat',
+        customVariables: {
+          baseColor: '#8a4af3',
+          buttonTextColor: '#F8F0EA',
+          formBackgroundColor: darkMode ? '#18181B' : '',
+          inputBackgroundColor: darkMode ? '#27272A' : ''
+        }
+      }
+    },
+    paymentMethods: {
+      mercadoPago: 'all',
+      debitCard: 'all',
+      bankTransfer: 'all'
+    }
+  }
 
   const onSubmit = async ({ formData }: any) => {
     const order = await supabase
@@ -81,9 +111,42 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
     })
       .then(res => res.json())
       .then(({ id, status, fee_details, transaction_amount, external_resource_url }) => {
-        // if (external_resource_url) {
-        //   router.push(external_resource_url)
-        // }
+        if (external_resource_url) {
+          supabase
+            .from('orders')
+            .insert([{
+              user_id: userId,
+              user_name: user.name,
+              product,
+              order_state: 'buscando cocina...',
+              kitchen_id: product.id_kitchen,
+              influencer_id: product.influencers.id,
+              user_address: addressSelect,
+              kitchen_address: product.kitchens.address,
+              invoice_id: id,
+              user_email: user.email,
+              payment_status: 'pending',
+              transaction_amount: {
+                mercadopago: calculateMercadoPagoComission(amount),
+                influencer,
+                kitchen: product.price,
+                delivery: {
+                  service: shippingCost,
+                  tip
+                },
+                earnings: transaction_amount - calculateMercadoPagoComission(amount) - product.price - shippingCost - tip - influencer,
+                total: transaction_amount
+              }
+            }])
+            .select('id')
+            .then(({ error }) => {
+              if (error) {
+                return
+              }
+              router.push(external_resource_url)
+            })
+          return
+        }
         if (status === 'approved') {
           supabase
             .from('orders')
@@ -98,6 +161,7 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
               kitchen_address: product.kitchens.address,
               invoice_id: id,
               user_email: user.email,
+              payment_status: 'approved',
               transaction_amount: {
                 mercadopago: Math.floor(fee_details[0].amount),
                 influencer,
@@ -111,7 +175,12 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
               }
             }])
             .select('id')
-            .then(({ data }) => data && router.push('/currentshipment'))
+            .then(({ error }) => {
+              if (error) {
+                return
+              }
+              router.push('/currentshipment')
+            })
         }
       })
   }
@@ -131,22 +200,7 @@ export function PaymentForm ({ amount, description, error, product, kitchenOpen,
             onSubmit={onSubmit}
             locale='es-CO'
             initialization={{ amount: amount + calculateMercadoPagoComission(amount) }}
-            customization={{
-              visual: {
-                style: {
-                  theme: darkMode ? 'dark' : 'flat',
-                  customVariables: {
-                    baseColor: '#8a4af3',
-                    buttonTextColor: '#F8F0EA',
-                    formBackgroundColor: darkMode ? '#18181B' : ''
-                  }
-                }
-              },
-              paymentMethods: {
-                mercadoPago: 'all',
-                debitCard: 'all'
-              }
-            }}
+            customization={custormization}
           />
         </CardBody>
       </Card>
