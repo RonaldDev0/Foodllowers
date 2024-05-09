@@ -6,7 +6,7 @@ export async function POST (req: NextRequest) {
   const body = await req.json()
 
   const client = new MercadoPagoConfig({
-    accessToken: process.env.NEXT_PUBLIC_MP_ACCESS_TOKEN!,
+    accessToken: process.env.MP_ACCESS_TOKEN!,
     options: {
       timeout: 5000,
       idempotencyKey: crypto.randomUUID()

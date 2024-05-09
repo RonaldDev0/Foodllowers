@@ -19,7 +19,10 @@ export default function CurrentShipment () {
       return
     }
 
-    fetch(`https://api.mercadopago.com/v1/payments/${paymentId}?access_token=${process.env.NEXT_PUBLIC_MP_ACCESS_TOKEN}`)
+    fetch('api/search_payment', {
+      method: 'POST',
+      body: JSON.stringify({ paymentId })
+    })
       .then((res) => res.json())
       .then(({ id, status }) => {
         console.log({ status })
