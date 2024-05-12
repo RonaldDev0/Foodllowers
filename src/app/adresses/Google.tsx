@@ -24,7 +24,7 @@ const bounds = {
 }
 
 export function Google ({ addressError, setAddress, setAddressError, address }: IProps) {
-  const [input, setInput] = useState<string>(address ? address.formattedAddress : '')
+  const [input, setInput] = useState<string>(address ? address.formatted_address : '')
   const [markerPosition, setMarkerPosition] = useState<any>(address ? address.geometry.location : null)
   const [mapCenter, setMapCenter] = useState<any>(address ? address.geometry.location : position)
   const [predictionss, setPredictions] = useState<any>([])

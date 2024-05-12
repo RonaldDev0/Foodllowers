@@ -1,9 +1,9 @@
 'use client'
-import { useUser } from '@/store'
-import { useSupabase } from '../Providers'
+import { useUser, type IAddress } from '@/store'
+import { useSupabase } from '@/app/Providers'
 import { Button, Card, CardBody, Dropdown, DropdownTrigger, DropdownMenu, useDisclosure, DropdownItem } from '@nextui-org/react'
-import { AddressForm } from './AddressForm'
-import type { IAddress } from './page'
+import { AddressForm } from '../AddressForm'
+import { Settings } from 'lucide-react'
 
 export function CardAddress ({ address }: { address: IAddress }) {
   const { setStore, addressList } = useUser()
@@ -15,12 +15,13 @@ export function CardAddress ({ address }: { address: IAddress }) {
       .from('addresses')
       .delete()
       .eq('id', address.id)
-      .then(({ error }) => !error && (
-        setStore('addressList',
-          addressList
-            ?.filter((item: any) => item.id !== address.id)
-        )
-      ))
+      .then(({ error }) => {
+        if (error) {
+          return
+        }
+        const newAddressList = addressList?.filter(item => item.id !== address.id)
+        setStore('addressList', newAddressList)
+      })
   }
 
   return (
@@ -45,7 +46,7 @@ export function CardAddress ({ address }: { address: IAddress }) {
               <Dropdown>
                 <DropdownTrigger>
                   <Button color='secondary'>
-                    Opciones
+                    <Settings size={20} />
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label='Static Actions'>

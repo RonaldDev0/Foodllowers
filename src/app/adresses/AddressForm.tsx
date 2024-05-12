@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 'use client'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
 import { useState, useEffect } from 'react'
@@ -105,21 +106,24 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
         })
         .eq('id', value.id)
         .select()
-        .then(({ data }) => (
-          setStore(
-            'addressList',
-            (data && addressList) && [
-              ...addressList
-                .filter(({ id }) => id !== value.id),
-              ...data
-            ]
+        .then(({ data, error }) => {
+          if (error) {
+            console.log(error)
+            return
+          }
+
+          (
+            setStore(
+              'addressList',
+              addressList && [
+                ...addressList
+                  .filter(({ id }) => id !== value.id),
+                ...data
+              ]
+            )
           )
-        ))
-        .then(() => {
-          cleanUser()
-          setAddress(null)
-          onClose()
         })
+        .then(() => onClose())
       return
     }
 
@@ -144,8 +148,8 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
 
   useEffect(() => {
     if (value) {
-      const { user, number, numberPrefix, aditionalInfo, formatted_address: formattedAddress, geometry } = value
-      setAddress({ formattedAddress, geometry })
+      const { user, number, numberPrefix, aditionalInfo, formatted_address, geometry } = value
+      setAddress({ formatted_address, geometry })
       setUser({ user, number, numberPrefix, aditionalInfo })
     }
   }, [value])

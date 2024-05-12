@@ -1,22 +1,28 @@
 import { create } from 'zustand'
 
-type IAddress = {
-  [key: string]: any
-  id: string,
-  user: string,
-  number: string,
-  numberPrefix: string,
-  country: string,
-  city: string,
-  localidad: string,
+export type IAddress = {
+  id: string
+  user: string
+  number: string
+  numberPrefix: string
+  country: string
+  city: string
+  localidad: string
   address: {
     streetType: string
-    value1: string,
-    value2: string,
+    value1: string
+    value2: string
     value3?: string
   },
-  aditionalInfo?: string,
+  aditionalInfo?: string
   complete: string
+  formatted_address: string
+  geometry: {
+    location: {
+      lat: number
+      lng: number
+    }
+  }
 }
 
 type Card = {
