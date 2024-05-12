@@ -1,19 +1,20 @@
+/* eslint-disable camelcase */
 'use client'
 import { Button, Divider } from '@nextui-org/react'
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { useContent } from '@/store'
 
-import type { IInfluencer } from '@/store'
-
-export function Banner ({ influencer }: { influencer: IInfluencer }) {
+export function Banner () {
+  const { currentInfluencer: { banner, avatar, full_name } } = useContent()
   const [follow, setFollow] = useState<boolean>(false)
 
   return (
     <div className='w-[1000px] [@media(max-width:800px)]:w-full mt-5 [@media(max-width:800px)]:m-0'>
       <Image
-        src={influencer.banner}
+        src={banner}
         width='400'
         height='200'
         alt='banner image'
@@ -28,13 +29,13 @@ export function Banner ({ influencer }: { influencer: IInfluencer }) {
       <div className='flex gap-6 items-center mt-5 ml-4'>
         <Image
           alt='img'
-          src={influencer.avatar}
+          src={avatar}
           width='250'
           height='250'
           className='w-44 [@media(max-width:800px)]:w-32 rounded-full row-span-2'
         />
         <div className='flex flex-col gap-8'>
-          <p className='font-bold text-xl'>{influencer.full_name}</p>
+          <p className='font-bold text-xl'>{full_name}</p>
           <Button
             color={follow ? 'primary' : 'secondary'}
             onPress={() => setFollow(!follow)}

@@ -12,6 +12,8 @@ export type IInfluencer = {
 type State = {
   influencerList: IInfluencer[] | null
   productList: any
+  currentInfluencer: any
+  currentProduct: any
 }
 
 type Actions = {
@@ -21,5 +23,7 @@ type Actions = {
 export const useContent = create<State & Actions>(set => ({
   influencerList: null,
   productList: null,
+  currentInfluencer: null,
+  currentProduct: null,
   setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value }))
 }))
