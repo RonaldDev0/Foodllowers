@@ -226,7 +226,16 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={() => handleSubmit(onClose)}>
+                <Button
+                  color='primary'
+                  onPress={() => {
+                    try {
+                      handleSubmit(onClose)
+                    } catch (e) {
+                      console.log(e)
+                    }
+                  }}
+                >
                   Guardar
                 </Button>
               </ModalFooter>

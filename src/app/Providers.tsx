@@ -1,11 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 import { NextUIProvider } from '@nextui-org/react'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/store'
-import { useDecrypt } from '@/hooks'
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 type Database = {
@@ -37,21 +35,6 @@ export function Providers ({ children }: { children: ReactNode }) {
         if (session) {
           setStore('user', session.user.user_metadata)
           setStore('userId', session.user.id)
-          supabase
-            .from('addresses')
-            .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
-            .then(({ data }: any) => {
-              if (data.length > 0) {
-                useDecrypt({
-                  key: session.user.id,
-                  data,
-                  ignore: ['id']
-                }).then(response => {
-                  setStore('addressList', response)
-                  setStore('addressSelect', response[0])
-                })
-              }
-            })
         }
       })
   }, [])
