@@ -47,7 +47,6 @@ export function Providers ({ children }: { children: ReactNode }) {
                   data,
                   ignore: ['id']
                 }).then(response => {
-                  console.log(response)
                   setStore('addressList', response)
                   setStore('addressSelect', response[0])
                 })
