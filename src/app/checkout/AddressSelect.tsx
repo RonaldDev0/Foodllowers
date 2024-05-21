@@ -16,14 +16,7 @@ export function AddressSelect ({ setError }: { setError: Function }) {
   useEffect(() => {
     if (addressList) {
       setStore('addressSelect', addressList[0])
-      return
     }
-
-    if (!addressList || !addressSelect) {
-      return
-    }
-
-    setError(false)
   }, [])
 
   useEffect(() => {

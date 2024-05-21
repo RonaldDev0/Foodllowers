@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 import { useSearchParams } from 'next/navigation'
 import { useSupabase } from '../Providers'
@@ -10,6 +11,7 @@ import { Tip } from './Tip'
 import { Summary } from './Summary'
 import { Alert } from '@/components/Alert'
 import { EstimationTime } from './EstimationTime'
+import { useDecrypt } from '@/hooks'
 
 const pricePerKm = 1000
 const minima = 3000
@@ -32,7 +34,7 @@ function calculateMercadoPagoComission (amount: number) {
 export default function Checkout () {
   const query = useSearchParams().get('q')
   const { supabase } = useSupabase()
-  const { addressSelect } = useUser()
+  const { addressSelect, userId, setStore } = useUser()
 
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
@@ -41,6 +43,31 @@ export default function Checkout () {
   const [total, setTotal] = useState<any>(null)
 
   const [error, setError] = useState<any>(false)
+
+  useEffect(() => {
+    if (!userId) return
+
+    try {
+      supabase
+        .from('addresses')
+        .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
+        .then(({ data, error }) => {
+          if (error) {
+            return
+          }
+          useDecrypt({
+            key: userId,
+            data,
+            ignore: ['id']
+          }).then(res => {
+            setStore('addressList', res)
+            setStore('addressSelect', res[0])
+          })
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  }, [userId])
 
   useEffect(() => {
     if (!addressSelect) {
