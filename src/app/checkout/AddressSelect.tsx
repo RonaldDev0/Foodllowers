@@ -2,11 +2,9 @@
 import { useUser } from '@/store'
 import { Card, CardBody, CardHeader, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 import { useEffect } from 'react'
-import { useSupabase } from '../Providers'
 import Link from 'next/link'
 
 export function AddressSelect ({ setError }: { setError: Function }) {
-  const { supabase } = useSupabase()
   const { addressList, addressSelect, setStore } = useUser()
   const { onOpen, isOpen, onOpenChange } = useDisclosure()
 
@@ -20,19 +18,6 @@ export function AddressSelect ({ setError }: { setError: Function }) {
       setStore('addressSelect', addressList[0])
       return
     }
-
-    supabase
-      .from('addresses')
-      .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
-      .then(({ data }: any) => {
-        if (data.length > 0) {
-          setStore('addressSelect', data[0])
-          setStore('addressList', data)
-          return
-        }
-
-        setError({ message: 'Address invalid' })
-      })
 
     if (!addressList || !addressSelect) {
       return
