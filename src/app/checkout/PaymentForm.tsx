@@ -53,9 +53,9 @@ export function PaymentForm ({
       }
     },
     paymentMethods: {
-      mercadoPago: 'all',
-      debitCard: 'all',
-      bankTransfer: 'all'
+      // mercadoPago: 'all',
+      debitCard: 'all'
+      // bankTransfer: 'all'
     }
   }
 
