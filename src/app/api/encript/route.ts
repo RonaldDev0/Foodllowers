@@ -1,36 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { AES } from 'crypto-js'
 
-export async function POST(req: NextRequest) {
-  const { key, data, ignore } = await req.json()
+export async function POST (req: NextRequest) {
+  try {
+    const { key, data, ignore } = await req.json()
 
-  const encriptKey = process.env.ENCRIPT_KEY!.concat(key)
+    const encryptKey = process.env.ENCRIPT_KEY!.concat(key)
 
-  if (!key || !data) {
-    return NextResponse.json({ error: 'Invalid request' })
-  }
+    function encryptedObj (data: { [key: string]: any }) {
+      const encryptedObj: any = {}
 
-  if (typeof data === 'string') {
-    return NextResponse.json(
-      AES.encrypt(JSON.stringify(data), encriptKey)
-        .toString()
-    )
-  }
-
-  if (typeof data === 'object') {
-    const encryptedObj: any = {}
-
-    for (const key in data) {
-      if (!ignore.includes(key)) {
-        encryptedObj[key] = AES.encrypt(
-          JSON.stringify(data[key]),
-          encriptKey
-        ).toString()
-      } else {
-        encryptedObj[key] = data[key]
+      for (const key in data) {
+        if (!ignore.includes(key)) {
+          encryptedObj[key] = AES.encrypt(
+            JSON.stringify(data[key]),
+            encryptKey
+          ).toString()
+        } else {
+          encryptedObj[key] = data[key]
+        }
       }
+
+      return encryptedObj
     }
 
-    return NextResponse.json(encryptedObj)
+    if (!key || !data) {
+      return NextResponse.json({ error: 'Invalid request' })
+    }
+
+    if (typeof data === 'string') {
+      return NextResponse.json(
+        AES.encrypt(JSON.stringify(data), encryptKey)
+          .toString()
+      )
+    }
+
+    if (Array.isArray(data)) {
+      const response = await Promise.all(
+        data.map((item) => encryptedObj(item))
+      )
+      return NextResponse.json(response)
+    }
+
+    if (typeof data === 'object') {
+      const response = await encryptedObj(data)
+      return NextResponse.json(response)
+    }
+  } catch (e) {
+    return NextResponse.json({ error: e })
   }
 }

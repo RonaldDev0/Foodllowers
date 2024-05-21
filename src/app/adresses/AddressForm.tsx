@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable camelcase */
 'use client'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
@@ -7,6 +8,7 @@ import { z } from 'zod'
 import { useUser } from '@/store'
 import { Google } from './Google'
 import { Info } from 'lucide-react'
+import { useEncrypt } from '@/hooks'
 
 type IUser = {
   [key: string]: any
@@ -73,7 +75,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     }))
   }
 
-  const handleSubmit = (onClose: any) => {
+  const handleSubmit = async (onClose: any) => {
     const result = userSchema.safeParse(user)
 
     if (!result.success) {
@@ -98,12 +100,17 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     })
 
     if (isEdit && value) {
-      supabase
-        .from('addresses')
-        .update({
+      const encrypted = await useEncrypt({
+        key: userId,
+        data: {
           ...user,
           ...address
-        })
+        }
+      })
+
+      supabase
+        .from('addresses')
+        .update(encrypted)
         .eq('id', value.id)
         .select()
         .then(({ data, error }) => {
@@ -112,33 +119,39 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
             return
           }
 
-          (
-            setStore(
-              'addressList',
-              addressList && [
-                ...addressList
-                  .filter(({ id }) => id !== value.id),
-                ...data
-              ]
-            )
+          setStore(
+            'addressList',
+            addressList && [
+              ...addressList
+                .filter(({ id }) => id !== value.id),
+              { ...user, ...address, user_id: userId }
+            ]
           )
         })
         .then(() => onClose())
       return
     }
 
-    supabase
-      .from('addresses')
-      .insert([{
+    const encrypted = await useEncrypt({
+      key: userId,
+      data: [{
         ...user,
         ...address,
         user_id: userId
-      }])
-      .select()
-      .then(({ data }) => setStore(
-        'addressList',
-        (data && addressList) && [...addressList, ...data]
-      ))
+      }]
+    })
+
+    supabase
+      .from('addresses')
+      .insert(encrypted)
+      .select('id')
+      .then(({ data }) => {
+        if (!data || data.length === 0) return
+        setStore(
+          'addressList',
+          (data && addressList) && [...addressList, { id: data[0].id, user_id: userId, ...user, ...address }]
+        )
+      })
       .then(() => {
         cleanUser()
         setAddress(null)
