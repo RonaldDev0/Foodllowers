@@ -25,7 +25,6 @@ export default function CurrentShipment () {
     })
       .then((res) => res.json())
       .then(({ id, status }) => {
-        // console.log({ status })
         if (status === 'approved') {
           supabase
             .from('orders')
@@ -68,9 +67,15 @@ export default function CurrentShipment () {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${userId}` },
-        ({ new: { order_state: orderState, payment_status: paymentStatus } }: any) => {
+        (payload: any) => {
+          const { new: { order_state: orderState, payment_status: paymentStatus }, eventType } = payload
           if (paymentStatus === 'approved') {
             setActiveStep(orderState)
+            return
+          }
+          if (eventType === 'DELETE') {
+            setActiveStep(null)
+            setProduct(null)
           }
         }
       ).subscribe()
@@ -79,7 +84,10 @@ export default function CurrentShipment () {
   return (
     <div className='h-screen grid place-content-center'>
       {activeStep
-        ? <CardData activeStep={activeStep} product={product} />
+        ? <CardData
+            activeStep={activeStep}
+            product={product}
+          />
         : <EmptyCard />}
     </div>
   )

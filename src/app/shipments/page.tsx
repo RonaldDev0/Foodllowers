@@ -26,7 +26,7 @@ export default function Shipments () {
   }, [userId])
 
   return (
-    <div className='w-full h-screen flex flex-col top-12 justify-around items-center'>
+    <div className='w-full flex flex-col top-12 justify-around items-center'>
       <div className='flex flex-col gap-4'>
         {shipmentList?.map((shipment) => (
           <ShipmentCard
