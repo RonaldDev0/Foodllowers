@@ -29,14 +29,20 @@ const SunIcon = (props: any) => (
 )
 
 export function SideBarr () {
-  const [open, setOpen] = useState<boolean>(true)
+  const [open, setOpen] = useState<boolean>(JSON.parse(localStorage.getItem('sidebarOpen') || 'true'))
   const { user, darkMode, setStore } = useUser()
 
-  useEffect(() => (
+  useEffect(() => {
+    localStorage.setItem('sidebarOpen', JSON.stringify(open))
+  }, [open])
+
+  useEffect(() => {
     !darkMode
       ? document.documentElement.classList.remove('dark')
       : document.documentElement.classList.add('dark')
-  ), [darkMode])
+
+    localStorage.setItem('darkMode', JSON.stringify(darkMode))
+  }, [darkMode])
 
   if (!user) {
     return null

@@ -68,7 +68,7 @@ type Actions = {
 }
 
 export const useUser = create<State & Actions>(set => ({
-  darkMode: true,
+  darkMode: JSON.parse(localStorage.getItem('darkMode') || 'true'),
   user: null,
   userId: null,
   phone: null,
