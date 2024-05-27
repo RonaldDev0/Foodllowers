@@ -31,7 +31,7 @@ type Card = {
   expiration: string
 }
 
-type Shipment = {
+export type IShipment = {
   id: string
   user_id: string
   product: {
@@ -59,7 +59,7 @@ type State = {
   addressList: IAddress[]| null,
   cardSelect: any,
   cardList: Card[],
-  shipmentList: Shipment[]| null,
+  shipmentList: IShipment[]| null,
   darkMode: boolean
 }
 
