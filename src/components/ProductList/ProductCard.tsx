@@ -2,15 +2,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
+import { useContent } from '@/store'
 
 const serviceFee = 2000
 const influencer = 2000
 
 export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => void }) {
+  const { setStore } = useContent()
+
   return (
     <Link
       href={product.state ? `/checkout?q=${product.id}` : ''}
       key={product.id}
+      onClick={() => setStore('currentProduct', product)}
     >
       <Card>
         <CardBody

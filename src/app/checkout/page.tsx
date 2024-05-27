@@ -2,7 +2,7 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
 import { useSupabase } from '../Providers'
-import { useUser } from '@/store'
+import { useUser, useContent } from '@/store'
 import { useState, useEffect } from 'react'
 import { AddressSelect } from './AddressSelect'
 import { ProductDetails } from './ProductDetails'
@@ -34,7 +34,8 @@ function calculateMercadoPagoComission (amount: number) {
 export default function Checkout () {
   const query = useSearchParams().get('q')
   const { supabase } = useSupabase()
-  const { addressSelect, userId, setStore } = useUser()
+  const { addressSelect, addressList, userId, setStore } = useUser()
+  const { currentProduct } = useContent()
 
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
@@ -45,7 +46,7 @@ export default function Checkout () {
   const [error, setError] = useState<any>(false)
 
   useEffect(() => {
-    if (!userId) return
+    if (!userId || addressList) return
 
     try {
       supabase
@@ -70,7 +71,30 @@ export default function Checkout () {
   }, [userId])
 
   useEffect(() => {
-    if (!addressSelect) {
+    if (!addressSelect) return
+
+    if (currentProduct) {
+      setProduct(currentProduct)
+
+      fetch('/api/maps_distance', {
+        cache: 'no-cache',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          origin: currentProduct.kitchens.address.geometry.location,
+          destination: addressSelect.geometry.location
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          const { distance: { text: distance }, duration: { text: duration } } = data.rows[0].elements[0]
+
+          const convertion = parseFloat(distance) * pricePerKm
+          const operation = convertion > minima ? convertion : minima
+          setShippingCost(operation)
+
+          setEstimationTime(parseFloat(duration) + preparationTime)
+        })
       return
     }
 
