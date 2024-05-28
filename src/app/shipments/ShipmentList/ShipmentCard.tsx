@@ -24,8 +24,8 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
               <Avatar src={avatar} />
               <p className='opacity-50'>{full_name}</p>
             </div>
-            <p className='text-green-600'>
-              {price.toLocaleString()}
+            <p className='opacity-50'>
+              {price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' })}
             </p>
           </div>
         </div>

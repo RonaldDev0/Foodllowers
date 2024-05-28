@@ -9,6 +9,7 @@ import { useUser } from '@/store'
 import { Google } from './Google'
 import { Info } from 'lucide-react'
 import { useEncrypt } from '@/hooks'
+import { indexedDB } from '@/indexedDB'
 
 type IUser = {
   [key: string]: any
@@ -112,21 +113,19 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
         .from('addresses')
         .update(encrypted)
         .eq('id', value.id)
-        .select()
+        .select('*')
         .then(({ data, error }) => {
-          if (error) {
-            console.log(error)
-            return
-          }
+          if (error) return
 
           setStore(
             'addressList',
             addressList && [
               ...addressList
                 .filter(({ id }) => id !== value.id),
-              { ...user, ...address, user_id: userId }
+              { id: data[0].id, user_id: userId, ...user, ...address }
             ]
           )
+          indexedDB.addresses.update(data[0].id, { ...data[0] })
         })
         .then(() => onClose())
       return
@@ -144,13 +143,16 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
     supabase
       .from('addresses')
       .insert(encrypted)
-      .select('id')
-      .then(({ data }) => {
-        if (!data || data.length === 0) return
+      .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
+      .then(({ data, error }) => {
+        if (error) return
+
         setStore(
           'addressList',
           (data && addressList) && [...addressList, { id: data[0].id, user_id: userId, ...user, ...address }]
         )
+
+        indexedDB.addresses.add(data[0])
       })
       .then(() => {
         cleanUser()
@@ -172,7 +174,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       {
         !isEdit && (
           <Button
-            color='primary'
+            color='secondary'
             onPress={onOpen}
           >
             Agregar direccion

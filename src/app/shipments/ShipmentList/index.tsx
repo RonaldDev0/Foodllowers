@@ -21,7 +21,7 @@ export default function ShipmentList () {
         if (error) return
         setStore('shipmentList', data)
         data.map(item => (
-          indexedDB.shipmentList.add(item)
+          indexedDB.shipmentList.add(item as any)
         ))
       })
   }
