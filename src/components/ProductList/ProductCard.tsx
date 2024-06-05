@@ -50,8 +50,16 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
                 </p>
               </div>
             </div>
-            <p className='font-bold text-green-600'>
-              ${(product.price + serviceFee + influencer).toLocaleString()}
+            <p className='opacity-80'>
+              {
+                (product.price + serviceFee + influencer).toLocaleString('es-Es', {
+                  style: 'currency',
+                  currency: 'COP',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                  useGrouping: true
+                })
+              }
             </p>
           </div>
         </CardBody>

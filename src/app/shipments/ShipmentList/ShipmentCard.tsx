@@ -2,6 +2,9 @@
 import Image from 'next/image'
 import { Card, CardBody, Avatar } from '@nextui-org/react'
 
+const serviceFee = 2000
+const influencer = 2000
+
 export function ShipmentCard ({ shipment }: { shipment: any }) {
   const { product: { name, price, preview, influencers: { avatar, full_name } } } = shipment
 
@@ -25,7 +28,15 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
               <p className='opacity-50'>{full_name}</p>
             </div>
             <p className='opacity-50'>
-              {price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' })}
+              {
+                (price + serviceFee + influencer).toLocaleString('es-Es', {
+                  style: 'currency',
+                  currency: 'COP',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                  useGrouping: true
+                })
+              }
             </p>
           </div>
         </div>

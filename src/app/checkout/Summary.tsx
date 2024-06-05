@@ -12,6 +12,16 @@ type props = {
 }
 
 export function Summary ({ productPrice, serviceFee, shippingCost, tip, total, influencer, calculateMercadoPagoComission }: props) {
+  function copFormat (value: number) {
+    return value.toLocaleString('es-Es', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+      useGrouping: true
+    })
+  }
+
   return (
     <Card className='w-96'>
       <CardHeader>
@@ -28,11 +38,13 @@ export function Summary ({ productPrice, serviceFee, shippingCost, tip, total, i
             <p className='font-bold mt-4'>Total</p>
           </div>
           <div className='text-right font-bold text-green-600'>
-            <p>${(productPrice + serviceFee + influencer).toLocaleString()}</p>
-            <p>${calculateMercadoPagoComission(total).toLocaleString()}</p>
-            <p>${shippingCost.toLocaleString()}</p>
-            <p>${tip.toLocaleString()}</p>
-            <p className='mt-4'>${(total + calculateMercadoPagoComission(total)).toLocaleString()}</p>
+            <p>{copFormat(productPrice + serviceFee + influencer)}</p>
+            <p>{copFormat(calculateMercadoPagoComission(total))}</p>
+            <p>{copFormat(shippingCost)}</p>
+            <p>{copFormat(tip)}</p>
+            <p className='mt-4'>
+              {copFormat(total + calculateMercadoPagoComission(total))}
+            </p>
           </div>
         </div>
       </CardBody>
