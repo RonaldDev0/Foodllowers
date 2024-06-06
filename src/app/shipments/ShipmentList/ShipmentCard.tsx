@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
+'use client'
 import Image from 'next/image'
 import { Card, CardBody, Avatar } from '@nextui-org/react'
-
-const serviceFee = 2000
-const influencer = 2000
+import { useContent } from '@/store'
 
 export function ShipmentCard ({ shipment }: { shipment: any }) {
+  const { serviceFee, influencer } = useContent()
   const { product: { name, price, preview, influencers: { avatar, full_name } } } = shipment
 
   return (

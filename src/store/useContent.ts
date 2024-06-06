@@ -14,16 +14,28 @@ type State = {
   productList: any
   currentInfluencer: any
   currentProduct: any
+  preparationTime: number
+  pricePerKm: number
+  minima: number
+  serviceFee: number
+  influencer: number
 }
 
 type Actions = {
   setStore: (property: keyof State, value: any) => void
 }
 
+// note: get prices from supabase
+
 export const useContent = create<State & Actions>(set => ({
   influencerList: null,
   productList: null,
   currentInfluencer: null,
   currentProduct: null,
+  preparationTime: 20,
+  pricePerKm: 1000,
+  minima: 3000,
+  serviceFee: 2000,
+  influencer: 2000,
   setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value }))
 }))

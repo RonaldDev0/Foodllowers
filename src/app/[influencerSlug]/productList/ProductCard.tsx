@@ -1,6 +1,8 @@
+'use client'
 import { Card, CardBody, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useContent } from '@/store'
 
 export type IProductCard = {
   id: number
@@ -14,10 +16,8 @@ export type IProductCard = {
   state: boolean
 }
 
-const serviceFee = 2000
-const influencer = 2000
-
 export function ProductCard ({ product }: { product: IProductCard }) {
+  const { serviceFee, influencer } = useContent()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (

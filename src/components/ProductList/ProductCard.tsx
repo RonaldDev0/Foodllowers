@@ -4,11 +4,8 @@ import Image from 'next/image'
 import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
 import { useContent } from '@/store'
 
-const serviceFee = 2000
-const influencer = 2000
-
 export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => void }) {
-  const { setStore } = useContent()
+  const { setStore, serviceFee, influencer } = useContent()
 
   return (
     <Link

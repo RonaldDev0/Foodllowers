@@ -1,11 +1,11 @@
+'use client'
 import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
-
-const serviceFee = 2000
-const influencer = 2000
+import { useContent } from '@/store'
 
 export function ProductCard ({ item }: { item: any }) {
+  const { serviceFee, influencer } = useContent()
   return (
     <Link href={`/checkout?q=${item.id}`} key={item.id}>
       <Card>

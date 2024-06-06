@@ -13,12 +13,6 @@ import { Alert } from '@/components/Alert'
 import { EstimationTime } from './EstimationTime'
 import { useDecrypt } from '@/hooks'
 
-const pricePerKm = 1000
-const minima = 3000
-const preparationTime = 20
-const serviceFee = 2000
-const influencer = 2000
-
 function calculateMercadoPagoComission (amount: number) {
   const porcentajeComision = 0.0279
   const IVA = 0.19
@@ -35,7 +29,7 @@ export default function Checkout () {
   const query = useSearchParams().get('q')
   const { supabase } = useSupabase()
   const { addressSelect, addressList, userId, setStore } = useUser()
-  const { currentProduct } = useContent()
+  const { currentProduct, pricePerKm, minima, serviceFee, influencer, preparationTime } = useContent()
 
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
@@ -44,6 +38,26 @@ export default function Checkout () {
   const [total, setTotal] = useState<any>(null)
 
   const [error, setError] = useState<any>(false)
+
+  function fetchMapsDistance (origin: any) {
+    if (!addressSelect) return
+    fetch('/api/maps_distance', {
+      cache: 'no-cache',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ origin, destination: addressSelect.geometry.location })
+    })
+      .then(res => res.json())
+      .then(data => {
+        const { distance: { text: distance }, duration: { text: duration } } = data.rows[0].elements[0]
+
+        const convertion = parseFloat(distance) * pricePerKm
+        const operation = convertion > minima ? convertion : minima
+        setShippingCost(operation)
+
+        setEstimationTime(parseFloat(duration) + preparationTime)
+      })
+  }
 
   useEffect(() => {
     if (!userId || addressList) return
@@ -75,26 +89,7 @@ export default function Checkout () {
 
     if (currentProduct) {
       setProduct(currentProduct)
-
-      fetch('/api/maps_distance', {
-        cache: 'no-cache',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          origin: currentProduct.kitchens.address.geometry.location,
-          destination: addressSelect.geometry.location
-        })
-      })
-        .then(res => res.json())
-        .then(data => {
-          const { distance: { text: distance }, duration: { text: duration } } = data.rows[0].elements[0]
-
-          const convertion = parseFloat(distance) * pricePerKm
-          const operation = convertion > minima ? convertion : minima
-          setShippingCost(operation)
-
-          setEstimationTime(parseFloat(duration) + preparationTime)
-        })
+      fetchMapsDistance(currentProduct.kitchens.address.geometry.location)
       return
     }
 
@@ -105,25 +100,7 @@ export default function Checkout () {
       .then((res: any) => {
         if (res.data) {
           setProduct(res.data[0])
-          fetch('/api/maps_distance', {
-            cache: 'no-cache',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              origin: res.data[0].kitchens.address.geometry.location,
-              destination: addressSelect.geometry.location
-            })
-          })
-            .then(res => res.json())
-            .then(data => {
-              const { distance: { text: distance }, duration: { text: duration } } = data.rows[0].elements[0]
-
-              const convertion = parseFloat(distance) * pricePerKm
-              const operation = convertion > minima ? convertion : minima
-              setShippingCost(operation)
-
-              setEstimationTime(parseFloat(duration) + preparationTime)
-            })
+          fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
           return
         }
         setError({ message: 'Product does not exist' })
@@ -136,9 +113,7 @@ export default function Checkout () {
     }
   }, [product, tip, shippingCost])
 
-  if (!product || !total) {
-    return null
-  }
+  if (!product || !total) return null
 
   return (
     <main
