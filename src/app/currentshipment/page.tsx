@@ -8,11 +8,12 @@ import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function CurrentShipment () {
   const { supabase } = useSupabase()
-  const [activeStep, setActiveStep] = useState(null)
-  const [product, setProduct] = useState(null)
   const { userId } = useUser()
   const paymentId = useSearchParams().get('payment_id')
   const router = useRouter()
+
+  const [activeStep, setActiveStep] = useState(null)
+  const [product, setProduct] = useState(null)
 
   useEffect(() => {
     if (!paymentId || !userId) {
@@ -47,9 +48,7 @@ export default function CurrentShipment () {
   }, [paymentId, userId])
 
   useEffect(() => {
-    if (!userId) {
-      return
-    }
+    if (!userId) return
 
     supabase
       .from('orders')
@@ -57,28 +56,26 @@ export default function CurrentShipment () {
       .eq('user_id', userId)
       .eq('payment_status', 'approved')
       .then(({ data }: any) => {
-        if (data?.length) {
-          setProduct(data[0].product)
-          setActiveStep(data[0].order_state)
-        }
-      })
+        if (!data?.length) return
+        setProduct(data[0].product)
+        setActiveStep(data[0].order_state)
 
-    supabase.channel('orders')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${userId}` },
-        (payload: any) => {
-          const { new: { order_state: orderState, payment_status: paymentStatus }, eventType } = payload
-          if (paymentStatus === 'approved') {
-            setActiveStep(orderState)
-            return
-          }
-          if (eventType === 'DELETE') {
-            setActiveStep(null)
-            setProduct(null)
-          }
-        }
-      ).subscribe()
+        supabase.channel('orders')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${userId}` },
+            ({ new: { order_state: orderState, payment_status: paymentStatus }, eventType }: any) => {
+              if (paymentStatus === 'approved') {
+                setActiveStep(orderState)
+                return
+              }
+              if (eventType === 'DELETE') {
+                setActiveStep(null)
+                setProduct(null)
+              }
+            }
+          ).subscribe()
+      })
   }, [userId])
 
   return (

@@ -10,28 +10,24 @@ initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY!)
 
 type props = {
   amount: number
-  description: string
   error: Boolean
   product: any
-  kitchenOpen: boolean
-  kitchenAddress: object
   shippingCost: number
   tip: number
   influencer: number
   calculateMercadoPagoComission: Function
+  isMaximumOrders: boolean
 }
 
 export function PaymentForm ({
   amount,
-  description,
   error,
   product,
-  kitchenOpen,
-  kitchenAddress,
   shippingCost,
   tip,
   influencer,
-  calculateMercadoPagoComission
+  calculateMercadoPagoComission,
+  isMaximumOrders
 }: props) {
   const { supabase } = useSupabase()
   const { darkMode, addressSelect, userId, user } = useUser()
@@ -60,9 +56,14 @@ export function PaymentForm ({
   }
 
   const onSubmit = async ({ formData }: any) => {
+    if (isMaximumOrders) {
+      setAlert('La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.')
+      return
+    }
+
     const order = await supabase
       .from('orders')
-      .select('*')
+      .select('id')
       .eq('user_id', userId)
       .then(({ data }: any) => data)
 
@@ -73,27 +74,19 @@ export function PaymentForm ({
       setAlert(JSON.stringify(error, null, 2))
       router.refresh()
       return
-    }
-
-    if (!product.state) {
+    } else if (!product.state) {
       setAlert('Este producto se encuentra agotado.')
-      router.refresh()
+      router.push('/')
       return
-    }
-
-    if (!kitchenOpen) {
+    } else if (!product?.kitchens.open) {
       setAlert('Esta cocina esta cerrada!!')
-      router.refresh()
+      router.push('/')
       return
-    }
-
-    if (!kitchenAddress) {
+    } else if (!product?.kitchens.address) {
       setAlert('Este restaurante aun no esta listo para entregar domicilios')
-      router.refresh()
+      router.push('/')
       return
-    }
-
-    if (order.length) {
+    } else if (order.length) {
       setAlert('ya tienes un pedido en camino!, no puedes hacer mas de un pedido al mismo tiempo')
       return
     }
@@ -105,7 +98,7 @@ export function PaymentForm ({
       body: JSON.stringify({
         ...formData,
         callback_url: 'https://foodllowers.vercel.app/currentshipment',
-        description,
+        description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
         additional_info: { ip_address: ip }
       })
     })
@@ -186,9 +179,7 @@ export function PaymentForm ({
   }
 
   useEffect(() => {
-    if (alert) {
-      onOpen()
-    }
+    if (alert) onOpen()
   }, [alert])
 
   return (

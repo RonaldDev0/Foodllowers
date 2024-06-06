@@ -13,6 +13,9 @@ import { Alert } from '@/components/Alert'
 import { EstimationTime } from './EstimationTime'
 import { useDecrypt } from '@/hooks'
 
+const MAX_SUPABASE_REALTIME = 100
+const MAX_KITCHEN_LIMIT = 5
+
 function calculateMercadoPagoComission (amount: number) {
   const porcentajeComision = 0.0279
   const IVA = 0.19
@@ -31,6 +34,7 @@ export default function Checkout () {
   const { addressSelect, addressList, userId, setStore } = useUser()
   const { currentProduct, pricePerKm, minima, serviceFee, influencer, preparationTime } = useContent()
 
+  const [isMaximumOrders, setIsMaximumOrders] = useState(false)
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
   const [shippingCost, setShippingCost] = useState(0)
@@ -113,6 +117,35 @@ export default function Checkout () {
     }
   }, [product, tip, shippingCost])
 
+  useEffect(() => {
+    if (!product) return
+
+    async function updateData () {
+      const isMaximumOrders = await supabase
+        .from('orders')
+        .select('id', { count: 'exact', head: true })
+        .then(({ count, error }) => {
+          if (error || !count) return
+
+          const isMaximumOrders = count >= MAX_SUPABASE_REALTIME
+          setIsMaximumOrders(isMaximumOrders)
+          return isMaximumOrders
+        })
+
+      if (isMaximumOrders) return
+
+      supabase
+        .from('orders')
+        .select('id', { count: 'exact', head: true })
+        .eq('kitchen_id', product.id_kitchen)
+        .then(({ count, error }) => {
+          if (error || !count) return
+          setIsMaximumOrders(count >= MAX_KITCHEN_LIMIT)
+        })
+    }
+    updateData()
+  }, [product])
+
   if (!product || !total) return null
 
   return (
@@ -128,6 +161,7 @@ export default function Checkout () {
       >
         {!product?.kitchens.open && <Alert message='Este restaurante esta cerrado!!' />}
         {!product?.kitchens.address && <Alert message='Este restaurante aun no esta listo para entregar domicilios' />}
+        {isMaximumOrders && <Alert message='La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.' />}
 
         <AddressSelect setError={setError} />
         <ProductDetails product={product} />
@@ -156,13 +190,11 @@ export default function Checkout () {
           error={error}
           amount={total}
           product={product}
-          description={'Foodllowers: ' + product.name + ' - ' + product.influencers.full_name}
-          kitchenOpen={product?.kitchens.open}
-          kitchenAddress={product?.kitchens.address}
           shippingCost={shippingCost}
           tip={tip}
           influencer={influencer}
           calculateMercadoPagoComission={calculateMercadoPagoComission}
+          isMaximumOrders={isMaximumOrders}
         />
       </div>
     </main>
