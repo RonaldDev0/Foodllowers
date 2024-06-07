@@ -17,6 +17,7 @@ type props = {
   influencer: number
   calculateMercadoPagoComission: Function
   isMaximumOrders: boolean
+  isMaximumNumberOfPurchases: boolean
 }
 
 export function PaymentForm ({
@@ -27,7 +28,8 @@ export function PaymentForm ({
   tip,
   influencer,
   calculateMercadoPagoComission,
-  isMaximumOrders
+  isMaximumOrders,
+  isMaximumNumberOfPurchases
 }: props) {
   const { supabase } = useSupabase()
   const { darkMode, addressSelect, userId, user } = useUser()
@@ -58,6 +60,9 @@ export function PaymentForm ({
   const onSubmit = async ({ formData }: any) => {
     if (isMaximumOrders) {
       setAlert('La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.')
+      return
+    } else if (isMaximumNumberOfPurchases) {
+      setAlert('No quedan más productos disponibles')
       return
     }
 

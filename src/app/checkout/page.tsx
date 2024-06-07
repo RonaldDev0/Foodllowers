@@ -16,6 +16,9 @@ import { useDecrypt } from '@/hooks'
 const MAX_SUPABASE_REALTIME = 100
 const MAX_KITCHEN_LIMIT = 5
 
+// Note: This is a temporary limit to prevent abuse
+const MAX_NUMBER_OF_PURCHASES = 100
+
 function calculateMercadoPagoComission (amount: number) {
   const porcentajeComision = 0.0279
   const IVA = 0.19
@@ -34,6 +37,7 @@ export default function Checkout () {
   const { addressSelect, addressList, userId, setStore } = useUser()
   const { currentProduct, pricePerKm, minima, serviceFee, influencer, preparationTime } = useContent()
 
+  const [numberOfPurchases, setNumberOfPurchases] = useState(0)
   const [isMaximumOrders, setIsMaximumOrders] = useState(false)
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
@@ -66,26 +70,21 @@ export default function Checkout () {
   useEffect(() => {
     if (!userId || addressList) return
 
-    try {
-      supabase
-        .from('addresses')
-        .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
-        .then(({ data, error }) => {
-          if (error) {
-            return
-          }
-          useDecrypt({
-            key: userId,
-            data,
-            ignore: ['id']
-          }).then(res => {
-            setStore('addressList', res)
-            setStore('addressSelect', res[0])
-          })
+    supabase
+      .from('addresses')
+      .select('id, user, number, numberPrefix, aditionalInfo, formatted_address, geometry')
+      .then(({ data, error }) => {
+        if (error) return
+
+        useDecrypt({
+          key: userId,
+          data,
+          ignore: ['id']
+        }).then(res => {
+          setStore('addressList', res)
+          setStore('addressSelect', res[0])
         })
-    } catch (e) {
-      console.log(e)
-    }
+      })
   }, [userId])
 
   useEffect(() => {
@@ -121,7 +120,7 @@ export default function Checkout () {
     if (!product) return
 
     async function updateData () {
-      const isMaximumOrders = await supabase
+      const { isMaximumOrders, ordersCount }: any = await supabase
         .from('orders')
         .select('id', { count: 'exact', head: true })
         .then(({ count, error }) => {
@@ -129,10 +128,22 @@ export default function Checkout () {
 
           const isMaximumOrders = count >= MAX_SUPABASE_REALTIME
           setIsMaximumOrders(isMaximumOrders)
-          return isMaximumOrders
+
+          return { isMaximumOrders, ordersCount: count }
         })
 
       if (isMaximumOrders) return
+
+      const { shipmentsCount }: any = await supabase
+        .from('shipments')
+        .select('id', { count: 'exact', head: true })
+        .then(({ count, error }) => {
+          if (error || !count) return
+
+          return { shipmentsCount: count }
+        })
+
+      setNumberOfPurchases(ordersCount + shipmentsCount)
 
       supabase
         .from('orders')
@@ -148,6 +159,18 @@ export default function Checkout () {
 
   if (!product || !total) return null
 
+  const AlertMessage = (() => {
+    if (!product?.kitchens.open) {
+      return 'Este restaurante esta cerrado!!'
+    } else if (!product?.kitchens.address) {
+      return 'Este restaurante aun no esta listo para entregar domicilios'
+    } else if (isMaximumOrders) {
+      return 'La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.'
+    } else {
+      return `Quedan ${MAX_NUMBER_OF_PURCHASES - numberOfPurchases} productos disponibles`
+    }
+  })()
+
   return (
     <main
       className='flex justify-center items-start gap-5 mt-16 mb-14
@@ -159,9 +182,7 @@ export default function Checkout () {
         className='flex flex-col gap-5
           [@media(min-width:800px)]:w-[522px]'
       >
-        {!product?.kitchens.open && <Alert message='Este restaurante esta cerrado!!' />}
-        {!product?.kitchens.address && <Alert message='Este restaurante aun no esta listo para entregar domicilios' />}
-        {isMaximumOrders && <Alert message='La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.' />}
+        <Alert message={AlertMessage} />
 
         <AddressSelect setError={setError} />
         <ProductDetails product={product} />
@@ -195,6 +216,7 @@ export default function Checkout () {
           influencer={influencer}
           calculateMercadoPagoComission={calculateMercadoPagoComission}
           isMaximumOrders={isMaximumOrders}
+          isMaximumNumberOfPurchases={numberOfPurchases >= MAX_NUMBER_OF_PURCHASES}
         />
       </div>
     </main>
