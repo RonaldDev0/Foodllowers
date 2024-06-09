@@ -124,7 +124,7 @@ export default function Checkout () {
         .from('orders')
         .select('id', { count: 'exact', head: true })
         .then(({ count, error }) => {
-          if (error || !count) return
+          if (error || !count) return { isMaximumOrders: false, ordersCount: count }
 
           const isMaximumOrders = count >= MAX_SUPABASE_REALTIME
           setIsMaximumOrders(isMaximumOrders)

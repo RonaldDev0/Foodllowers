@@ -4,48 +4,13 @@ import { useSupabase } from '../Providers'
 import { EmptyCard } from './EmptyCard'
 import { CardData } from './CardData'
 import { useUser } from '@/store'
-import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function CurrentShipment () {
   const { supabase } = useSupabase()
   const { userId } = useUser()
-  const paymentId = useSearchParams().get('payment_id')
-  const router = useRouter()
 
   const [activeStep, setActiveStep] = useState(null)
   const [product, setProduct] = useState(null)
-
-  useEffect(() => {
-    if (!paymentId || !userId) {
-      return
-    }
-
-    fetch('api/search_payment', {
-      method: 'POST',
-      body: JSON.stringify({ paymentId })
-    })
-      .then((res) => res.json())
-      .then(({ id, status }) => {
-        if (status === 'approved') {
-          supabase
-            .from('orders')
-            .update({ payment_status: status })
-            .eq('user_id', userId)
-            .eq('invoice_id', id)
-            .select('id')
-            .then(() => router.push('/currentshipment'))
-          return
-        }
-        if (status === 'rejected' || status === 'cancelled') {
-          supabase
-            .from('orders')
-            .delete()
-            .eq('user_id', userId)
-            .eq('invoice_id', id)
-            .then(() => router.push('/currentshipment'))
-        }
-      })
-  }, [paymentId, userId])
 
   useEffect(() => {
     if (!userId) return

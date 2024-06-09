@@ -101,85 +101,25 @@ export function PaymentForm ({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        ...formData,
+        product,
+        shippingCost,
+        tip,
+        influencer,
+        userId,
+        user,
+        addressSelect,
+        paymentInfo: {
+          ...formData,
         callback_url: 'https://foodllowers.vercel.app/currentshipment',
         description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
         additional_info: { ip_address: ip }
+        },
       })
     })
       .then(res => res.json())
-      .then(({ id, status, fee_details, transaction_amount, external_resource_url }) => {
-        if (external_resource_url) {
-          supabase
-            .from('orders')
-            .insert([{
-              user_id: userId,
-              user_name: user.name,
-              product,
-              order_state: 'buscando cocina...',
-              kitchen_id: product.id_kitchen,
-              influencer_id: product.influencers.id,
-              user_address: addressSelect,
-              kitchen_address: product.kitchens.address,
-              invoice_id: id,
-              user_email: user.email,
-              payment_status: 'pending',
-              transaction_amount: {
-                mercadopago: calculateMercadoPagoComission(amount),
-                influencer,
-                kitchen: product.price,
-                delivery: {
-                  service: shippingCost,
-                  tip
-                },
-                earnings: transaction_amount - calculateMercadoPagoComission(amount) - product.price - shippingCost - tip - influencer,
-                total: transaction_amount
-              }
-            }])
-            .select('id')
-            .then(({ error }) => {
-              if (error) {
-                return
-              }
-              router.push(external_resource_url)
-            })
-          return
-        }
-        if (status === 'approved') {
-          supabase
-            .from('orders')
-            .insert([{
-              user_id: userId,
-              user_name: user.name,
-              product,
-              order_state: 'buscando cocina...',
-              kitchen_id: product.id_kitchen,
-              influencer_id: product.influencers.id,
-              user_address: addressSelect,
-              kitchen_address: product.kitchens.address,
-              invoice_id: id,
-              user_email: user.email,
-              payment_status: 'approved',
-              transaction_amount: {
-                mercadopago: Math.floor(fee_details[0].amount),
-                influencer,
-                kitchen: product.price,
-                delivery: {
-                  service: shippingCost,
-                  tip
-                },
-                earnings: transaction_amount - Math.floor(fee_details[0].amount) - product.price - shippingCost - tip - influencer,
-                total: transaction_amount
-              }
-            }])
-            .select('id')
-            .then(({ error }) => {
-              if (error) {
-                return
-              }
-              router.push('/currentshipment')
-            })
-        }
+      .then(({ error }) => {
+        if (error) return router.refresh()
+        router.push('/currentshipment')
       })
   }
 
