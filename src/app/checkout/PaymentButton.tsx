@@ -18,19 +18,7 @@ type props = {
   paymentInfo: any
 }
 
-
-export function PaymentButton({
-  amount,
-  error,
-  product,
-  shippingCost,
-  tip,
-  influencer,
-  isMaximumOrders,
-  isMaximumNumberOfPurchases,
-  paymentInfo
-}: props) {
-
+export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo }: props) {
   const { supabase } = useSupabase()
   const { addressSelect, userId, user } = useUser()
   const router = useRouter()
@@ -39,13 +27,11 @@ export function PaymentButton({
   const [alert, setAlert] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-
-  const showAlert = (message: string, route = null as string | null ) => {
+  const showAlert = (message: string, route = null as string | null) => {
     setAlert(message)
     onOpen()
     setIsLoading(false)
-    if (route === null) return
-    else if (route === '/') router.push(route)
+    if (route === '/') router.push(route)
     else if (route === '/currentshipment') router.push(route)
     else if (route === 'refresh') router.refresh()
   }
@@ -58,9 +44,7 @@ export function PaymentButton({
     } else if (isMaximumNumberOfPurchases) {
       showAlert('No quedan más productos disponibles')
       return
-    }
-
-    if (error) {
+    } else if (error) {
       showAlert('Error al procesar la transacción', 'refresh')
       return
     } else if (!product.state) {
@@ -72,8 +56,8 @@ export function PaymentButton({
     } else if (!product?.kitchens.address) {
       showAlert('Este restaurante aun no esta listo para entregar domicilios', '/')
       return
-    } 
-    
+    }
+
     const order = await supabase
       .from('orders')
       .select('id')
@@ -106,7 +90,7 @@ export function PaymentButton({
           callback_url: 'https://foodllowers.vercel.app/currentshipment',
           description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
           additional_info: { ip_address: ip }
-        },
+        }
       })
     })
       .then(res => res.json())

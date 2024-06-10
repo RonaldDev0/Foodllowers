@@ -6,7 +6,6 @@ interface props {
 }
 
 export function PaymentForm ({ paymentInfo, setPaymentInfo }: props) {
-
   const handleChange = (e: any) => {
     const { name, value } = e.target
     setPaymentInfo({ ...paymentInfo, [name]: value })

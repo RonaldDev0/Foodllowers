@@ -15,7 +15,6 @@ const client = new MercadoPagoConfig({
 
 const payment = new Payment(client)
 
-
 export async function POST (req: NextRequest) {
   const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo } = await req.json()
   const { id, status, transaction_amount, fee_details }: any = await payment.create({ body: paymentInfo })
