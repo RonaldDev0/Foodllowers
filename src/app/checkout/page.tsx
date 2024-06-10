@@ -11,7 +11,14 @@ import { Tip } from './Tip'
 import { Summary } from './Summary'
 import { Alert } from '@/components/Alert'
 import { EstimationTime } from './EstimationTime'
+import { PaymentButton } from './PaymentButton'
 import { useDecrypt } from '@/hooks'
+
+interface IPaymentInfo {
+  card_number: string
+  expiration_date: string
+  cvv: string
+}
 
 const MAX_SUPABASE_REALTIME = 100
 const MAX_KITCHEN_LIMIT = 5
@@ -41,6 +48,11 @@ export default function Checkout () {
   const [isMaximumOrders, setIsMaximumOrders] = useState(false)
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
+  const [paymentInfo, setPaymentInfo] = useState<IPaymentInfo>({
+    card_number: '',
+    expiration_date: '',
+    cvv: ''
+  })
   const [shippingCost, setShippingCost] = useState(0)
   const [tip, setTip] = useState(0)
   const [total, setTotal] = useState<any>(null)
@@ -208,13 +220,17 @@ export default function Checkout () {
           calculateMercadoPagoComission={calculateMercadoPagoComission}
         />
         <PaymentForm
+          paymentInfo={paymentInfo}
+          setPaymentInfo={setPaymentInfo}
+        />
+        <PaymentButton
+          paymentInfo={paymentInfo}
           error={error}
           amount={total}
           product={product}
           shippingCost={shippingCost}
           tip={tip}
           influencer={influencer}
-          calculateMercadoPagoComission={calculateMercadoPagoComission}
           isMaximumOrders={isMaximumOrders}
           isMaximumNumberOfPurchases={numberOfPurchases >= MAX_NUMBER_OF_PURCHASES}
         />
