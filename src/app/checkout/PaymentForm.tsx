@@ -110,10 +110,10 @@ export function PaymentForm ({
         addressSelect,
         paymentInfo: {
           ...formData,
-        callback_url: 'https://foodllowers.vercel.app/currentshipment',
-        description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
-        additional_info: { ip_address: ip }
-        },
+          callback_url: 'https://foodllowers.vercel.app/currentshipment',
+          description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
+          additional_info: { ip_address: ip }
+        }
       })
     })
       .then(res => res.json())
