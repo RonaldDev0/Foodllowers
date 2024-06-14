@@ -1,10 +1,9 @@
 'use client'
 import { NextUIProvider } from '@nextui-org/react'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { createPagesBrowserClient, type SupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/store'
-import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 type Database = {
   public: {

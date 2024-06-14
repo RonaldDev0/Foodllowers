@@ -53,5 +53,7 @@ export async function POST (req: NextRequest) {
       return { error: false }
     })
 
+  console.log(response)
+
   return NextResponse.json(response)
 }

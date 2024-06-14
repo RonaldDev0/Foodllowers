@@ -53,6 +53,11 @@ export default function Checkout () {
     expiration_date: '',
     cvv: ''
   })
+  const [paymentError, setPaymentError] = useState<any>({
+    card_number: false,
+    expiration_date: false,
+    cvv: false
+  })
   const [shippingCost, setShippingCost] = useState(0)
   const [tip, setTip] = useState(0)
   const [total, setTotal] = useState<any>(null)
@@ -220,10 +225,13 @@ export default function Checkout () {
           calculateMercadoPagoComission={calculateMercadoPagoComission}
         />
         <PaymentForm
+          paymentError={paymentError}
+          setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           setPaymentInfo={setPaymentInfo}
         />
         <PaymentButton
+          setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           error={error}
           amount={total}

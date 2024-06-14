@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useUser } from '@/store'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 import { useSupabase } from '@/app/Providers'
+import { z } from 'zod'
 
 type props = {
   amount: number
@@ -16,9 +17,19 @@ type props = {
   isMaximumOrders: boolean
   isMaximumNumberOfPurchases: boolean
   paymentInfo: any
+  setPaymentError: Function
 }
 
-export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo }: props) {
+const paymentInfoSchema = z.object({
+  card_number: z.string()
+    .length(16, 'El número de tarjeta debe tener 16 dígitos'),
+  expiration_date: z.string()
+    .length(4, 'La fecha de expiración debe tener 4 dígitos'),
+  cvv: z.string()
+    .length(3, 'CVV debe tener 3 o 4 dígitos')
+})
+
+export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError }: props) {
   const { supabase } = useSupabase()
   const { addressSelect, userId, user } = useUser()
   const router = useRouter()
@@ -36,9 +47,39 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
     else if (route === 'refresh') router.refresh()
   }
 
+  function validatePaymentInfo () {
+    const result = paymentInfoSchema.safeParse(paymentInfo)
+
+    if (result.success) {
+      setPaymentError({ card_number: false, expiration_date: false, cvv: false })
+      return { errorMessages: {} }
+    } else {
+      const errorMessages: Record<string, string> = {}
+
+      result.error.errors.forEach(error => {
+        if (error.path && error.path.length > 0) {
+          errorMessages[error.path[0] as string] = error.message
+        }
+      })
+
+      setPaymentError(errorMessages)
+      return errorMessages
+    }
+  }
+
   const onSubmit = async () => {
     setIsLoading(true)
-    if (isMaximumOrders) {
+    const errorMessages: any = validatePaymentInfo()
+
+    if (errorMessages.card_number) {
+      showAlert('La tarjeta no es válida')
+      return
+    } else if (errorMessages.expiration_date) {
+      showAlert('La fecha de expiración no es válida')
+      return
+    } else if (errorMessages.cvv) {
+      showAlert('El CVV no es válido')
+    } else if (isMaximumOrders) {
       showAlert('La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.')
       return
     } else if (isMaximumNumberOfPurchases) {
@@ -85,11 +126,15 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
         user,
         addressSelect,
         paymentInfo: {
-          ...paymentInfo,
+          // ...paymentInfo,
           transaction_amount: amount,
           callback_url: 'https://foodllowers.vercel.app/currentshipment',
           description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
-          additional_info: { ip_address: ip }
+          additional_info: { ip_address: ip },
+          payment_method_id: 'debvisa',
+          payer: {
+            email: user.email
+          }
         }
       })
     })
@@ -111,13 +156,19 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
         onClick={onSubmit}
         disabled={isLoading}
         color='secondary'
-        className={`text-lg font-semibold ${isLoading ? 'opacity-60' : ''}`}
+        className={`
+          text-lg font-semibold ${isLoading ? 'opacity-60' : ''}
+          [@media(max-width:800px)]:fixed
+          [@media(max-width:800px)]:z-40
+          [@media(max-width:800px)]:bottom-5
+          [@media(max-width:800px)]:w-96
+        `}
       >
         {isLoading ? 'Comprando...' : 'Comprar'}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
-          {() => (
+          {onClose => (
             <>
               <ModalHeader>
                 <p>Error</p>
@@ -126,10 +177,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
                 <p>{alert}</p>
               </ModalBody>
               <ModalFooter>
-                <Button
-                  color='secondary'
-                  onPress={() => router.push('/currentshipment')}
-                >
+                <Button color='secondary' onPress={onClose}>
                   Aceptar
                 </Button>
               </ModalFooter>
