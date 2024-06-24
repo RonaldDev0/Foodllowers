@@ -11,26 +11,31 @@ interface props {
 export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPaymentError }: props) {
   const handleChange = (e: any) => {
     const { name, value } = e.target
+    const isTyping = value.length > paymentInfo[name].length
+
     setPaymentError({ ...paymentError, [name]: false })
 
-    switch (name) {
-      case 'card_number':
-        if (value.length <= 16) {
-          setPaymentInfo({ ...paymentInfo, [name]: value })
+    if (name === 'card_number' && value.length <= 16) {
+      setPaymentInfo({ ...paymentInfo, [name]: value })
+    }
+
+    if (name === 'expiration_date' && value.length <= 5) {
+      if (value.length === 3) {
+        if (isTyping) {
+          // Si el usuario está escribiendo, formatear el valor como 'MM/YY'
+          setPaymentInfo({ ...paymentInfo, [name]: value.slice(0, 2) + '/' + value.slice(2) })
+        } else {
+          // Si el usuario está borrando, eliminar el último carácter
+          setPaymentInfo({ ...paymentInfo, [name]: value.slice(0, -1) })
         }
-        break
-      case 'expiration_date':
-        if (value.length <= 4) {
-          setPaymentInfo({ ...paymentInfo, [name]: value })
-        }
-        break
-      case 'cvv':
-        if (value.length <= 4) {
-          setPaymentInfo({ ...paymentInfo, [name]: value })
-        }
-        break
-      default:
-        break
+      } else {
+        // Si la longitud no es 3, actualizar el valor sin cambios
+        setPaymentInfo({ ...paymentInfo, [name]: value })
+      }
+    }
+
+    if (name === 'cvv' && value.length <= 4) {
+      setPaymentInfo({ ...paymentInfo, [name]: value })
     }
   }
 
@@ -59,7 +64,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
                 name='expiration_date'
                 value={paymentInfo.expiration_date}
                 onChange={handleChange}
-                type='number'
+                type='text'
                 placeholder='MM/YY'
                 isInvalid={!!paymentError.expiration_date}
                 errorMessage={paymentError.expiration_date}

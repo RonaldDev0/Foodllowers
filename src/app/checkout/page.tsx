@@ -193,7 +193,8 @@ export default function Checkout () {
       className='flex justify-center items-start gap-5 mt-16 mb-14
         [@media(max-width:800px)]:flex-col
         [@media(max-width:800px)]:items-center
-        [@media(max-width:800px)]:w-96'
+        [@media(max-width:800px)]:w-96
+        [@media(max-width:800px)]:mb-20'
     >
       <div
         className='flex flex-col gap-5

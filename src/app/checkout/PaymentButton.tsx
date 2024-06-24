@@ -22,11 +22,12 @@ type props = {
 
 const paymentInfoSchema = z.object({
   card_number: z.string()
-    .length(16, 'El número de tarjeta debe tener 16 dígitos'),
+    .length(16, 'El número de tarjeta es invalido'),
   expiration_date: z.string()
-    .length(4, 'La fecha de expiración debe tener 4 dígitos'),
+    .length(4, 'La fecha de expiración es invalida'),
   cvv: z.string()
-    .length(3, 'CVV debe tener 3 o 4 dígitos')
+    .min(3, 'CVV debe tener almenos 3 dígitos')
+    .max(4, 'CVV debe tener 3 o 4 dígitos')
 })
 
 export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError }: props) {

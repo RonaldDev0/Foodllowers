@@ -25,8 +25,8 @@
     "lucide-react": "^0.288.0",
     "mercadopago": "^2.0.9",
     "next": "14.0.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "sharp": "^0.32.6",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
