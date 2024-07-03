@@ -15,23 +15,34 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
 
     setPaymentError({ ...paymentError, [name]: false })
 
-    if (name === 'card_number' && value.length <= 16) {
-      setPaymentInfo({ ...paymentInfo, [name]: value })
+    if (name === 'card_number' && value.length <= 19) {
+      // Eliminar todos los espacios y formatear
+      const cleanedValue = value.replace(/\D/g, '')
+      let formattedCardNumber = ''
+
+      for (let i = 0; i < cleanedValue.length; i += 4) {
+        if (i > 0) formattedCardNumber += ' '
+        formattedCardNumber += cleanedValue.substring(i, i + 4)
+      }
+
+      if (formattedCardNumber.length <= 19) {
+        setPaymentInfo({ ...paymentInfo, [name]: formattedCardNumber })
+      }
     }
 
     if (name === 'expiration_date' && value.length <= 5) {
-      if (value.length === 3) {
-        if (isTyping) {
-          // Si el usuario está escribiendo, formatear el valor como 'MM/YY'
-          setPaymentInfo({ ...paymentInfo, [name]: value.slice(0, 2) + '/' + value.slice(2) })
-        } else {
-          // Si el usuario está borrando, eliminar el último carácter
-          setPaymentInfo({ ...paymentInfo, [name]: value.slice(0, -1) })
-        }
-      } else {
-        // Si la longitud no es 3, actualizar el valor sin cambios
-        setPaymentInfo({ ...paymentInfo, [name]: value })
+      // Eliminar todos los caracteres no numéricos excepto '/'
+      const cleanedValue = value.replace(/[^\d/]/g, '')
+
+      // Formatear la fecha de expiración
+      let formattedExpirationDate = cleanedValue
+      if (cleanedValue.length === 2 && isTyping) {
+        formattedExpirationDate = cleanedValue + '/'
+      } else if (cleanedValue.length === 3 && !isTyping) {
+        formattedExpirationDate = cleanedValue.slice(0, 2)
       }
+
+      setPaymentInfo({ ...paymentInfo, [name]: formattedExpirationDate })
     }
 
     if (name === 'cvv' && value.length <= 4) {
@@ -52,7 +63,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
             name='card_number'
             value={paymentInfo.card_number}
             onChange={handleChange}
-            type='number'
+            type='text'
             placeholder='1234 1234 1234 1234'
             isInvalid={!!paymentError.card_number}
             errorMessage={paymentError.card_number}
