@@ -11,7 +11,6 @@ interface props {
 export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPaymentError }: props) {
   const handleChange = (e: any) => {
     const { name, value } = e.target
-    const isTyping = value.length > paymentInfo[name].length
 
     setPaymentError({ ...paymentError, [name]: false })
 
@@ -36,13 +35,32 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
 
       // Formatear la fecha de expiración
       let formattedExpirationDate = cleanedValue
-      if (cleanedValue.length === 2 && isTyping) {
-        formattedExpirationDate = cleanedValue + '/'
-      } else if (cleanedValue.length === 3 && !isTyping) {
-        formattedExpirationDate = cleanedValue.slice(0, 2)
+
+      // Si cleanedValue tiene más de 2 caracteres y no hay '/' al final, agregar '/'
+      if (cleanedValue.length > 2 && cleanedValue.charAt(2) !== '/') {
+        formattedExpirationDate = cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2)
       }
 
+      // Validar que los primeros dos caracteres no sean mayores a 12
+      const monthPart = formattedExpirationDate.split('/')[0]
+      if (parseInt(monthPart, 10) > 12) {
+        formattedExpirationDate = '12/'
+      }
+
+      // Actualizar paymentInfo con la fecha de expiración formateada
       setPaymentInfo({ ...paymentInfo, [name]: formattedExpirationDate })
+
+      // Verificar si la fecha de expiración es anterior a la fecha actual
+      const [expMonth, expYear] = formattedExpirationDate.split('/')
+      const currentDate = new Date()
+      const expirationDate = new Date(2000 + parseInt(expYear, 10), parseInt(expMonth, 10) - 1)
+
+      if (expirationDate < currentDate) {
+        setPaymentError({ ...paymentError, expiration_date: 'La fecha de expiración es anterior a la fecha actual' })
+      } else {
+        // Limpiar el error si la fecha de expiración es válida
+        setPaymentError({ ...paymentError, expiration_date: '' })
+      }
     }
 
     if (name === 'cvv' && value.length <= 4) {

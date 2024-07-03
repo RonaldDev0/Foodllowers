@@ -60,7 +60,6 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
       result.error.errors.forEach(error => {
         if (error.path && error.path.length > 0) {
           errorMessages[error.path[0] as string] = error.message
-          console.log(errorMessages)
         }
       })
 
