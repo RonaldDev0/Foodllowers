@@ -30,41 +30,51 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
     }
 
     if (name === 'expiration_date' && value.length <= 5) {
-      // Eliminar todos los caracteres no numéricos excepto '/'
-      const cleanedValue = value.replace(/[^\d/]/g, '')
+      // Eliminar todos los caracteres no numéricos
+      const cleanedValue = value.replace(/\D/g, '')
 
-      // Formatear la fecha de expiración
       let formattedExpirationDate = cleanedValue
 
-      // Si cleanedValue tiene más de 2 caracteres y no hay '/' al final, agregar '/'
-      if (cleanedValue.length > 2 && cleanedValue.charAt(2) !== '/') {
-        formattedExpirationDate = cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2)
+      // Insertar '/' en la posición correcta si es necesario
+      if (cleanedValue.length >= 3) {
+        formattedExpirationDate = `${cleanedValue.slice(0, 2)}/${cleanedValue.slice(2)}`
       }
 
-      // Validar que los primeros dos caracteres no sean mayores a 12
-      const monthPart = formattedExpirationDate.split('/')[0]
+      // Si el usuario está borrando caracteres, manejar la eliminación del '/'
+      if (cleanedValue.length === 2) {
+        formattedExpirationDate = cleanedValue
+      }
+
+      // Validar y corregir el mes si es necesario
+      let [monthPart, yearPart] = formattedExpirationDate.split('/')
+
+      if (monthPart?.length === 1 && parseInt(monthPart, 10) > 1) {
+        monthPart = `0${monthPart}`
+        formattedExpirationDate = `${monthPart}/${yearPart || ''}`
+      }
+
       if (parseInt(monthPart, 10) > 12) {
-        formattedExpirationDate = '12/'
+        formattedExpirationDate = `12/${yearPart || ''}`
       }
 
       // Actualizar paymentInfo con la fecha de expiración formateada
       setPaymentInfo({ ...paymentInfo, [name]: formattedExpirationDate })
 
       // Verificar si la fecha de expiración es anterior a la fecha actual
-      const [expMonth, expYear] = formattedExpirationDate.split('/')
-      const currentDate = new Date()
-      const expirationDate = new Date(2000 + parseInt(expYear, 10), parseInt(expMonth, 10) - 1)
+      if (formattedExpirationDate.length === 5) {
+        const [expMonth, expYear] = formattedExpirationDate.split('/')
+        const currentDate = new Date()
+        const expirationDate = new Date(2000 + parseInt(expYear, 10), parseInt(expMonth, 10) - 1)
 
-      if (expirationDate < currentDate) {
-        setPaymentError({ ...paymentError, expiration_date: 'La fecha de expiración es anterior a la fecha actual' })
-      } else {
-        // Limpiar el error si la fecha de expiración es válida
-        setPaymentError({ ...paymentError, expiration_date: '' })
+        if (expirationDate < currentDate) {
+          setPaymentError({ ...paymentError, expiration_date: 'La fecha de expiración es anterior a la fecha actual' })
+        }
       }
     }
 
     if (name === 'cvv' && value.length <= 4) {
-      setPaymentInfo({ ...paymentInfo, [name]: value })
+      const cleanedValue = value.replace(/\D/g, '')
+      setPaymentInfo({ ...paymentInfo, [name]: cleanedValue })
     }
   }
 
@@ -77,15 +87,22 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
         <Divider />
         <CardBody className='w-96 flex flex-col gap-4'>
           <span>Número de la tarjeta</span>
-          <Input
-            name='card_number'
-            value={paymentInfo.card_number}
-            onChange={handleChange}
-            type='text'
-            placeholder='1234 1234 1234 1234'
-            isInvalid={!!paymentError.card_number}
-            errorMessage={paymentError.card_number}
-          />
+          <div className='relative'>
+            <Input
+              name='card_number'
+              value={paymentInfo.card_number}
+              onChange={handleChange}
+              type='text'
+              placeholder='1234 1234 1234 1234'
+              isInvalid={!!paymentError.card_number}
+              errorMessage={paymentError.card_number}
+            />
+            {paymentInfo.card_number.length > 3 && (
+              <p className='absolute right-2 top-2'>
+                card_icon
+              </p>
+            )}
+          </div>
           <div className='flex gap-4'>
             <div>
               <span>Fecha de expiración</span>
@@ -101,15 +118,20 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
             </div>
             <div>
               <span>CVV</span>
-              <Input
-                name='cvv'
-                value={paymentInfo.cvv}
-                onChange={handleChange}
-                type='number'
-                placeholder='123'
-                isInvalid={!!paymentError.cvv}
-                errorMessage={paymentError.cvv}
-              />
+              <div className='relative'>
+                <Input
+                  name='cvv'
+                  value={paymentInfo.cvv}
+                  onChange={handleChange}
+                  type='text'
+                  placeholder='123'
+                  isInvalid={!!paymentError.cvv}
+                  errorMessage={paymentError.cvv}
+                />
+                <p className='absolute right-2 top-2'>
+                  cvv_icon
+                </p>
+              </div>
             </div>
           </div>
         </CardBody>
