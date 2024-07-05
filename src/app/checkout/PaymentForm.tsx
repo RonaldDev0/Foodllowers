@@ -1,5 +1,6 @@
 'use client'
 import { Card, CardHeader, CardBody, Divider, Input } from '@nextui-org/react'
+import Image from 'next/image'
 
 interface props {
   paymentInfo: any
@@ -9,6 +10,26 @@ interface props {
 }
 
 export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPaymentError }: props) {
+  const getCardType = (cardNumber: string) => {
+    // Eliminar espacios en blanco del número de tarjeta y convertir a cadena
+    const cardNumberCleaned = cardNumber.replace(/\D/g, '')
+
+    // Patrones para cada tipo de tarjeta basados en los primeros dígitos
+    const cardPatterns = {
+      visa: { pattern: /^4/, route: '/icons/visa.svg' },
+      mastercard: { pattern: /^5[1-5]/, route: '/icons/mc_symbol.svg' }
+    }
+
+    // Verificar cada patrón
+    for (const [, { pattern, route }] of Object.entries(cardPatterns)) {
+      if (pattern.test(cardNumberCleaned)) {
+        return route // Devuelve el tipo de tarjeta
+      }
+    }
+
+    return false
+  }
+
   const handleChange = (e: any) => {
     const { name, value } = e.target
 
@@ -26,10 +47,15 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
 
       if (formattedCardNumber.length <= 19) {
         setPaymentInfo({ ...paymentInfo, [name]: formattedCardNumber })
+        if (formattedCardNumber.length === 4) {
+          setPaymentInfo({ ...paymentInfo, [name]: formattedCardNumber, card_type: getCardType(value) })
+        } else if (formattedCardNumber.length < 4) {
+          setPaymentInfo({ ...paymentInfo, [name]: formattedCardNumber, card_type: '' })
+        }
       }
     }
 
-    if (name === 'expiration_date' && value.length <= 5) {
+    if (name === 'expiration_date' && value.length <= 7) {
       // Eliminar todos los caracteres no numéricos
       const cleanedValue = value.replace(/\D/g, '')
 
@@ -37,7 +63,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
 
       // Insertar '/' en la posición correcta si es necesario
       if (cleanedValue.length >= 3) {
-        formattedExpirationDate = `${cleanedValue.slice(0, 2)}/${cleanedValue.slice(2)}`
+        formattedExpirationDate = `${cleanedValue.slice(0, 2)} / ${cleanedValue.slice(2)}`
       }
 
       // Si el usuario está borrando caracteres, manejar la eliminación del '/'
@@ -46,7 +72,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
       }
 
       // Validar y corregir el mes si es necesario
-      let [monthPart, yearPart] = formattedExpirationDate.split('/')
+      let [monthPart, yearPart] = formattedExpirationDate.split(' / ')
 
       if (monthPart?.length === 1 && parseInt(monthPart, 10) > 1) {
         monthPart = `0${monthPart}`
@@ -54,7 +80,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
       }
 
       if (parseInt(monthPart, 10) > 12) {
-        formattedExpirationDate = `12/${yearPart || ''}`
+        formattedExpirationDate = `12 / ${yearPart || ''}`
       }
 
       // Actualizar paymentInfo con la fecha de expiración formateada
@@ -62,7 +88,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
 
       // Verificar si la fecha de expiración es anterior a la fecha actual
       if (formattedExpirationDate.length === 5) {
-        const [expMonth, expYear] = formattedExpirationDate.split('/')
+        const [expMonth, expYear] = formattedExpirationDate.split(' / ')
         const currentDate = new Date()
         const expirationDate = new Date(2000 + parseInt(expYear, 10), parseInt(expMonth, 10) - 1)
 
@@ -97,13 +123,17 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
               isInvalid={!!paymentError.card_number}
               errorMessage={paymentError.card_number}
             />
-            {paymentInfo.card_number.length > 3 && (
-              <p className='absolute right-2 top-2'>
-                card_icon
-              </p>
+            {paymentInfo.card_type && (
+              <Image
+                src={paymentInfo.card_type}
+                width={33}
+                height={33}
+                alt='cvv'
+                className='absolute right-2 top-2 pointer-events-none'
+              />
             )}
           </div>
-          <div className='flex gap-4'>
+          <div className='flex gap-8'>
             <div>
               <span>Fecha de expiración</span>
               <Input
@@ -128,9 +158,13 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
                   isInvalid={!!paymentError.cvv}
                   errorMessage={paymentError.cvv}
                 />
-                <p className='absolute right-2 top-2'>
-                  cvv_icon
-                </p>
+                <Image
+                  src='/icons/cvv.png'
+                  width={33}
+                  height={33}
+                  alt='cvv'
+                  className='absolute right-2 top-1 pointer-events-none'
+                />
               </div>
             </div>
           </div>

@@ -16,6 +16,7 @@ import { useDecrypt } from '@/hooks'
 
 interface IPaymentInfo {
   card_number: string
+  card_type: any
   expiration_date: string
   cvv: string
 }
@@ -50,11 +51,13 @@ export default function Checkout () {
   const [product, setProduct] = useState<any>(null)
   const [paymentInfo, setPaymentInfo] = useState<IPaymentInfo>({
     card_number: '',
+    card_type: false,
     expiration_date: '',
     cvv: ''
   })
   const [paymentError, setPaymentError] = useState<any>({
     card_number: false,
+    card_type: false,
     expiration_date: false,
     cvv: false
   })
