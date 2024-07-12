@@ -234,7 +234,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                     try {
                       handleSubmit(onClose)
                     } catch (e) {
-                      console.log(e)
+                      console.log('')
                     }
                   }}
                 >

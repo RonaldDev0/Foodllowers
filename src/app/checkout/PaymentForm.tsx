@@ -1,172 +1,185 @@
 /* eslint-disable camelcase */
 'use client'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useUser } from '@/store'
-import { Card, CardBody, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
-import { useSupabase } from '@/app/Providers'
-import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
-initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY!)
+import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Button } from '@nextui-org/react'
+import Image from 'next/image'
 
-type props = {
-  amount: number
-  error: Boolean
-  product: any
-  shippingCost: number
-  tip: number
-  influencer: number
-  calculateMercadoPagoComission: Function
-  isMaximumOrders: boolean
-  isMaximumNumberOfPurchases: boolean
+interface props {
+  paymentInfo: any
+  setPaymentInfo: Function
+  paymentError: any
+  setPaymentError: Function
 }
 
-export function PaymentForm ({
-  amount,
-  error,
-  product,
-  shippingCost,
-  tip,
-  influencer,
-  calculateMercadoPagoComission,
-  isMaximumOrders,
-  isMaximumNumberOfPurchases
-}: props) {
-  const { supabase } = useSupabase()
-  const { darkMode, addressSelect, userId, user } = useUser()
-  const router = useRouter()
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPaymentError }: props) {
+  const getCardType = (cardNumber: string) => {
+    // Eliminar espacios en blanco del número de tarjeta y convertir a cadena
+    const cardNumberCleaned = cardNumber.replace(/\D/g, '')
 
-  const [alert, setAlert] = useState<string | null>(null)
+    // Patrones para cada tipo de tarjeta basados en los primeros dígitos
+    const cardPatterns = {
+      visa: { pattern: /^4/, route: '/icons/visa.svg' },
+      mastercard: { pattern: /^5[1-5]/, route: '/icons/mc_symbol.svg' },
+      amex: { pattern: /^3[47]/, route: '/icons/amex.svg' }
+    }
 
-  const custormization: any = {
-    visual: {
-      style: {
-        theme: darkMode ? 'dark' : 'flat',
-        customVariables: {
-          baseColor: '#8a4af3',
-          buttonTextColor: '#F8F0EA',
-          formBackgroundColor: darkMode ? '#18181B' : '',
-          inputBackgroundColor: darkMode ? '#27272A' : ''
+    // Verificar cada patrón
+    for (const [, { pattern, route }] of Object.entries(cardPatterns)) {
+      if (pattern.test(cardNumberCleaned)) {
+        return route // Devuelve el tipo de tarjeta
+      }
+    }
+
+    return false
+  }
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target
+
+    setPaymentError({ ...paymentError, [name]: false })
+
+    if (name === 'card_number' && value.length <= 19) {
+      // Eliminar todos los espacios y formatear
+      const cleanedValue = value.replace(/\D/g, '')
+      let formattedCardNumber = ''
+
+      for (let i = 0; i < cleanedValue.length; i += 4) {
+        if (i > 0) formattedCardNumber += ' '
+        formattedCardNumber += cleanedValue.substring(i, i + 4)
+      }
+
+      if (formattedCardNumber.length <= 19) {
+        setPaymentInfo({ ...paymentInfo, [name]: formattedCardNumber })
+        if (formattedCardNumber.length === 4) {
+          setPaymentInfo({ ...paymentInfo, [name]: formattedCardNumber, card_type: getCardType(value) })
+        } else if (formattedCardNumber.length < 4) {
+          setPaymentInfo({ ...paymentInfo, [name]: formattedCardNumber, card_type: '' })
         }
       }
-    },
-    paymentMethods: {
-      // mercadoPago: 'all',
-      debitCard: 'all'
-      // bankTransfer: 'all'
-    }
-  }
-
-  const onSubmit = async ({ formData }: any) => {
-    if (isMaximumOrders) {
-      setAlert('La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.')
-      return
-    } else if (isMaximumNumberOfPurchases) {
-      setAlert('No quedan más productos disponibles')
-      return
     }
 
-    const order = await supabase
-      .from('orders')
-      .select('id')
-      .eq('user_id', userId)
-      .then(({ data }: any) => data)
+    if (name === 'expiration_date' && value.length <= 7) {
+      // Eliminar todos los caracteres no numéricos
+      const cleanedValue = value.replace(/\D/g, '')
 
-    const { ip }: any = await fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
+      let formattedExpirationDate = cleanedValue
 
-    if (error) {
-      setAlert(JSON.stringify(error, null, 2))
-      router.refresh()
-      return
-    } else if (!product.state) {
-      setAlert('Este producto se encuentra agotado.')
-      router.push('/')
-      return
-    } else if (!product?.kitchens.open) {
-      setAlert('Esta cocina esta cerrada!!')
-      router.push('/')
-      return
-    } else if (!product?.kitchens.address) {
-      setAlert('Este restaurante aun no esta listo para entregar domicilios')
-      router.push('/')
-      return
-    } else if (order.length) {
-      setAlert('ya tienes un pedido en camino!, no puedes hacer mas de un pedido al mismo tiempo')
-      return
-    }
+      // Insertar '/' en la posición correcta si es necesario
+      if (cleanedValue.length >= 3) {
+        formattedExpirationDate = `${cleanedValue.slice(0, 2)} / ${cleanedValue.slice(2)}`
+      }
 
-    fetch('/api/process_payment', {
-      cache: 'no-store',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        product,
-        shippingCost,
-        tip,
-        influencer,
-        userId,
-        user,
-        addressSelect,
-        paymentInfo: {
-          ...formData,
-          callback_url: 'https://foodllowers.vercel.app/currentshipment',
-          description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
-          additional_info: { ip_address: ip }
+      // Si el usuario está borrando caracteres, manejar la eliminación del '/'
+      if (cleanedValue.length === 2) {
+        formattedExpirationDate = cleanedValue
+      }
+
+      // Validar y corregir el mes si es necesario
+      let [monthPart, yearPart] = formattedExpirationDate.split(' / ')
+
+      if (monthPart?.length === 1 && parseInt(monthPart, 10) > 1) {
+        monthPart = `0${monthPart}`
+        formattedExpirationDate = `${monthPart}/${yearPart || ''}`
+      }
+
+      if (parseInt(monthPart, 10) > 12) {
+        formattedExpirationDate = `12 / ${yearPart || ''}`
+      }
+
+      // Actualizar paymentInfo con la fecha de expiración formateada
+      setPaymentInfo({ ...paymentInfo, [name]: formattedExpirationDate })
+
+      // Verificar si la fecha de expiración es anterior a la fecha actual
+      if (formattedExpirationDate.length === 5) {
+        const [expMonth, expYear] = formattedExpirationDate.split(' / ')
+        const currentDate = new Date()
+        const expirationDate = new Date(2000 + parseInt(expYear, 10), parseInt(expMonth, 10) - 1)
+
+        if (expirationDate < currentDate) {
+          setPaymentError({ ...paymentError, expiration_date: 'La fecha de expiración es anterior a la fecha actual' })
         }
-      })
-    })
-      .then(res => res.json())
-      .then(({ error }) => {
-        if (error) return router.refresh()
-        router.push('/currentshipment')
-      })
-  }
+      }
+    }
 
-  useEffect(() => {
-    if (alert) onOpen()
-  }, [alert])
+    if (name === 'cvv' && value.length <= 4) {
+      const cleanedValue = value.replace(/\D/g, '')
+      setPaymentInfo({ ...paymentInfo, [name]: cleanedValue })
+    }
+  }
 
   return (
     <>
       <Card>
-        <CardBody className='p-0 w-96'>
-          <Payment
-            key={product.id}
-            onSubmit={onSubmit}
-            locale='es-CO'
-            initialization={{ amount: amount + calculateMercadoPagoComission(amount) }}
-            customization={custormization}
-          />
+        <CardHeader>
+          Información de pago
+        </CardHeader>
+        <Divider />
+        <CardBody className='w-96 flex flex-col gap-4'>
+          <span>Número de la tarjeta</span>
+          <div className='relative'>
+            <Input
+              name='card_number'
+              value={paymentInfo.card_number}
+              onChange={handleChange}
+              type='text'
+              placeholder='1234 1234 1234 1234'
+              isInvalid={!!paymentError.card_number}
+              errorMessage={paymentError.card_number}
+            />
+            {paymentInfo.card_type && (
+              <Image
+                src={paymentInfo.card_type}
+                width={33}
+                height={33}
+                alt='cvv'
+                className={`absolute right-2 ${paymentInfo.card_type === '/icons/amex.svg' ? 'top-1' : 'top-2'} pointer-events-none`}
+              />
+            )}
+          </div>
+          <div className='flex gap-8'>
+            <div>
+              <span>Fecha de expiración</span>
+              <Input
+                name='expiration_date'
+                value={paymentInfo.expiration_date}
+                onChange={handleChange}
+                type='text'
+                placeholder='MM/YY'
+                isInvalid={!!paymentError.expiration_date}
+                errorMessage={paymentError.expiration_date}
+              />
+            </div>
+            <div>
+              <span>CVV</span>
+              <div className='relative'>
+                <Input
+                  name='cvv'
+                  value={paymentInfo.cvv}
+                  onChange={handleChange}
+                  type='text'
+                  placeholder='123'
+                  isInvalid={!!paymentError.cvv}
+                  errorMessage={paymentError.cvv}
+                />
+                <Image
+                  src='/icons/cvv.png'
+                  width={33}
+                  height={33}
+                  alt='cvv'
+                  className='absolute right-2 top-1 pointer-events-none'
+                />
+              </div>
+            </div>
+          </div>
         </CardBody>
+        <CardFooter>
+          <Button
+            className='w-full'
+            onClick={() => setPaymentInfo({ card_number: '4915 1120 5524 6507', card_type: '/icons/visa.svg', expiration_date: '11 / 25', cvv: '123' })}
+          >
+            Acuto completed
+          </Button>
+        </CardFooter>
       </Card>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {onClose => (
-            <>
-              <ModalHeader>
-                <p>Error</p>
-              </ModalHeader>
-              <ModalBody>
-                <p>{alert}</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  color='secondary'
-                  onPress={() => {
-                    if (alert === 'ya tienes un pedido en camino!, no puedes hacer mas de un pedido al mismo tiempo') {
-                      router.push('/currentshipment')
-                    }
-                    onClose()
-                  }}
-                >
-                  Aceptar
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </>
   )
 }

@@ -1,0 +1,18 @@
+{
+  "installments": 1,
+  "issuer_id": "205",
+  "token": "b535006572a3bfbbb045d991dd7a0208",
+
+
+
+  "transaction_amount": 10000,
+
+  "payer": {
+    "email": "elonmusk@spacex.com",
+    "identification": {
+      "type": "CC",
+      "number": "2423432423432"
+    }
+  },
+  "payment_method_id": "debvisa"
+}
