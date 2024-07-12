@@ -133,9 +133,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
           additional_info: { ip_address: ip },
           payer: {
             email: user.email
-          },
-          installments: 1,
-          payment_method_id: 'debvisa'
+          }
         },
         card: paymentInfo
       })

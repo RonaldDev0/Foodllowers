@@ -17,7 +17,8 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
     // Patrones para cada tipo de tarjeta basados en los primeros dígitos
     const cardPatterns = {
       visa: { pattern: /^4/, route: '/icons/visa.svg' },
-      mastercard: { pattern: /^5[1-5]/, route: '/icons/mc_symbol.svg' }
+      mastercard: { pattern: /^5[1-5]/, route: '/icons/mc_symbol.svg' },
+      amex: { pattern: /^3[47]/, route: '/icons/amex.svg' }
     }
 
     // Verificar cada patrón
@@ -129,7 +130,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
                 width={33}
                 height={33}
                 alt='cvv'
-                className='absolute right-2 top-2 pointer-events-none'
+                className={`absolute right-2 ${paymentInfo.card_type === '/icons/amex.svg' ? 'top-1' : 'top-2'} pointer-events-none`}
               />
             )}
           </div>
