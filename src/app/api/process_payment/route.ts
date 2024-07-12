@@ -16,8 +16,28 @@ const client = new MercadoPagoConfig({
 const payment = new Payment(client)
 
 export async function POST (req: NextRequest) {
-  const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo } = await req.json()
-  const { id, status, transaction_amount, fee_details }: any = await payment.create({ body: paymentInfo })
+  const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo, card } = await req.json()
+
+  const token = await fetch('https://api.mercadopago.com/v1/card_tokens', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${client.accessToken}`
+    },
+    body: JSON.stringify({
+      card_number: card.card_number.replace(/\s+/g, ''),
+      expiration_month: card.expiration_date.slice(0, 2),
+      expiration_year: '20' + card.expiration_date.slice(5, 7),
+      security_code: card.cvv,
+      cardholder: {
+        name: user.name
+      }
+    })
+  })
+    .then(res => res.json())
+    .then(res => res.id)
+
+  const { id, status, transaction_amount, fee_details }: any = await payment.create({ body: { ...paymentInfo, token } })
 
   if (status !== 'approved') return NextResponse.json({ error: true })
 

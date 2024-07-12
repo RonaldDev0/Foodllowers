@@ -127,16 +127,17 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
         user,
         addressSelect,
         paymentInfo: {
-          // ...paymentInfo,
           transaction_amount: amount,
           callback_url: 'https://foodllowers.vercel.app/currentshipment',
           description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
           additional_info: { ip_address: ip },
-          payment_method_id: 'debvisa',
           payer: {
             email: user.email
-          }
-        }
+          },
+          installments: 1,
+          payment_method_id: 'debvisa'
+        },
+        card: paymentInfo
       })
     })
       .then(res => res.json())
