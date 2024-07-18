@@ -70,6 +70,12 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
 
   const onSubmit = async () => {
     setIsLoading(true)
+
+    if (!addressSelect) {
+      showAlert('Debes agregar una dirección')
+      return
+    }
+
     const errorMessages: any = validatePaymentInfo()
 
     if (errorMessages.card_number) {

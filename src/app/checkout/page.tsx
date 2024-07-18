@@ -108,8 +108,6 @@ export default function Checkout () {
   }, [userId])
 
   useEffect(() => {
-    if (!addressSelect) return
-
     if (currentProduct) {
       setProduct(currentProduct)
       fetchMapsDistance(currentProduct.kitchens.address.geometry.location)
@@ -123,12 +121,14 @@ export default function Checkout () {
       .then((res: any) => {
         if (res.data) {
           setProduct(res.data[0])
-          fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
+          if (addressSelect) {
+            fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
+          }
           return
         }
         setError({ message: 'Product does not exist' })
       })
-  }, [addressSelect])
+  }, [])
 
   useEffect(() => {
     if (product) {
@@ -154,13 +154,13 @@ export default function Checkout () {
 
       if (isMaximumOrders) return
 
-      const { shipmentsCount }: any = await supabase
+      const shipmentsCount = await supabase
         .from('shipments')
         .select('id', { count: 'exact', head: true })
         .then(({ count, error }) => {
           if (error || !count) return
 
-          return { shipmentsCount: count }
+          return count
         })
 
       setNumberOfPurchases(ordersCount + shipmentsCount)
