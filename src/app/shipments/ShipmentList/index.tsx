@@ -3,15 +3,14 @@ import { useEffect } from 'react'
 import { useSupabase } from '../../Providers'
 import { useUser } from '@/store'
 import { ShipmentCard } from './ShipmentCard'
-import { indexedDB } from '@/indexedDB'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { EmptyCard } from './EmptyCard'
 
 export default function ShipmentList () {
   const { supabase } = useSupabase()
   const { userId, shipmentList, setStore } = useUser()
-  const shipmentListQuery = useLiveQuery(() => indexedDB.shipmentList.toArray())
 
-  function updateIndexedDB () {
+  useEffect(() => {
+    if (!userId || shipmentList) return
     supabase
       .from('shipments')
       .select('id, product')
@@ -20,22 +19,8 @@ export default function ShipmentList () {
       .then(({ data, error }) => {
         if (error) return
         setStore('shipmentList', data)
-        data.map(item => (
-          indexedDB.shipmentList.add(item as any)
-        ))
       })
-  }
-
-  useEffect(() => {
-    if (!userId || !shipmentListQuery || shipmentList) return
-
-    if (shipmentListQuery.length > 0) {
-      setStore('shipmentList', shipmentListQuery)
-      return
-    }
-
-    updateIndexedDB()
-  }, [userId, shipmentListQuery])
+  }, [userId, shipmentList])
 
   return (
     <div className='flex flex-col gap-4'>
@@ -45,6 +30,11 @@ export default function ShipmentList () {
           shipment={shipment}
         />
       ))}
+      {
+        shipmentList?.length === 0 && (
+          <EmptyCard />
+        )
+      }
     </div>
   )
 }

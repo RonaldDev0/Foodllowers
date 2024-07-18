@@ -4,7 +4,6 @@ import { useSupabase } from '@/app/Providers'
 import { Button, Card, CardBody, Dropdown, DropdownTrigger, DropdownMenu, useDisclosure, DropdownItem } from '@nextui-org/react'
 import { AddressForm } from '../AddressForm'
 import { Settings } from 'lucide-react'
-import { indexedDB } from '@/indexedDB'
 
 export function CardAddress ({ address }: { address: IAddress }) {
   const { setStore, addressList } = useUser()
@@ -12,19 +11,16 @@ export function CardAddress ({ address }: { address: IAddress }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const remove = () => {
-    indexedDB.addresses.delete(address.id).then(() => {
-      supabase
-        .from('addresses')
-        .delete()
-        .eq('id', address.id)
-        .then(({ error }) => {
-          if (error) {
-            return
-          }
-          const newAddressList = addressList?.filter(item => item.id !== address.id)
-          setStore('addressList', newAddressList)
-        })
-    })
+    supabase
+      .from('addresses')
+      .delete()
+      .eq('id', address.id)
+      .then(({ error }) => {
+        if (error) return
+
+        const newAddressList = addressList?.filter(item => item.id !== address.id)
+        setStore('addressList', newAddressList)
+      })
   }
 
   return (

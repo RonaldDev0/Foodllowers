@@ -9,7 +9,6 @@ import { useUser } from '@/store'
 import { Google } from './Google'
 import { Info } from 'lucide-react'
 import { useEncrypt } from '@/hooks'
-import { indexedDB } from '@/indexedDB'
 
 type IUser = {
   [key: string]: any
@@ -125,7 +124,6 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
               { id: data[0].id, user_id: userId, ...user, ...address }
             ]
           )
-          indexedDB.addresses.update(data[0].id, { ...data[0] })
         })
         .then(() => onClose())
       return
@@ -151,8 +149,6 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
           'addressList',
           (data && addressList) && [...addressList, { id: data[0].id, user_id: userId, ...user, ...address }]
         )
-
-        indexedDB.addresses.add(data[0])
       })
       .then(() => {
         cleanUser()
