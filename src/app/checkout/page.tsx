@@ -108,9 +108,7 @@ export default function Checkout () {
   }, [userId])
 
   useEffect(() => {
-    if (!addressSelect) return
-
-    if (currentProduct) {
+    if (currentProduct && addressSelect) {
       setProduct(currentProduct)
       fetchMapsDistance(currentProduct.kitchens.address.geometry.location)
       return
@@ -123,7 +121,9 @@ export default function Checkout () {
       .then((res: any) => {
         if (res.data) {
           setProduct(res.data[0])
-          fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
+          if (addressSelect) {
+            fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
+          }
           return
         }
         setError({ message: 'Product does not exist' })
