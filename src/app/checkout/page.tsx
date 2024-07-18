@@ -108,6 +108,8 @@ export default function Checkout () {
   }, [userId])
 
   useEffect(() => {
+    if (!addressSelect) return
+
     if (currentProduct) {
       setProduct(currentProduct)
       fetchMapsDistance(currentProduct.kitchens.address.geometry.location)
@@ -121,14 +123,12 @@ export default function Checkout () {
       .then((res: any) => {
         if (res.data) {
           setProduct(res.data[0])
-          if (addressSelect) {
-            fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
-          }
+          fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
           return
         }
         setError({ message: 'Product does not exist' })
       })
-  }, [])
+  }, [addressSelect])
 
   useEffect(() => {
     if (product) {
