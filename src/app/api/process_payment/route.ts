@@ -37,6 +37,7 @@ export async function POST (req: NextRequest) {
     })
       .then(res => res.json())
       .then(res => res.id)
+      .catch(err => console.log(err))
 
     const { id, status, transaction_amount, fee_details }: any = await payment.create({
       body: {
@@ -48,6 +49,8 @@ export async function POST (req: NextRequest) {
     })
 
     if (status !== 'approved') return NextResponse.json({ error: true })
+
+    console.log({ status, transaction_amount, fee_details })
 
     const response = await supabase
       .from('orders')
@@ -77,12 +80,14 @@ export async function POST (req: NextRequest) {
       }])
       .select('id')
       .then(({ error }) => {
+        console.log(error)
         if (error) return { error: true }
         return { error: false }
       })
 
     return NextResponse.json(response)
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: true })
   }
 }

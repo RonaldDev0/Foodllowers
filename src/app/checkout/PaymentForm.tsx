@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 'use client'
-import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Button } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Divider, Input } from '@nextui-org/react'
 import Image from 'next/image'
 
 interface props {
@@ -171,14 +171,6 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
             </div>
           </div>
         </CardBody>
-        <CardFooter>
-          <Button
-            className='w-full'
-            onClick={() => setPaymentInfo({ card_number: '4915 1120 5524 6507', card_type: '/icons/visa.svg', expiration_date: '11 / 25', cvv: '123' })}
-          >
-            Acuto completed
-          </Button>
-        </CardFooter>
       </Card>
     </>
   )
