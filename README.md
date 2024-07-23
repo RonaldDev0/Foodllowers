@@ -62,4 +62,3 @@ Este proyecto está bajo la Licencia de Uso Interno de Conglonet S.A.S. Consulta
 ## Contacto
 
 Para más información, contacta a Ronald Zamora en [ronaldzamoradev@gmail.com](mailto:ronaldzamoradev@gmail.com).
-```
