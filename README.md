@@ -1,6 +1,6 @@
 # Foodllowers
 
-Foodllowers es una aplicación desarrollada con [Next.js](https://nextjs.org/) y [React](https://reactjs.org/), diseñada para [describir la funcionalidad o el propósito de la aplicación]. Esta aplicación busca [breve descripción del propósito, por ejemplo: conectar a influencers con restaurantes para promociones].
+Foodllowers es una innovadora aplicación desarrollada con [Next.js](https://nextjs.org/) y [React](https://reactjs.org/), que facilita la conexión entre cocinas ocultas y influencers. Su objetivo es generar ingresos para ambos y fortalecer la relación entre los influencers y sus seguidores. A través de la plataforma, cocinas ocultas pueden promocionar sus productos y servicios, mientras que los influencers tienen la oportunidad de colaborar en campañas auténticas y rentables.
 
 ## Instalación y Uso
 
@@ -63,5 +63,3 @@ Este proyecto está bajo la Licencia de Uso Interno de Conglonet S.A.S. Consulta
 
 Para más información, contacta a Ronald Zamora en [ronaldzamoradev@gmail.com](mailto:ronaldzamoradev@gmail.com).
 ```
-
-Este archivo `README.md` proporciona una descripción continua y fluida sobre la instalación, uso, estructura del proyecto, contribución, licencia y contacto, sin secciones numeradas separadas.
