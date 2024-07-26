@@ -6,7 +6,6 @@ export function Alert ({ message }: { message: string }) {
       <CardBody className='grid place-content-center'>
         <p className='text-xl'>{message}</p>
       </CardBody>
-      
     </Card>
   )
 }
