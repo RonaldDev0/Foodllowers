@@ -15,12 +15,11 @@ export function ProductList () {
       supabase
         .from('products')
         .select('id, preview, name, price, state, influencers( avatar, full_name, path, bank_account ), kitchens( open, address, bank_account )')
+        .neq('preview', null)
         .then(({ data, error }) => {
-          if (error) {
-            return
-          }
+          if (error || !data) return
 
-          const products = data.filter((item: any) =>
+          const products = data.filter((item: any) => item.influencers !== null).filter((item: any) =>
             item.kitchens.address !== null &&
             item.kitchens.bank_account !== null &&
             item.influencers.bank_account !== null
