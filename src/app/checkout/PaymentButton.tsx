@@ -133,7 +133,6 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
         user,
         addressSelect,
         paymentInfo: {
-          // transaction_amount: 1500,
           transaction_amount: amount,
           callback_url: 'https://foodllowers.vercel.app/currentshipment',
           description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
