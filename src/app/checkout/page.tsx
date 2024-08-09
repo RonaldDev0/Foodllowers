@@ -157,9 +157,7 @@ export default function Checkout () {
       const shipmentsCount = await supabase
         .from('shipments')
         .select('id', { count: 'exact', head: true })
-        .then(({ count, error }) => {
-          if (error || !count) return
-
+        .then(({ count }) => {
           return count
         })
 
