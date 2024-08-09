@@ -3,7 +3,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { createPagesBrowserClient, type SupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@/store'
+import { useUser, useContent } from '@/store'
 
 type Database = {
   public: {
@@ -27,6 +27,7 @@ export function Providers ({ children }: { children: ReactNode }) {
   const [supabase] = useState(() => createPagesBrowserClient())
   const router = useRouter()
   const { setStore } = useUser()
+  const { setStore: setContentStore } = useContent()
 
   useEffect(() => {
     supabase.auth.getSession()
@@ -35,6 +36,31 @@ export function Providers ({ children }: { children: ReactNode }) {
           setStore('user', session.user.user_metadata)
           setStore('userId', session.user.id)
         }
+
+        supabase
+          .from('costs')
+          .select('*')
+          .then(({ data, error }) => {
+            if (error) return
+            data.forEach(item => {
+              switch (item.role) {
+                case 'influencer':
+                  setContentStore('influencer', item.cost)
+                  break
+                case 'delivery_minima':
+                  setContentStore('minima', item.cost)
+                  break
+                case 'delivery_price_per_km':
+                  setContentStore('pricePerKm', item.cost)
+                  break
+                case 'service_fee':
+                  setContentStore('serviceFee', item.cost)
+                  break
+                default:
+                  break
+              }
+            })
+          })
       })
   }, [])
 

@@ -33,9 +33,9 @@ export const useContent = create<State & Actions>(set => ({
   currentInfluencer: null,
   currentProduct: null,
   preparationTime: 20,
-  pricePerKm: 1000,
-  minima: 3000,
-  serviceFee: 2000,
-  influencer: 1000,
+  pricePerKm: 0,
+  minima: 0,
+  serviceFee: 0,
+  influencer: 0,
   setStore: (property, value) => set(prevState => ({ ...prevState, [property]: value }))
 }))
