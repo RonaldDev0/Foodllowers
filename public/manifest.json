@@ -4,8 +4,8 @@
   "display": "Standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "foodllowers",
-  "short_name": "foodllowers",
+  "name": "Foodllowers",
+  "short_name": "Foodllowers",
   "icons": [
     {
       "src": "/icon-192x192.png",
