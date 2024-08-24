@@ -236,7 +236,7 @@ export default function Checkout () {
           setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           error={error}
-          amount={total}
+          amount={total + calculateMercadoPagoComission(total)}
           product={product}
           shippingCost={shippingCost}
           tip={tip}
