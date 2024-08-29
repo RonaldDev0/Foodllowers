@@ -1,17 +1,12 @@
 'use client'
 import Image from 'next/image'
-import { Button, Card, CardHeader, CardBody, CardFooter, Divider, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
+import { Button, Card, CardHeader, CardBody, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
 import { ClipboardList } from 'lucide-react'
 import { useSupabase } from '../Providers'
-import { useRef } from 'react'
-import Link from 'next/link'
 
 export default function Login () {
   const { supabase } = useSupabase()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
-  const email = useRef<any>()
-  const password = useRef<any>()
 
   const Login = async () => await supabase
     .auth
@@ -28,22 +23,20 @@ export default function Login () {
           Iniciar sesión
         </CardHeader>
         <CardBody className='justify-center items-center flex flex-col gap-6'>
-          <Input
-            ref={email}
-            isRequired
-            type='email'
-            label='Email'
-            className='max-w-xs'
-          />
-          <Input
-            ref={password}
-            isRequired
-            type='password'
-            label='Password'
-            className='max-w-xs'
-          />
-          <Button className='w-full' color='secondary'>
-            Ingresar
+          <Button
+            color='primary'
+            onPress={Login}
+            className='flex justify-center items-center gap-2 w-80 py-6 text-lg'
+          >
+            <Image
+              src='./icons/google.svg'
+              alt='Google'
+              width='45'
+              height='45'
+            />
+            <p>
+              Inicar sesión con Google
+            </p>
           </Button>
           <p className='text-purple-500 cursor-pointer' onClick={onOpen}>
             Terminos y Condiciones de Uso
@@ -94,28 +87,7 @@ export default function Login () {
               )}
             </ModalContent>
           </Modal>
-          <Link href='/register' className='text-purple-500'>
-            No tienes una cuenta?
-          </Link>
         </CardBody>
-        <CardFooter className='flex flex-col justify-center'>
-          <Divider className='mb-8' />
-          <Button
-            color='primary'
-            onPress={Login}
-            className='flex justify-center items-center gap-2 w-80 py-6 text-lg'
-          >
-            <Image
-              src='./icons/google.svg'
-              alt='Google'
-              width='45'
-              height='45'
-            />
-            <p>
-              Inicar sesión con Google
-            </p>
-          </Button>
-        </CardFooter>
       </Card>
     </main>
   )
