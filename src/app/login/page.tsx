@@ -39,7 +39,7 @@ export default function Login () {
             </p>
           </Button>
           <p className='text-purple-500 cursor-pointer' onClick={onOpen}>
-            Terminos y Condiciones de Uso
+            Al continuar estas aseptando los Terminos y Condiciones de Uso
           </p>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>

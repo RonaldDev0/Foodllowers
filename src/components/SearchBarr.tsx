@@ -32,7 +32,7 @@ export function SearchBarr ({ message }: { message: boolean }) {
                 onChange={({ target: { value } }: any) => setInput(value)}
                 value={input}
                 className='bg-transparent outline-none p-3 w-[500px] [@media(min-width:800px)]:focus:w-[600px] transition-all rounded-l-lg'
-                placeholder='Buca a tu Foodllowed favorito 😋...'
+                placeholder='Busca a tu favorito 😋...'
                 type='text'
               />
               <Button
