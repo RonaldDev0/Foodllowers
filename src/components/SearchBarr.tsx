@@ -21,7 +21,7 @@ export function SearchBarr ({ message }: { message: boolean }) {
     >
       {message && (
         <p className='text-xl m-2' style={{ fontSize: '1.5rem', fontFamily: 'skranji-bold, cursive', fontWeight: 700, color: 'rgb(244, 202, 68)' }}>
-          El dia esta muy lindo pa' no comer algo rico (づ￣3￣)づ🍔
+          El dia esta muy lindo pa' no comer algo rico :3
         </p>
       )}
       <form onSubmit={handleSubmit}>
