@@ -17,7 +17,7 @@ export default function Login () {
     )
 
   return (
-    <main className='h-screen flex justify-center items-center'>
+    <main className='flex-col h-screen flex justify-center items-center'>
       <Card className='p-10 [@media(max-width:800px)]:p-2'>
         <CardHeader className='justify-center text-2xl'>
           Iniciar sesión
@@ -38,7 +38,7 @@ export default function Login () {
               Inicar sesión con Google
             </p>
           </Button>
-          <p className='text-purple-500 cursor-pointer' onClick={onOpen}>
+          <p className='text-purple-500 cursor-pointer w-96' onClick={onOpen}>
             Al continuar estas aseptando los Terminos y Condiciones de Uso
           </p>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
