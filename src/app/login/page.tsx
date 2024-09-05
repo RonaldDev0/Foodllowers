@@ -23,7 +23,9 @@ export default function Login () {
         alt='Google'
         width='450'
         height='450'
-        className='fixed top-60'
+        className='fixed
+        [@media(max-width:800px)]:top-32
+        [@media(min-width:800px)]:top-60'
       />
       <Card className='p-10 [@media(max-width:800px)]:p-2'>
         <CardHeader className='justify-center text-2xl'>
