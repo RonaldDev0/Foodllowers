@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { Providers } from './Providers'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
+
 import type { Metadata } from 'next'
 
 // Components
@@ -22,7 +23,7 @@ export default function RootLayout ({ children }: { children: ReactNode }) {
       <head>
         <meta name='theme-color' content='#1f1f1f' />
       </head>
-      <body className='w-full min-h-screen flex flex-col top-12 items-center dark:bg-gradient-to-r from-blue-950 dark:to-neutral-950'>
+      <body className='w-full min-h-screen flex flex-col top-12 items-center dark:bg-zinc-950'>
         <Providers>
           <SideBarr />
           {children}
