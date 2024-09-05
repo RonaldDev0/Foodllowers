@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { Button, Card, CardHeader, CardBody, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
+import { Button, Card, CardHeader, CardBody, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from '@nextui-org/react'
 import { ClipboardList } from 'lucide-react'
 import { useSupabase } from '../Providers'
 
@@ -23,6 +23,7 @@ export default function Login () {
         alt='Google'
         width='450'
         height='450'
+        className='fixed top-60'
       />
       <Card className='p-10 [@media(max-width:800px)]:p-2'>
         <CardHeader className='justify-center text-2xl'>
@@ -30,23 +31,24 @@ export default function Login () {
         </CardHeader>
         <CardBody className='justify-center items-center flex flex-col gap-6'>
           <Button
-            color='primary'
             onPress={Login}
-            className='flex justify-center items-center gap-2 w-80 py-6 text-lg'
+            className='flex justify-center items-center gap-2 w-80 py-6 text-lg bg-zinc-950'
           >
             <Image
               src='/icons/google.svg'
               alt='Google'
-              width='45'
+              width='35'
               height='45'
             />
             <p>
-              Inicar sesión con Google
+              Continuar con Google
             </p>
           </Button>
-          <p className='text-purple-500 cursor-pointer' onClick={onOpen}>
-            Al continuar estas aseptando los Terminos y Condiciones de Uso
-          </p>
+          <div>
+            <p className='text-purple-500 cursor-pointer' onClick={onOpen}>
+              Al continuar estas aceptando los <br /> Terminos y Condiciones de Uso
+            </p>
+          </div>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
               {() => (
@@ -86,9 +88,6 @@ export default function Login () {
                       Conglonet reserva los derechos de cambiar o de modificar estos términos sin previo aviso.
                     </div>
                   </ModalBody>
-                  <ModalFooter>
-                    {}
-                  </ModalFooter>
                 </>
               )}
             </ModalContent>

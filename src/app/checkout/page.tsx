@@ -13,6 +13,8 @@ import { Alert } from '@/components/Alert'
 import { EstimationTime } from './EstimationTime'
 import { PaymentButton } from './PaymentButton'
 import { useDecrypt } from '@/hooks'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface IPaymentInfo {
   card_number: string
@@ -197,9 +199,24 @@ export default function Checkout () {
         [@media(max-width:800px)]:w-96
         [@media(max-width:800px)]:mb-20'
     >
+      <Link
+        href='/'
+        className='
+          [@media(min-width:800px)]:fixed
+          [@media(min-width:800px)]:top-16'
+      >
+        <Image
+          src='/img/LogName.png'
+          alt='Google'
+          width='450'
+          height='450'
+        />
+      </Link>
       <div
         className='flex flex-col gap-5
-          [@media(min-width:800px)]:w-[522px]'
+          [@media(min-width:800px)]:w-[522px]
+          [@media(min-width:800px)]:pt-32
+          [@media(max-width:800px)]:pt-6'
       >
         <Alert message={AlertMessage} />
 
@@ -215,7 +232,8 @@ export default function Checkout () {
       </div>
       <div
         className='flex flex-col gap-5 top-5
-          [@media(min-width:800px)]:sticky'
+          [@media(min-width:800px)]:sticky
+          [@media(min-width:800px)]:pt-32'
       >
         <Summary
           productPrice={product.price}
