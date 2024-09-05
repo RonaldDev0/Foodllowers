@@ -17,7 +17,13 @@ export default function Login () {
     )
 
   return (
-    <main className='h-screen flex justify-center items-center'>
+    <main className='h-screen flex flex-col justify-center items-center'>
+      <Image
+        src='/img/LogName.png'
+        alt='Google'
+        width='450'
+        height='450'
+      />
       <Card className='p-10 [@media(max-width:800px)]:p-2'>
         <CardHeader className='justify-center text-2xl'>
           Iniciar sesión
@@ -29,7 +35,7 @@ export default function Login () {
             className='flex justify-center items-center gap-2 w-80 py-6 text-lg'
           >
             <Image
-              src='./icons/google.svg'
+              src='/icons/google.svg'
               alt='Google'
               width='45'
               height='45'
