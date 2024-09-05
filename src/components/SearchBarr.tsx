@@ -20,8 +20,8 @@ export function SearchBarr ({ message }: { message: boolean }) {
       ${message ? 'mt-24' : 'my-10 [@media(max-width:800px)]:mt-16'}`}
     >
       {message && (
-        <p className='text-xl m-2'>
-          ¿Cuál es tu influenciador favorito?
+        <p className='text-xl m-2' style={{ fontSize: '1.5rem', fontFamily: 'skranji-bold, cursive', fontWeight: 700, color: 'rgb(244, 202, 68)' }}>
+          El dia esta muy lindo pa' no comer algo rico :3
         </p>
       )}
       <form onSubmit={handleSubmit}>
@@ -32,11 +32,11 @@ export function SearchBarr ({ message }: { message: boolean }) {
                 onChange={({ target: { value } }: any) => setInput(value)}
                 value={input}
                 className='bg-transparent outline-none p-3 w-[500px] [@media(min-width:800px)]:focus:w-[600px] transition-all rounded-l-lg'
-                placeholder='Buscar...'
+                placeholder='Busca a tu favorito 😋...'
                 type='text'
               />
               <Button
-                color='primary'
+                style={{ backgroundColor: 'rgb(244, 202, 68)' }}
                 size='lg'
                 className='[@media(max-width:800px)]:hidden rounded-none rounded-r-lg'
               >
