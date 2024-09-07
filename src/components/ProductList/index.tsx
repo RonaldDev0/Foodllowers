@@ -14,7 +14,7 @@ export function ProductList () {
     if (!productList) {
       supabase
         .from('products')
-        .select('id, preview, name, price, state, influencers( avatar, full_name, path, bank_account ), kitchens( open, address, bank_account )')
+        .select('id, preview, name, price, state, influencers( avatar, full_name, bank_account ), kitchens( open, address, bank_account )')
         .neq('preview', null)
         .then(({ data, error }) => {
           if (error || !data) return

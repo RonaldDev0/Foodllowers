@@ -118,11 +118,12 @@ export default function Checkout () {
 
     supabase
       .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( id, full_name, avatar, path ), kitchens( open, address )')
+      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( id, full_name, avatar ), kitchens( open, address )')
       .eq('id', query)
       .then((res: any) => {
         if (res.data) {
-          setProduct(res.data[0])
+          const product = res.data[0].id_influencer !== null ? res.data[0] : null
+          setProduct(product)
           if (addressSelect) {
             fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
           }
