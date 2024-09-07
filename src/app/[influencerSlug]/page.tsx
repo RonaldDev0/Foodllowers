@@ -23,14 +23,14 @@ export default function InfluencerPage ({ params: { influencerSlug } }: IProps) 
 
     supabase
       .from('influencers')
-      .select('id, full_name, path, avatar, banner, products(id, price, name, preview, state, kitchens( address, open ))')
+      .select('id, full_name, avatar, banner, products(id, price, name, preview, state, kitchens( address, open ))')
       .neq('bank_account', null)
-      .eq('path', '/' + influencerSlug)
+      .eq('full_name', influencerSlug)
+      .eq('register_step', 'finished')
       .single()
       .then(({ data, error }) => {
-        if (error) {
-          return
-        }
+        if (error) return
+
         setStore('currentInfluencer', data)
       })
   }, [influencerSlug])

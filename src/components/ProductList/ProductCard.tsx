@@ -35,7 +35,7 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
           )}
           <div className='p-4 flex justify-between items-center'>
             <div className='flex gap-3 items-center'>
-              <Link href={product.influencers.path}>
+              <Link href={'/' + product.influencers.full_name}>
                 <Avatar src={product.influencers.avatar} />
               </Link>
               <div>
