@@ -26,7 +26,7 @@ export function CardData ({ activeStep, product }: props) {
             className='w-96'
           />
           <div className='flex items-center p-3 gap-4'>
-            <Link href={product.influencers?.path}>
+            <Link href={product.influencers?.full_name}>
               <Avatar src={product.influencers?.avatar} />
             </Link>
             <div className='flex flex-col'>
