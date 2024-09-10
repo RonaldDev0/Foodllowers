@@ -64,8 +64,8 @@ export function SideBarr () {
       >
         <Card className='w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'>
           <CardBody className='p-0'>
-            <div className='w-full flex justify-around mt-3'>
-              <Switch
+            <div className='w-full flex justify-end mt-3'>
+              {/* <Switch
                 onClick={() => setStore('darkMode', !darkMode)}
                 defaultSelected={!darkMode}
                 size='md'
@@ -75,7 +75,7 @@ export function SideBarr () {
                     ? <SunIcon className={className} />
                     : <MoonIcon className={className} />
                 )}
-              />
+              /> */}
               <X
                 size={40}
                 className='cursor-pointer'

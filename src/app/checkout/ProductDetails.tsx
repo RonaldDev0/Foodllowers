@@ -42,7 +42,7 @@ export function ProductDetails ({ product }: Props) {
               {product.name}
             </p>
             <div className='flex gap-4 items-center'>
-              <Link href={product.influencers?.path}>
+              <Link href={'/' + product.influencers?.full_name}>
                 <Avatar
                   src={product.influencers?.avatar}
                   className='w-14 h-14'
