@@ -3,6 +3,11 @@ import { Search } from 'lucide-react'
 import { useState } from 'react'
 import { Button, Card, CardBody } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+
+import { Skranji } from 'next/font/google'
+
+const skranji = Skranji({ weight: '400', subsets: ['latin'], display: 'swap', preload: true })
 
 export function SearchBarr ({ message }: { message: boolean }) {
   const router = useRouter()
@@ -19,8 +24,14 @@ export function SearchBarr ({ message }: { message: boolean }) {
     <div className={`flex flex-col items-center
       ${message ? 'mt-24' : 'my-10 [@media(max-width:800px)]:mt-16'}`}
     >
+      <Image
+        src='/img/LogName.png'
+        alt='Google'
+        width='450'
+        height='450'
+      />
       {message && (
-        <p className='text-xl m-2' style={{ fontSize: '1.5rem', fontFamily: 'skranji-bold, cursive', fontWeight: 700, color: 'rgb(244, 202, 68)' }}>
+        <p className={`${skranji.className} m-2 text-[1.5rem] text-[#f4ca44] font-bold`}>
           El dia esta muy lindo pa' no comer algo rico :3
         </p>
       )}
