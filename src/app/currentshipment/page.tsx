@@ -30,7 +30,6 @@ export default function CurrentShipment () {
             'postgres_changes',
             { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${userId}` },
             ({ new: { order_state: orderState, payment_status: paymentStatus }, eventType }: any) => {
-              console.log({ orderState, paymentStatus, eventType })
               if (paymentStatus === 'approved') {
                 setActiveStep(orderState)
                 return
