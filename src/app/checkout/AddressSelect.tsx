@@ -30,7 +30,7 @@ export function AddressSelect ({ setError }: { setError: Function }) {
   return (
     <>
       <Card>
-        <CardHeader className='flex w-full justify-around'>
+        <CardHeader className='flex w-full justify-around z-0'>
           <p>Dirección de envio</p>
           <Button onPress={onOpen} variant='faded'>
             Cambiar

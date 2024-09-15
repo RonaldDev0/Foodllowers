@@ -17,7 +17,7 @@ const payment = new Payment(client)
 
 export async function POST (req: NextRequest) {
   try {
-    const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo, card } = await req.json()
+    const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo, card, preference } = await req.json()
 
     const token = await fetch('https://api.mercadopago.com/v1/card_tokens', {
       method: 'POST',
@@ -66,6 +66,7 @@ export async function POST (req: NextRequest) {
         invoice_id: id,
         user_email: user.email,
         payment_status: 'approved',
+        preferences: preference,
         transaction_amount: {
           mercadopago: Math.floor(fee_details[0].amount),
           influencer,

@@ -21,7 +21,7 @@ export function Tip ({ amount, setTip, serviceFee, influencer }: IProps) {
 
   return (
     <Card>
-      <CardHeader className='flex justify-between'>
+      <CardHeader className='flex justify-between z-0'>
         <p>Añade una propina</p>
         <p className='text-sm'>Esta recompensa va para el Domiciliario</p>
       </CardHeader>
