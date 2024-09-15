@@ -15,6 +15,7 @@ import { PaymentButton } from './PaymentButton'
 import { useDecrypt } from '@/hooks'
 import Image from 'next/image'
 import Link from 'next/link'
+import { MisteryBurguerOptions } from './MisteryBurguerOptions'
 
 interface IPaymentInfo {
   card_number: string
@@ -51,6 +52,7 @@ export default function Checkout () {
   const [isMaximumOrders, setIsMaximumOrders] = useState(false)
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
+  const [preference, setPreference] = useState<any>(null)
   const [paymentInfo, setPaymentInfo] = useState<IPaymentInfo>({
     card_number: '',
     card_type: false,
@@ -236,6 +238,7 @@ export default function Checkout () {
           [@media(min-width:800px)]:sticky
           [@media(min-width:800px)]:pt-32'
       >
+        <MisteryBurguerOptions value={preference} setValue={setPreference} />
         <Summary
           productPrice={product.price}
           serviceFee={serviceFee}
@@ -262,6 +265,7 @@ export default function Checkout () {
           influencer={influencer}
           isMaximumOrders={isMaximumOrders}
           isMaximumNumberOfPurchases={numberOfPurchases >= MAX_NUMBER_OF_PURCHASES}
+          preference={preference}
         />
       </div>
     </main>

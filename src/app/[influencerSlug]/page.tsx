@@ -17,9 +17,7 @@ export default function InfluencerPage ({ params: { influencerSlug } }: IProps) 
   const { currentInfluencer, setStore } = useContent()
 
   useEffect(() => {
-    if (currentInfluencer?.path === '/' + influencerSlug) {
-      return
-    }
+    if (currentInfluencer?.full_name === '/' + influencerSlug) return
 
     supabase
       .from('influencers')
@@ -35,9 +33,7 @@ export default function InfluencerPage ({ params: { influencerSlug } }: IProps) 
       })
   }, [influencerSlug])
 
-  if (!currentInfluencer) {
-    return null
-  }
+  if (!currentInfluencer) return null
 
   return (
     <main className='flex flex-col w-full mb-16 items-center gap-8'>

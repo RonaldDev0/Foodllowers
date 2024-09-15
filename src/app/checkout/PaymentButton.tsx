@@ -18,6 +18,7 @@ type props = {
   isMaximumNumberOfPurchases: boolean
   paymentInfo: any
   setPaymentError: Function
+  preference: null | string
 }
 
 const paymentInfoSchema = z.object({
@@ -30,7 +31,7 @@ const paymentInfoSchema = z.object({
     .max(4, 'CVV debe tener 3 o 4 dígitos')
 })
 
-export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError }: props) {
+export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError, preference }: props) {
   const { supabase } = useSupabase()
   const { addressSelect, userId, user } = useUser()
   const router = useRouter()
@@ -125,6 +126,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        preference,
         product,
         shippingCost,
         tip,
