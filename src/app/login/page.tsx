@@ -19,11 +19,21 @@ export default function Login () {
   return (
     <main className='h-screen flex flex-col justify-center items-center'>
       <Image
-        src='/img/LogName.png'
-        alt='Google'
+        src='/img/LogName-light.png'
+        alt='Foodllowers'
         width='450'
         height='450'
-        className='fixed
+        className='fixed dark:hidden
+        [@media(max-width:800px)]:top-32
+        [@media(max-width:1400px)]:top-28
+        [@media(min-width:1500px)]:top-60'
+      />
+      <Image
+        src='/img/LogName.png'
+        alt='Foodllowers'
+        width='450'
+        height='450'
+        className='fixed hidden dark:block
         [@media(max-width:800px)]:top-32
         [@media(max-width:1400px)]:top-28
         [@media(min-width:1500px)]:top-60'
