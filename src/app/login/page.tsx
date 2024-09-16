@@ -25,7 +25,8 @@ export default function Login () {
         height='450'
         className='fixed
         [@media(max-width:800px)]:top-32
-        [@media(min-width:800px)]:top-60'
+        [@media(max-width:1400px)]:top-28
+        [@media(min-width:1500px)]:top-60'
       />
       <Card className='p-10 [@media(max-width:800px)]:p-2'>
         <CardHeader className='justify-center text-2xl'>
