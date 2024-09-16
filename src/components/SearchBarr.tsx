@@ -25,10 +25,18 @@ export function SearchBarr ({ message }: { message: boolean }) {
       ${message ? 'mt-24' : 'my-10 [@media(max-width:800px)]:mt-16'}`}
     >
       <Image
-        src='/img/LogName.png'
-        alt='Google'
+        src='/img/LogName-light.png'
+        alt='Foodllowers'
         width='450'
         height='450'
+        className='dark:hidden'
+      />
+      <Image
+        src='/img/LogName.png'
+        alt='Foodllowers'
+        width='450'
+        height='450'
+        className='hidden dark:block'
       />
       {message && (
         <p className={`${skranji.className} m-2 text-[1.5rem] text-[#f4ca44] font-bold`}>

@@ -209,10 +209,18 @@ export default function Checkout () {
           [@media(min-width:800px)]:top-16'
       >
         <Image
-          src='/img/LogName.png'
-          alt='Google'
+          src='/img/LogName-light.png'
+          alt='Foodllowers'
           width='450'
           height='450'
+          className='dark:hidden'
+        />
+        <Image
+          src='/img/LogName.png'
+          alt='Foodllowers'
+          width='450'
+          height='450'
+          className='hidden dark:block'
         />
       </Link>
       <div
