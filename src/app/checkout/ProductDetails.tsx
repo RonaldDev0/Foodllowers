@@ -30,7 +30,7 @@ export function ProductDetails ({ product }: Props) {
             width='200'
             height='200'
             alt='preview'
-            className='w-72 aspect-video [@media(max-width:800px)]:w-full'
+            className='w-72 aspect-video [@media(max-width:800px)]:w-full h-[280px]'
           />
           {!product?.state && (
             <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>

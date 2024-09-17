@@ -23,7 +23,7 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
             width='200'
             height='200'
             alt='preview'
-            className='w-[350px] h-[200px]'
+            className='w-[350px] h-[280px]'
           />
           {!product?.state && (
             <Chip

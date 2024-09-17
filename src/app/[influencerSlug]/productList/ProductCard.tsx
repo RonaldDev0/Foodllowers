@@ -33,7 +33,7 @@ export function ProductCard ({ product }: { product: IProductCard }) {
               width='200'
               height='200'
               alt='preview'
-              className='w-[350px] h-[200px]'
+              className='w-[350px] h-[280px]'
             />
             {!product?.state && (
               <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>
