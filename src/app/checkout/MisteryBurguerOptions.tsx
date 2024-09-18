@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Card, CardBody, CardHeader, Divider, Button, Checkbox, Accordion, AccordionItem, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react'
 import { Info, X } from 'lucide-react'
@@ -9,7 +9,7 @@ type ICategory = {
   items: {
     name: string
     checked: any
-  } []
+  }[]
 }
 
 const initialPreferences: ICategory[] = [
@@ -79,6 +79,7 @@ export function MisteryBurguerOptions ({ value, setValue }: { value: any, setVal
   const query = useSearchParams().get('q')
   const isMisteryBurguer = query === '471ba020-79b7-4204-9e9d-2e8ca2b0f216'
   const [preferences, setPreferences] = useState<any>(initialPreferences)
+  const [showPreferences, setShowPreferences] = useState<any>(null)
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -130,9 +131,14 @@ export function MisteryBurguerOptions ({ value, setValue }: { value: any, setVal
         items.filter(({ checked }: any) => checked).map(({ name }: any) => name)
       )).flat()
 
-    setValue(preferencesFormatted.length ? preferencesFormatted : null)
+    setShowPreferences(preferencesFormatted.length ? preferencesFormatted : null)
+    setValue(preferences)
     onClose()
   }
+
+  useEffect(() => {
+    setValue(initialPreferences)
+  }, [])
 
   if (!isMisteryBurguer) return null
   return (
@@ -149,7 +155,7 @@ export function MisteryBurguerOptions ({ value, setValue }: { value: any, setVal
         </CardHeader>
         <Divider />
         <CardBody className='max-w-96'>
-          {value?.map((item: string) => (
+          {showPreferences?.map((item: string) => (
             <p key={item}>{item}</p>
           )) || (
             <p>No has elegido ingredientes para evitar. <br /> ¡Marca los que prefieres excluir!</p>

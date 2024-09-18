@@ -273,7 +273,7 @@ export default function Checkout () {
           influencer={influencer}
           isMaximumOrders={isMaximumOrders}
           isMaximumNumberOfPurchases={numberOfPurchases >= MAX_NUMBER_OF_PURCHASES}
-          preference={preference}
+          preferences={preference}
         />
       </div>
     </main>
