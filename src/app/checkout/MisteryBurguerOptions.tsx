@@ -75,7 +75,7 @@ const initialPreferences: ICategory[] = [
   }
 ]
 
-export function MisteryBurguerOptions ({ value, setValue }: { value: any, setValue: Function }) {
+export function MisteryBurguerOptions ({ setValue }: { setValue: Function }) {
   const query = useSearchParams().get('q')
   const isMisteryBurguer = query === '471ba020-79b7-4204-9e9d-2e8ca2b0f216'
   const [preferences, setPreferences] = useState<any>(initialPreferences)
@@ -138,6 +138,7 @@ export function MisteryBurguerOptions ({ value, setValue }: { value: any, setVal
 
   useEffect(() => {
     setValue(initialPreferences)
+    onOpen()
   }, [])
 
   if (!isMisteryBurguer) return null
