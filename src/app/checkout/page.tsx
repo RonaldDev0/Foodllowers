@@ -52,7 +52,7 @@ export default function Checkout () {
   const [isMaximumOrders, setIsMaximumOrders] = useState(false)
   const [estimationTime, setEstimationTime] = useState(0)
   const [product, setProduct] = useState<any>(null)
-  const [preference, setPreference] = useState<any>(null)
+  const [preferences, setPreferences] = useState<any>(null)
   const [paymentInfo, setPaymentInfo] = useState<IPaymentInfo>({
     card_number: '',
     card_type: false,
@@ -246,7 +246,7 @@ export default function Checkout () {
           [@media(min-width:800px)]:sticky
           [@media(min-width:800px)]:pt-32'
       >
-        <MisteryBurguerOptions value={preference} setValue={setPreference} />
+        <MisteryBurguerOptions setValue={setPreferences} />
         <Summary
           productPrice={product.price}
           serviceFee={serviceFee}
@@ -273,7 +273,7 @@ export default function Checkout () {
           influencer={influencer}
           isMaximumOrders={isMaximumOrders}
           isMaximumNumberOfPurchases={numberOfPurchases >= MAX_NUMBER_OF_PURCHASES}
-          preferences={preference}
+          preferences={preferences}
         />
       </div>
     </main>
