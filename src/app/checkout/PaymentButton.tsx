@@ -19,6 +19,7 @@ type props = {
   paymentInfo: any
   setPaymentError: Function
   preferences: null | string
+  haveDelivery: boolean
 }
 
 const paymentInfoSchema = z.object({
@@ -31,7 +32,7 @@ const paymentInfoSchema = z.object({
     .max(4, 'CVV debe tener 3 o 4 dígitos')
 })
 
-export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError, preferences }: props) {
+export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError, preferences, haveDelivery }: props) {
   const { supabase } = useSupabase()
   const { addressSelect, userId, user } = useUser()
   const router = useRouter()
@@ -79,7 +80,10 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
 
     const errorMessages: any = validatePaymentInfo()
 
-    if (errorMessages.card_number) {
+    if (!haveDelivery) {
+      showAlert('Actualmente no tenemos deliverys en tu zona')
+      return
+    } else if (errorMessages.card_number) {
       showAlert('La tarjeta no es válida')
       return
     } else if (errorMessages.expiration_date) {
@@ -162,7 +166,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
     <>
       <Button
         onClick={onSubmit}
-        disabled={isLoading}
+        isDisabled={isLoading}
         color='secondary'
         className={`
           text-lg font-semibold ${isLoading ? 'opacity-60' : ''}

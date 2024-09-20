@@ -68,6 +68,7 @@ export default function Checkout () {
   const [shippingCost, setShippingCost] = useState(0)
   const [tip, setTip] = useState(0)
   const [total, setTotal] = useState<any>(null)
+  const [haveDelivery, setHaveDelivery] = useState(false)
 
   const [error, setError] = useState<any>(false)
 
@@ -178,12 +179,26 @@ export default function Checkout () {
         })
     }
     updateData()
+
+    supabase
+      .from('deliverys')
+      .select('id', { head: true, count: 'exact' })
+      .eq('register_complete', true)
+      .eq('register_step', 'finished')
+      .eq('active', true)
+      .eq('free', true)
+      .then(({ error, count }) => {
+        if (error) return
+        setHaveDelivery(!!count)
+      })
   }, [product])
 
   if (!product || !total) return null
 
   const AlertMessage = (() => {
-    if (!product?.kitchens.open) {
+    if (!haveDelivery) {
+      return 'Actualmente no tenemos deliverys en tu zona'
+    } else if (!product?.kitchens.open) {
       return 'Este restaurante esta cerrado!!'
     } else if (!product?.kitchens.address) {
       return 'Este restaurante aun no esta listo para entregar domicilios'
@@ -263,6 +278,7 @@ export default function Checkout () {
           setPaymentInfo={setPaymentInfo}
         />
         <PaymentButton
+          haveDelivery={haveDelivery}
           setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           error={error}
