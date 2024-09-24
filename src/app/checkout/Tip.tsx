@@ -7,16 +7,18 @@ interface IProps {
   setTip: Function
   serviceFee: number
   influencer: number
+  calculateMercadoPagoComission: Function
+  total: number
 }
 
-export function Tip ({ amount, setTip, serviceFee, influencer }: IProps) {
+export function Tip ({ amount, setTip, serviceFee, influencer, calculateMercadoPagoComission, total }: IProps) {
   const handleChangeTip = (e: any) => {
-    const tip = (amount + serviceFee + influencer) * e
+    const tip = (amount + serviceFee + influencer + calculateMercadoPagoComission(total)) * e
     setTip(tip)
   }
 
   useEffect(() => {
-    setTip((amount + serviceFee + influencer) * 0.05)
+    setTip((amount + serviceFee + influencer + calculateMercadoPagoComission(total)) * 0.05)
   }, [])
 
   return (

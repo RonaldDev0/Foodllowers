@@ -13,13 +13,13 @@ type ICategory = {
 }
 
 const initialPreferences: ICategory[] = [
-  {
-    category: 'Pan',
-    items: [
-      { name: 'Pan brioche a base de papa', checked: false },
-      { name: 'Pan brioche a base de papa de colores', checked: false }
-    ]
-  },
+  // {
+  //   category: 'Pan',
+  //   items: [
+  //     { name: 'Pan brioche a base de papa', checked: false },
+  //     { name: 'Pan brioche a base de papa de colores', checked: false }
+  //   ]
+  // },
   {
     category: 'Carnes',
     items: [
@@ -104,10 +104,10 @@ export function MisteryBurguerOptions ({ setValue }: { setValue: Function }) {
 
   function validation () {
     // almenos un tipo de pan
-    if (preferences[0].items.filter(({ checked }: any) => checked === true).length === preferences[0].items.length) {
-      setError('Debes dejar al menos un tipo de pan disponible.')
-      return true
-    }
+    // if (preferences[0].items.filter(({ checked }: any) => checked === true).length === preferences[0].items.length) {
+    //   setError('Debes dejar al menos un tipo de pan disponible.')
+    //   return true
+    // }
     // minimum 6 ingredients
     const ingredients = preferences
       .filter(({ category }: any) => category !== 'Salsas' && category !== 'Acompañantes' && category !== 'Pan')

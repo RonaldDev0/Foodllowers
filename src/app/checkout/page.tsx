@@ -254,6 +254,8 @@ export default function Checkout () {
           amount={product.price}
           serviceFee={serviceFee}
           influencer={influencer}
+          calculateMercadoPagoComission={calculateMercadoPagoComission}
+          total={total}
         />
       </div>
       <div
