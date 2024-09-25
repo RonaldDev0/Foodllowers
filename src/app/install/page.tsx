@@ -48,7 +48,7 @@ export default function Install () {
         [@media(max-width:1400px)]:top-28
         [@media(min-width:1500px)]:top-60'
       />
-      <Card className='w-96'>
+      <Card className='w-96 [@media(max-width:400px)]:!w-80'>
         <CardHeader className='flex justify-center text-2xl gap-2'>
           <Download size={30} />
           Instala la app
