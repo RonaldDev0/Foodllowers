@@ -174,6 +174,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
           [@media(max-width:800px)]:z-40
           [@media(max-width:800px)]:bottom-5
           [@media(max-width:800px)]:w-96
+          [@media(max-width:365px)]:!w-80
         `}
       >
         {isLoading ? 'Comprando...' : 'Comprar'}

@@ -39,12 +39,12 @@ export function SearchBarr ({ message }: { message: boolean }) {
         className='hidden dark:block'
       />
       {message && (
-        <p className={`${skranji.className} m-2 text-[1.5rem] text-[#f4ca44] font-bold`}>
+        <p className={`${skranji.className} m-2 text-[1.5rem] text-[#f4ca44] font-bold [@media(max-width:365px)]:text-center`}>
           El dia esta muy lindo pa' no comer algo rico :3
         </p>
       )}
       <form onSubmit={handleSubmit}>
-        <Card className='[@media(max-width:800px)]:w-96'>
+        <Card className='[@media(max-width:800px)]:w-96 [@media(max-width:365px)]:!w-80 [@media(min-width:800px)]:focus:w-[600px] transition-all'>
           <CardBody className='p-0'>
             <div className='flex items-center'>
               <input

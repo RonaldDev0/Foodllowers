@@ -215,7 +215,8 @@ export default function Checkout () {
         [@media(max-width:800px)]:flex-col
         [@media(max-width:800px)]:items-center
         [@media(max-width:800px)]:w-96
-        [@media(max-width:800px)]:mb-20'
+        [@media(max-width:800px)]:mb-20
+        [@media(max-width:365px)]:!w-80'
     >
       <Link
         href='/'
