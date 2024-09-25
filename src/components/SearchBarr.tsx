@@ -44,13 +44,13 @@ export function SearchBarr ({ message }: { message: boolean }) {
         </p>
       )}
       <form onSubmit={handleSubmit}>
-        <Card className='[@media(max-width:800px)]:w-96 [@media(max-width:365px)]:!w-80 w-[600px]'>
+        <Card className='[@media(max-width:800px)]:w-96 [@media(max-width:365px)]:!w-80 [@media(min-width:800px)]:focus:w-[600px] transition-all'>
           <CardBody className='p-0'>
             <div className='flex items-center'>
               <input
                 onChange={({ target: { value } }: any) => setInput(value)}
                 value={input}
-                className='bg-transparent outline-none p-3 w-full [@media(min-width:800px)]:focus:w-[600px] transition-all rounded-l-lg'
+                className='bg-transparent outline-none p-3 w-[500px] [@media(min-width:800px)]:focus:w-[600px] transition-all rounded-l-lg'
                 placeholder='Busca a tu favorito 😋...'
                 type='text'
               />
