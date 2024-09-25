@@ -16,6 +16,10 @@ export async function middleware (req: NextRequest) {
     req.nextUrl.pathname !== '/manifest.json' &&
     !req.nextUrl.searchParams.has('code')
 
+  if (req.url.endsWith('/install')) {
+    return
+  }
+
   if (req.url.endsWith('/login') &&
     session?.user?.role === 'authenticated') {
     return NextResponse.redirect(new URL('/', req.url))
