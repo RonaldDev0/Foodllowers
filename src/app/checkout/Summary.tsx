@@ -23,7 +23,7 @@ export function Summary ({ productPrice, serviceFee, shippingCost, tip, total, i
   }
 
   return (
-    <Card className='w-96 [@media(max-width:400px)]:!w-80'>
+    <Card className='w-96 [@media(max-width:365px)]:!w-80'>
       <CardHeader>
         Resumen
       </CardHeader>
