@@ -125,7 +125,7 @@ export default function Checkout () {
       .eq('id', query)
       .then((res: any) => {
         if (res.data) {
-          const product = res.data[0].id_influencer !== null ? res.data[0] : null
+          const product = res.data[0]?.id_influencer !== null ? res.data[0] : null
           setProduct(product)
           if (addressSelect) {
             fetchMapsDistance(res.data[0].kitchens.address.geometry.location)

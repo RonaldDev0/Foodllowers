@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Card, CardBody, CardHeader, Divider, Button, Checkbox, Accordion, AccordionItem, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react'
 import { Info, X } from 'lucide-react'
+import { useUser } from '@/store'
 
 type ICategory = {
   category: string
@@ -76,6 +77,7 @@ const initialPreferences: ICategory[] = [
 ]
 
 export function MisteryBurguerOptions ({ setValue }: { setValue: Function }) {
+  const { darkMode } = useUser()
   const query = useSearchParams().get('q')
   const isMisteryBurguer = query === '471ba020-79b7-4204-9e9d-2e8ca2b0f216'
   const [preferences, setPreferences] = useState<any>(initialPreferences)
@@ -204,7 +206,7 @@ export function MisteryBurguerOptions ({ setValue }: { setValue: Function }) {
               <ModalFooter>
                 <Button
                   onPress={() => handleSubmit(onClose)}
-                  color='secondary'
+                  color={darkMode ? 'secondary' : 'warning'}
                   className={`w-full text-lg ${error ? 'opacity-60' : ''}`}
                   isDisabled={error}
                 >

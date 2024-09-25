@@ -34,7 +34,7 @@ const paymentInfoSchema = z.object({
 
 export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError, preferences, haveDelivery }: props) {
   const { supabase } = useSupabase()
-  const { addressSelect, userId, user } = useUser()
+  const { addressSelect, userId, user, darkMode } = useUser()
   const router = useRouter()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -167,7 +167,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
       <Button
         onClick={onSubmit}
         isDisabled={isLoading}
-        color='secondary'
+        color={darkMode ? 'secondary' : 'warning'}
         className={`
           text-lg font-semibold ${isLoading ? 'opacity-60' : ''}
           [@media(max-width:800px)]:fixed
@@ -189,7 +189,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
                 <p>{alert}</p>
               </ModalBody>
               <ModalFooter>
-                <Button color='secondary' onPress={onClose}>
+                <Button color={darkMode ? 'secondary' : 'warning'} onPress={onClose}>
                   Aceptar
                 </Button>
               </ModalFooter>

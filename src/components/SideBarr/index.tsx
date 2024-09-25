@@ -69,7 +69,7 @@ export function SideBarr () {
                 onClick={() => setStore('darkMode', !darkMode)}
                 defaultSelected={!darkMode}
                 size='md'
-                color='secondary'
+                color='warning'
                 thumbIcon={({ isSelected, className }: any) => (
                   isSelected
                     ? <SunIcon className={className} />
