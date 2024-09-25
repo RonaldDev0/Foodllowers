@@ -108,12 +108,12 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
 
   return (
     <>
-      <Card className='[@media(max-width:400px)]:!w-80'>
+      <Card className='[@media(max-width:365px)]:!w-80'>
         <CardHeader>
           Información de pago
         </CardHeader>
         <Divider />
-        <CardBody className='w-96 [@media(max-width:400px)]:!w-80 flex flex-col gap-4'>
+        <CardBody className='w-96 [@media(max-width:365px)]:!w-80 flex flex-col gap-4'>
           <span>Número de la tarjeta</span>
           <div className='relative'>
             <Input
@@ -150,7 +150,7 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
             </div>
             <div>
               <span>CVV</span>
-              <div className='relative [@media(max-width:400px)]:!top-6'>
+              <div className='relative [@media(max-width:365px)]:!top-6'>
                 <Input
                   name='cvv'
                   value={paymentInfo.cvv}
