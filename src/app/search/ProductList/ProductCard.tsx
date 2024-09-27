@@ -17,7 +17,7 @@ export function ProductCard ({ item }: { item: any }) {
             width='200'
             height='200'
             alt='preview'
-            className='w-[350px] h-[200px]'
+            className='w-[350px] h-[280px]'
           />
           {!item?.state && (
             <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>
@@ -26,7 +26,7 @@ export function ProductCard ({ item }: { item: any }) {
           )}
           <div className='p-4 flex justify-between items-center'>
             <div className='flex gap-3 items-center'>
-              <Link href={item.influencers.path}>
+              <Link href={item.influencers.full_name}>
                 <Avatar src={item.influencers.avatar} />
               </Link>
               <div>

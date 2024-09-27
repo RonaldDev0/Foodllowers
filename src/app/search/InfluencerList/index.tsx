@@ -13,7 +13,7 @@ export function InfluencerList () {
   useEffect(() => {
     supabase
       .from('influencers')
-      .select('id, full_name, avatar, path, description')
+      .select('id, full_name, avatar, description')
       .textSearch('full_name', query, { type: 'websearch' })
       .then(res => setInfluencers(res.data))
   }, [query])

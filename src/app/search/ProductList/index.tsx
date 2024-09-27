@@ -13,13 +13,11 @@ export function ProductList () {
   useEffect(() => {
     supabase
       .from('products')
-      .select('id, category, name, price, preview, state, influencers( avatar, path, full_name )')
+      .select('id, category, name, price, preview, state, influencers( avatar, full_name )')
       .textSearch('name', query, { type: 'websearch' })
       .then(({ data, error }) => {
-        if (error) {
-          return
-        }
-        setProducts(data)
+        if (error) return
+        setProducts(data.filter((item: any) => item.influencers !== null))
       })
   }, [query])
 
