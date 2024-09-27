@@ -4,8 +4,21 @@ import Image from 'next/image'
 import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
 import { useContent } from '@/store'
 
+function calculateMercadoPagoComission (amount: number) {
+  const porcentajeComision = 0.0279
+  const IVA = 0.19
+  const costoFijo = 952.00
+
+  const comision = amount * porcentajeComision
+  const IVAComision = comision * IVA
+  const totalComision = comision + IVAComision + costoFijo
+
+  return Math.floor(totalComision + 155)
+}
+
 export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => void }) {
   const { setStore, serviceFee, influencer } = useContent()
+  const total = product.price + serviceFee + influencer + calculateMercadoPagoComission(product.price + serviceFee + influencer)
 
   return (
     <Link
@@ -49,7 +62,7 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
             </div>
             <p className='opacity-80'>
               {
-                (product.price + serviceFee + influencer).toLocaleString('es-Es', {
+                (total + total * 0.01108).toLocaleString('es-Es', {
                   style: 'currency',
                   currency: 'COP',
                   minimumFractionDigits: 0,
