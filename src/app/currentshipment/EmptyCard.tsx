@@ -7,7 +7,7 @@ export function EmptyCard () {
       <CardBody className='p-6 w-96'>
         <div className='flex flex-col gap-4 justify-center items-center'>
           <p>No tienes ningun pedido en camino.</p>
-          <Link href='/' className='text-purple-800'>Explorar productos</Link>
+          <Link href='/' className='dark:text-purple-800 text-yellow-400'>Explorar productos</Link>
         </div>
       </CardBody>
     </Card>

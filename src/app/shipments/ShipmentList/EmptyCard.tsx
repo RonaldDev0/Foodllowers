@@ -5,9 +5,9 @@ export function EmptyCard () {
   return (
     <div className='w-full h-screen flex justify-center items-center'>
       <Card>
-        <CardBody>
+        <CardBody className='flex justify-center items-center'>
           <p>No haz hecho ninguna compra</p>
-          <Link className='text-purple-800 font-semibold' href='/'>
+          <Link className='dark:text-purple-800 text-yellow-400 font-semibold' href='/'>
             Compra aqui
           </Link>
         </CardBody>

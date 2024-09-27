@@ -23,7 +23,7 @@ export default function RootLayout ({ children }: { children: ReactNode }) {
       <head>
         <meta name='theme-color' content='#1f1f1f' />
       </head>
-      <body className='w-full min-h-screen flex flex-col top-12 items-center dark:bg-zinc-950'>
+      <body className='w-full min-h-screen flex flex-col top-12 items-center dark:bg-zinc-950 bg-stone-200'>
         <Providers>
           <SideBarr />
           {children}

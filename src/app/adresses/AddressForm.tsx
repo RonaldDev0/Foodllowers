@@ -36,7 +36,7 @@ const userSchema = z.object({
 
 export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenChange }: IProps) {
   const { supabase } = useSupabase()
-  const { userId, setStore, addressList } = useUser()
+  const { userId, setStore, addressList, darkMode } = useUser()
 
   const [address, setAddress] = useState<any>(null)
   const [addressError, setAddressError] = useState(false)
@@ -170,7 +170,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
       {
         !isEdit && (
           <Button
-            color='secondary'
+            color={darkMode ? 'secondary' : 'warning'}
             onPress={onOpen}
           >
             Agregar direccion
@@ -225,7 +225,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                   Cancelar
                 </Button>
                 <Button
-                  color='primary'
+                  color={darkMode ? 'secondary' : 'warning'}
                   onPress={() => {
                     try {
                       handleSubmit(onClose)

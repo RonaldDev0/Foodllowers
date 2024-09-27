@@ -42,7 +42,7 @@ export function AddressSelect ({ setError }: { setError: Function }) {
             ? (
               <div className='flex flex-col gap-5'>
                 <p>No tienes ninguna dirección registrada</p>
-                <Link className='text-purple-800 font-semibold' href='/adresses'>Agregar dirección</Link>
+                <Link className='dark:text-purple-800 text-yellow-400 font-semibold' href='/adresses'>Agregar dirección</Link>
               </div>
               )
             : (
@@ -88,7 +88,7 @@ export function AddressSelect ({ setError }: { setError: Function }) {
                 {(!addressList || addressList.length === 0) && (
                   <div className='flex flex-col gap-5'>
                     <p>No tienes ninguna dirección registrada</p>
-                    <Link className='text-purple-800 font-semibold' href='/adresses'>Agregar dirección</Link>
+                    <Link className='dark:text-purple-800 text-yellow-400 font-semibold' href='/adresses'>Agregar dirección</Link>
                   </div>
                 )}
               </ModalBody>
