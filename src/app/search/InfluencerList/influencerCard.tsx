@@ -8,7 +8,7 @@ export function InfluencerCard ({ item }: { item: any }) {
   const [follow, setFollow] = useState<boolean>(false)
 
   return (
-    <Link href={item.path}>
+    <Link href={item.full_name}>
       <Card>
         <CardBody className='p-2'>
           <div className='grid grid-cols-3 gap-4 items-center'>
