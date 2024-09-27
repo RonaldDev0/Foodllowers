@@ -4,8 +4,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useContent } from '@/store'
 
+function calculateMercadoPagoComission (amount: number) {
+  const porcentajeComision = 0.0279
+  const IVA = 0.19
+  const costoFijo = 952.00
+
+  const comision = amount * porcentajeComision
+  const IVAComision = comision * IVA
+  const totalComision = comision + IVAComision + costoFijo
+
+  return Math.floor(totalComision + 155)
+}
+
 export function ProductCard ({ item }: { item: any }) {
   const { serviceFee, influencer } = useContent()
+  const total = item.price + serviceFee + influencer + calculateMercadoPagoComission(item.price + serviceFee + influencer)
+
   return (
     <Link href={`/checkout?q=${item.id}`} key={item.id}>
       <Card>
@@ -36,8 +50,14 @@ export function ProductCard ({ item }: { item: any }) {
                 <p className='opacity-60'>{item.influencers.full_name}</p>
               </div>
             </div>
-            <p className='font-bold text-green-600'>
-              ${(item.price + serviceFee + influencer).toLocaleString()}
+            <p className='opacity-80'>
+              {(total + total * 0.01108).toLocaleString('es-Es', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+                useGrouping: true
+              })}
             </p>
           </div>
         </CardBody>
