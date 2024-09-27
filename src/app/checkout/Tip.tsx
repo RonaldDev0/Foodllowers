@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 import { Card, CardHeader, CardBody, Divider, Slider } from '@nextui-org/react'
-
+import { useUser } from '@/store'
 interface IProps {
   amount: number
   setTip: Function
@@ -12,6 +12,7 @@ interface IProps {
 }
 
 export function Tip ({ amount, setTip, serviceFee, influencer, calculateMercadoPagoComission, total }: IProps) {
+  const { darkMode } = useUser()
   const handleChangeTip = (e: any) => {
     const tip = (amount + serviceFee + influencer + calculateMercadoPagoComission(total)) * e
     setTip(tip)
@@ -32,7 +33,7 @@ export function Tip ({ amount, setTip, serviceFee, influencer, calculateMercadoP
         <div className='flex justify-center'>
           <Slider
             label='Propina:'
-            color='secondary'
+            color={darkMode ? 'secondary' : 'warning'}
             showTooltip
             step={0.01}
             formatOptions={{ style: 'percent' }}
