@@ -15,10 +15,9 @@ export function ProductList () {
       .from('products')
       .select('id, category, name, price, preview, state, influencers( avatar, full_name )')
       .textSearch('name', query, { type: 'websearch' })
-      .filter('influencers', 'is', 'not.null')
       .then(({ data, error }) => {
         if (error) return
-        setProducts(data)
+        setProducts(data.filter((item: any) => item.influencers !== null))
       })
   }, [query])
 
