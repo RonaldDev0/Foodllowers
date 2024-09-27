@@ -3,8 +3,8 @@
 import { Divider } from '@nextui-org/react'
 // import { useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+// import Link from 'next/link'
+// import { ArrowLeft } from 'lucide-react'
 import { useContent } from '@/store'
 
 export function Banner () {
@@ -20,12 +20,12 @@ export function Banner () {
         alt='banner image'
         className='w-full h-[200px] bg-black rounded-lg'
       />
-      <Link
+      {/* <Link
         href='/'
         className='bg-white absolute top-5 [@media(max-width:800px)]:top-12 m-4 rounded-3xl'
       >
         <ArrowLeft size={38} color='#595959' />
-      </Link>
+      </Link> */}
       <div className='flex gap-6 items-center mt-5 ml-4'>
         <Image
           alt='img'
