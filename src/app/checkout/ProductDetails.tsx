@@ -1,8 +1,11 @@
 import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { PlusCircle, MinusCircle } from 'lucide-react'
 
 type Props = {
+  numberOfProducts: number,
+  setNumberOfProducts: Function
   product: {
     id: string,
     id_influencer: string,
@@ -20,7 +23,19 @@ type Props = {
   }
 }
 
-export function ProductDetails ({ product }: Props) {
+export function ProductDetails ({ product, numberOfProducts, setNumberOfProducts }: Props) {
+  const minus = () => {
+    if (numberOfProducts > 1) {
+      setNumberOfProducts(numberOfProducts - 1)
+    }
+  }
+
+  const plus = () => {
+    if (numberOfProducts < 5) {
+      setNumberOfProducts(numberOfProducts + 1)
+    }
+  }
+
   return (
     <Card>
       <CardBody className='p-0'>
@@ -49,6 +64,22 @@ export function ProductDetails ({ product }: Props) {
                 />
               </Link>
               <p className='opacity-60'>{product.influencers.full_name}</p>
+            </div>
+            <div className='flex flex-col justify-center items-center gap-6 w-full h-full'>
+              <p>cantidad:</p>
+              <div className='flex gap-4 items-center justify-center h-full w-full'>
+                <MinusCircle
+                  size={30}
+                  className={`cursor-pointer ${numberOfProducts === 1 ? 'opacity-50' : ''} transition-all`}
+                  onClick={minus}
+                />
+                <p>{numberOfProducts}</p>
+                <PlusCircle
+                  size={30}
+                  className={`cursor-pointer ${numberOfProducts === 5 ? 'opacity-50' : ''} transition-all`}
+                  onClick={plus}
+                />
+              </div>
             </div>
           </div>
         </div>

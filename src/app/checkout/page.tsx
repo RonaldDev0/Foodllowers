@@ -69,6 +69,7 @@ export default function Checkout () {
   const [tip, setTip] = useState(0)
   const [total, setTotal] = useState<any>(null)
   const [haveDelivery, setHaveDelivery] = useState(false)
+  const [numberOfProducts, setNumberOfProducts] = useState(1)
 
   const [error, setError] = useState<any>(false)
 
@@ -138,9 +139,9 @@ export default function Checkout () {
 
   useEffect(() => {
     if (product) {
-      setTotal((product.price + serviceFee + shippingCost + tip + influencer))
+      setTotal((((product.price + serviceFee + influencer) * numberOfProducts) + shippingCost + tip))
     }
-  }, [product, tip, shippingCost])
+  }, [product, tip, shippingCost, numberOfProducts])
 
   useEffect(() => {
     if (!product) return
@@ -246,9 +247,12 @@ export default function Checkout () {
           [@media(max-width:800px)]:pt-6'
       >
         <Alert message={AlertMessage} />
-
         <AddressSelect setError={setError} />
-        <ProductDetails product={product} />
+        <ProductDetails
+          product={product}
+          numberOfProducts={numberOfProducts}
+          setNumberOfProducts={setNumberOfProducts}
+        />
         <EstimationTime time={estimationTime} />
         <Tip
           setTip={setTip}
@@ -264,9 +268,14 @@ export default function Checkout () {
           [@media(min-width:800px)]:sticky
           [@media(min-width:800px)]:pt-32'
       >
-        <MisteryBurguerOptions setValue={setPreferences} />
+        <MisteryBurguerOptions
+          setValue={setPreferences}
+          numberOfProducts={numberOfProducts}
+          setNumberOfProducts={setNumberOfProducts}
+        />
         <Summary
           productPrice={product.price}
+          numberOfProducts={numberOfProducts}
           serviceFee={serviceFee}
           shippingCost={shippingCost}
           tip={tip}
