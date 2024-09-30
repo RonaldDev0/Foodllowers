@@ -5,12 +5,26 @@ import { useContent } from '@/store'
 import { useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 
+function calculateMercadoPagoComission (amount: number) {
+  const porcentajeComision = 0.0279
+  const IVA = 0.19
+  const costoFijo = 952.00
+
+  const comision = amount * porcentajeComision
+  const IVAComision = comision * IVA
+  const totalComision = comision + IVAComision + costoFijo
+
+  return Math.floor(totalComision + 155)
+}
+
 export function ProductList () {
   const { supabase } = useSupabase()
-  const { productList, setStore } = useContent()
+  const { productList, influencer, serviceFee, setStore } = useContent()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
+    if (influencer === 0 || serviceFee === 0) return
+
     if (!productList) {
       supabase
         .from('products')
@@ -19,16 +33,23 @@ export function ProductList () {
         .then(({ data, error }) => {
           if (error || !data) return
 
-          const products = data.filter((item: any) => item.influencers !== null).filter((item: any) =>
-            item.kitchens.address !== null &&
-            item.kitchens.bank_account !== null &&
-            item.influencers.bank_account !== null
-          )
+          const products = data
+            .filter((item: any) => item.influencers !== null)
+            .filter((item: any) =>
+              item.kitchens.address !== null &&
+              item.kitchens.bank_account !== null &&
+              item.influencers.bank_account !== null
+            )
 
-          setStore('productList', products)
+          const updatePrices = products.map((item: any) => ({
+            ...item,
+            price: item.price + influencer + serviceFee + calculateMercadoPagoComission(item.price + influencer + serviceFee)
+          }))
+
+          setStore('productList', updatePrices)
         })
     }
-  }, [])
+  }, [influencer, serviceFee])
 
   return (
     <>

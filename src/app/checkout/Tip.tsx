@@ -5,21 +5,16 @@ import { useUser } from '@/store'
 interface IProps {
   amount: number
   setTip: Function
-  serviceFee: number
-  influencer: number
-  calculateMercadoPagoComission: Function
-  total: number
 }
 
-export function Tip ({ amount, setTip, serviceFee, influencer, calculateMercadoPagoComission, total }: IProps) {
+export function Tip ({ amount, setTip }: IProps) {
   const { darkMode } = useUser()
   const handleChangeTip = (e: any) => {
-    const tip = (amount + serviceFee + influencer + calculateMercadoPagoComission(total)) * e
-    setTip(tip)
+    setTip(amount * e)
   }
 
   useEffect(() => {
-    setTip((amount + serviceFee + influencer + calculateMercadoPagoComission(total)) * 0.05)
+    setTip(amount * 0.05)
   }, [])
 
   return (

@@ -114,6 +114,8 @@ export default function Checkout () {
   }, [userId])
 
   useEffect(() => {
+    if (serviceFee === 0 || influencer === 0) return
+
     if (currentProduct && addressSelect) {
       setProduct(currentProduct)
       fetchMapsDistance(currentProduct.kitchens.address.geometry.location)
@@ -124,22 +126,35 @@ export default function Checkout () {
       .from('products')
       .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( id, full_name, avatar ), kitchens( open, address )')
       .eq('id', query)
-      .then((res: any) => {
-        if (res.data) {
-          const product = res.data[0]?.id_influencer !== null ? res.data[0] : null
-          setProduct(product)
-          if (addressSelect) {
-            fetchMapsDistance(res.data[0].kitchens.address.geometry.location)
-          }
+      .then(({ data, error }) => {
+        if (error) {
+          setError({ message: 'Product does not exist' })
           return
         }
-        setError({ message: 'Product does not exist' })
+
+        const products = data
+          .filter((item: any) => item.influencers !== null)
+          .filter((item: any) =>
+            item.kitchens.address !== null &&
+            item.kitchens.bank_account !== null &&
+            item.influencers.bank_account !== null
+          )
+
+        const updatePrices = products.map((item: any) => ({
+          ...item,
+          price: item.price + influencer + serviceFee
+        }))
+
+        setProduct(updatePrices[0])
+        if (addressSelect) {
+          fetchMapsDistance(updatePrices[0].kitchens.address.geometry.location)
+        }
       })
-  }, [addressSelect])
+  }, [addressSelect, serviceFee, influencer])
 
   useEffect(() => {
     if (product) {
-      setTotal((((product.price + serviceFee + influencer) * numberOfProducts) + shippingCost + tip))
+      setTotal((product.price * numberOfProducts) + shippingCost + tip)
     }
   }, [product, tip, shippingCost, numberOfProducts])
 
@@ -254,14 +269,7 @@ export default function Checkout () {
           setNumberOfProducts={setNumberOfProducts}
         />
         <EstimationTime time={estimationTime} />
-        <Tip
-          setTip={setTip}
-          amount={product.price}
-          serviceFee={serviceFee}
-          influencer={influencer}
-          calculateMercadoPagoComission={calculateMercadoPagoComission}
-          total={total}
-        />
+        <Tip setTip={setTip} amount={product.price} />
       </div>
       <div
         className='flex flex-col gap-5 top-5
@@ -276,11 +284,9 @@ export default function Checkout () {
         <Summary
           productPrice={product.price}
           numberOfProducts={numberOfProducts}
-          serviceFee={serviceFee}
           shippingCost={shippingCost}
           tip={tip}
           total={total}
-          influencer={influencer}
           calculateMercadoPagoComission={calculateMercadoPagoComission}
         />
         <PaymentForm
@@ -294,7 +300,7 @@ export default function Checkout () {
           setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           error={error}
-          amount={total + calculateMercadoPagoComission(total)}
+          amount={total + calculateMercadoPagoComission((product.price * numberOfProducts) + tip + shippingCost)}
           product={product}
           shippingCost={shippingCost}
           tip={tip}
@@ -302,6 +308,8 @@ export default function Checkout () {
           isMaximumOrders={isMaximumOrders}
           isMaximumNumberOfPurchases={numberOfPurchases >= MAX_NUMBER_OF_PURCHASES}
           preferences={preferences}
+          numberOfProducts={numberOfProducts}
+          serviceFee={serviceFee}
         />
       </div>
     </main>
