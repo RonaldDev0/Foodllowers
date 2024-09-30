@@ -3,16 +3,14 @@ import { Card, CardHeader, CardBody, Divider } from '@nextui-org/react'
 
 type props = {
   productPrice: number
-  serviceFee: number
   shippingCost: number
   tip: number
   total: number
-  influencer: number
-  calculateMercadoPagoComission: Function
   numberOfProducts: number
+  calculateMercadoPagoComission: Function
 }
 
-export function Summary ({ productPrice, serviceFee, shippingCost, tip, total, influencer, calculateMercadoPagoComission, numberOfProducts }: props) {
+export function Summary ({ productPrice, shippingCost, tip, total, numberOfProducts, calculateMercadoPagoComission }: props) {
   function copFormat (value: number) {
     return value.toLocaleString('es-Es', {
       style: 'currency',
@@ -38,11 +36,11 @@ export function Summary ({ productPrice, serviceFee, shippingCost, tip, total, i
             <p className='font-bold mt-4'>Total</p>
           </div>
           <div className='text-right font-bold text-green-600'>
-            <p>{copFormat(((productPrice + serviceFee + influencer) * numberOfProducts) + calculateMercadoPagoComission(total))}</p>
+            <p>{copFormat((productPrice * numberOfProducts) + calculateMercadoPagoComission((productPrice * numberOfProducts) + tip + shippingCost))}</p>
             <p>{copFormat(shippingCost)}</p>
             <p>{copFormat(tip)}</p>
             <p className='mt-4'>
-              {copFormat(total + calculateMercadoPagoComission(total))}
+              {copFormat(total + calculateMercadoPagoComission((productPrice * numberOfProducts) + tip + shippingCost))}
             </p>
           </div>
         </div>

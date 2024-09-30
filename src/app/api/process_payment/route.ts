@@ -7,17 +7,14 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN!,
-  options: {
-    timeout: 5000,
-    idempotencyKey: crypto.randomUUID()
-  }
+  options: { timeout: 5000, idempotencyKey: crypto.randomUUID() }
 })
 
 const payment = new Payment(client)
 
 export async function POST (req: NextRequest) {
   try {
-    const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo, card, preferences } = await req.json()
+    const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo, card, preferences, numberOfProducts, serviceFee } = await req.json()
 
     const token = await fetch('https://api.mercadopago.com/v1/card_tokens', {
       method: 'POST',
@@ -30,9 +27,7 @@ export async function POST (req: NextRequest) {
         expiration_month: card.expiration_date.slice(0, 2),
         expiration_year: '20' + card.expiration_date.slice(5, 7),
         security_code: card.cvv,
-        cardholder: {
-          name: user.name
-        }
+        cardholder: { name: user.name }
       })
     })
       .then(res => res.json())
@@ -40,17 +35,16 @@ export async function POST (req: NextRequest) {
       .catch(err => console.log(err))
 
     const { id, status, transaction_amount, fee_details }: any = await payment.create({
-      body: {
-        ...paymentInfo,
-        token,
-        // payment_method_id: 'master',
-        installments: 1
-      }
+      body: { ...paymentInfo, token, installments: 1 }
     })
 
     if (status !== 'approved') return NextResponse.json({ error: true })
 
-    // console.log({ status, transaction_amount, fee_details })
+    const mercadopago = Math.floor(fee_details[0].amount)
+    const influencerEarnings = influencer * numberOfProducts
+
+    const kitchen = ((product.price - influencer - serviceFee) * numberOfProducts)
+    const earnings = transaction_amount - kitchen - influencerEarnings - mercadopago - shippingCost - tip
 
     const response = await supabase
       .from('orders')
@@ -68,27 +62,22 @@ export async function POST (req: NextRequest) {
         payment_status: 'approved',
         preferences,
         transaction_amount: {
-          mercadopago: Math.floor(fee_details[0].amount),
-          influencer,
-          kitchen: product.price,
-          delivery: {
-            service: shippingCost,
-            tip
-          },
-          earnings: transaction_amount - Math.floor(fee_details[0].amount) - product.price - shippingCost - tip - influencer,
+          mercadopago,
+          influencer: influencerEarnings,
+          kitchen,
+          delivery: { service: shippingCost, tip },
+          earnings,
           total: transaction_amount
         }
       }])
       .select('id')
       .then(({ error }) => {
-        // console.log(error)
         if (error) return { error: true }
         return { error: false }
       })
 
     return NextResponse.json(response)
   } catch (error) {
-    // console.log(error)
     return NextResponse.json({ error: true })
   }
 }

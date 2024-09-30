@@ -218,7 +218,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                     onChange={(page: number) => setStep(page - 1)}
                   />
                   )
-                : <p>todas las opciones son iguales</p>
+                : <p>Todas las hamburguesas comparten preferencias</p>
             )
           }
         </CardFooter>
@@ -282,7 +282,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                           isSelected={allTheSame}
                           onChange={() => setAllTheSame(!allTheSame)}
                         >
-                          Todas las opciones iguales?
+                          Todas las hamburguesas comparten preferencias?
                         </Checkbox>
                       )
                     }
