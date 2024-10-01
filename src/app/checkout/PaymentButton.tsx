@@ -159,6 +159,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
         if (error) {
           setIsLoading(false)
           showAlert('Error al procesar la transacción')
+          setTimeout(() => router.refresh(), 5000)
           return
         }
         router.push('/currentshipment')
