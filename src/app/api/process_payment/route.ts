@@ -40,7 +40,7 @@ export async function POST (req: NextRequest) {
 
     console.log({ id, status, transaction_amount, fee_details })
 
-    if (status !== 'approved') return NextResponse.json({ error: true })
+    if (status !== 'approved') return NextResponse.json({ error: 'Transacción rechazada' })
 
     const mercadopago = Math.floor(fee_details[0].amount)
     const influencerEarnings = influencer * numberOfProducts
@@ -74,12 +74,12 @@ export async function POST (req: NextRequest) {
       }])
       .select('id')
       .then(({ error }) => {
-        if (error) return { error: true }
+        if (error) return { error: 'transacción rechazada' }
         return { error: false }
       })
 
     return NextResponse.json(response)
   } catch (error) {
-    return NextResponse.json({ error: true })
+    return NextResponse.json({ error: 'transacción rechazada' })
   }
 }
