@@ -147,9 +147,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
           callback_url: 'https://foodllowers.vercel.app/currentshipment',
           description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
           additional_info: { ip_address: ip },
-          payer: {
-            email: user.email
-          }
+          payer: { email: user.email }
         },
         card: paymentInfo
       })
@@ -158,7 +156,7 @@ export function PaymentButton ({ amount, error, product, shippingCost, tip, infl
       .then(({ error }) => {
         if (error) {
           setIsLoading(false)
-          showAlert('Error al procesar la transacción')
+          showAlert(error)
           setTimeout(() => router.refresh(), 5000)
           return
         }

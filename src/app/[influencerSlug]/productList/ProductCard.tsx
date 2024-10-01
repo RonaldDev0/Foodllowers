@@ -31,7 +31,6 @@ function calculateMercadoPagoComission (amount: number) {
 export function ProductCard ({ product }: { product: IProductCard }) {
   const { serviceFee, influencer } = useContent()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const total = product.price + serviceFee + influencer + calculateMercadoPagoComission(product.price + serviceFee + influencer)
 
   return (
     <>
@@ -64,7 +63,7 @@ export function ProductCard ({ product }: { product: IProductCard }) {
               </div>
               <p className='opacity-80'>
                 {
-                  (total + total * 0.01108).toLocaleString('es-Es', {
+                  (product.price + serviceFee + influencer + calculateMercadoPagoComission(product.price + serviceFee + influencer + 10000)).toLocaleString('es-Es', {
                     style: 'currency',
                     currency: 'COP',
                     minimumFractionDigits: 0,

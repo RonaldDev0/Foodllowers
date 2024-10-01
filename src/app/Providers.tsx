@@ -62,6 +62,13 @@ export function Providers ({ children }: { children: ReactNode }) {
               }
             })
           })
+
+        supabase
+          .rpc('get_realtime_users')
+          .then(({ data, error }) => {
+            if (error) return
+            console.log(data[0])
+          })
       })
   }, [])
 
