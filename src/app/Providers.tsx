@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 'use client'
 import { NextUIProvider } from '@nextui-org/react'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
@@ -61,13 +62,6 @@ export function Providers ({ children }: { children: ReactNode }) {
                   break
               }
             })
-          })
-
-        supabase
-          .rpc('get_realtime_users')
-          .then(({ data, error }) => {
-            if (error) return
-            console.log(data[0])
           })
       })
   }, [])
