@@ -174,7 +174,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
   }
 
   useEffect(() => {
-    setValue(initialPreferences)
+    setValue(Array.from({ length: numberOfProducts }, () => initialPreferences))
     onOpen()
   }, [])
 
