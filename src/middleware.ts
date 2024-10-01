@@ -38,6 +38,8 @@ export async function middleware (req: NextRequest) {
     return NextResponse.redirect(new URL('/error', req.url))
   }
 
+  if (!isMaximumConnections && req.url.endsWith('/error')) return NextResponse.redirect(new URL('/', req.url))
+
   if (req.url.endsWith('/login') &&
     session?.user?.role === 'authenticated') {
     return NextResponse.redirect(new URL('/', req.url))
