@@ -42,6 +42,7 @@ export function Providers ({ children }: { children: ReactNode }) {
           .select('*')
           .then(({ data, error }) => {
             if (error) return
+
             data.forEach(item => {
               switch (item.role) {
                 case 'influencer':
