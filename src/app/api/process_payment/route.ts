@@ -38,6 +38,8 @@ export async function POST (req: NextRequest) {
       body: { ...paymentInfo, token, installments: 1 }
     })
 
+    console.log({ id, status, transaction_amount, fee_details })
+
     if (status !== 'approved') return NextResponse.json({ error: true })
 
     const mercadopago = Math.floor(fee_details[0].amount)

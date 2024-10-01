@@ -124,7 +124,7 @@ export default function Checkout () {
 
     supabase
       .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( id, full_name, avatar ), kitchens( open, address )')
+      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( id, full_name, avatar, bank_account ), kitchens( open, address, bank_account )')
       .eq('id', query)
       .then(({ data, error }) => {
         if (error) {

@@ -5,18 +5,6 @@ import { useContent } from '@/store'
 import { useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 
-function calculateMercadoPagoComission (amount: number) {
-  const porcentajeComision = 0.0279
-  const IVA = 0.19
-  const costoFijo = 952.00
-
-  const comision = amount * porcentajeComision
-  const IVAComision = comision * IVA
-  const totalComision = comision + IVAComision + costoFijo
-
-  return Math.floor(totalComision + 155)
-}
-
 export function ProductList () {
   const { supabase } = useSupabase()
   const { productList, influencer, serviceFee, setStore } = useContent()
@@ -28,7 +16,7 @@ export function ProductList () {
     if (!productList) {
       supabase
         .from('products')
-        .select('id, preview, name, price, state, influencers( avatar, full_name, bank_account ), kitchens( open, address, bank_account )')
+        .select('id, id_kitchen, preview, name, price, state, influencers( avatar, full_name, bank_account ), kitchens( open, address, bank_account )')
         .neq('preview', null)
         .then(({ data, error }) => {
           if (error || !data) return
@@ -43,7 +31,7 @@ export function ProductList () {
 
           const updatePrices = products.map((item: any) => ({
             ...item,
-            price: item.price + influencer + serviceFee + calculateMercadoPagoComission(item.price + influencer + serviceFee)
+            price: item.price + influencer + serviceFee
           }))
 
           setStore('productList', updatePrices)
