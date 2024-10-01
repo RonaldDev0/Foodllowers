@@ -7,6 +7,7 @@ import Pages from './Pages'
 import Logout from './Logout'
 import { useUser } from '@/store'
 import { Card, CardBody, Switch } from '@nextui-org/react'
+import { usePathname } from 'next/navigation'
 
 const sidebarVariants = {
   open: { x: 0 },
@@ -29,6 +30,7 @@ const SunIcon = (props: any) => (
 )
 
 export function SideBarr () {
+  const pathname = usePathname()
   const [open, setOpen] = useState<boolean>(typeof window !== 'undefined' && JSON.parse(localStorage.getItem('sidebarOpen') || 'true'))
   const { user, darkMode, setStore } = useUser()
 
@@ -44,9 +46,7 @@ export function SideBarr () {
     localStorage.setItem('darkMode', JSON.stringify(darkMode))
   }, [darkMode])
 
-  if (!user) {
-    return null
-  }
+  if (!user || pathname === '/error') return null
 
   return (
     <>

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse, NextRequest } from 'next/server'
 
@@ -6,6 +7,15 @@ export async function middleware (req: NextRequest) {
 
   const supabase = createMiddlewareClient({ req, res })
   const { data: { session } }: any = await supabase.auth.getSession()
+
+  const isMaximumConnections = await supabase
+    .rpc('get_realtime_users')
+    .then(({ data, error }) => {
+      if (error) return
+      const { realtime_users, total_connections } = data[0]
+      const isMaximumConnections = realtime_users >= 150 || total_connections >= 150
+      return isMaximumConnections
+    })
 
   const isStaticFile = /\.(ico|svg|png|jpg|jpeg|gif|webp)$/
     .test(req.nextUrl.pathname)
@@ -16,8 +26,16 @@ export async function middleware (req: NextRequest) {
     req.nextUrl.pathname !== '/manifest.json' &&
     !req.nextUrl.searchParams.has('code')
 
-  if (req.url.endsWith('/install')) {
-    return
+  const isNotErrorPage = !req.nextUrl.pathname.startsWith('/_next') &&
+    !isStaticFile &&
+    req.nextUrl.pathname !== '/error' &&
+    req.nextUrl.pathname !== '/manifest.json' &&
+    !req.nextUrl.searchParams.has('code')
+
+  if (req.url.endsWith('/install')) return
+
+  if (isMaximumConnections && isNotErrorPage) {
+    return NextResponse.redirect(new URL('/error', req.url))
   }
 
   if (req.url.endsWith('/login') &&
