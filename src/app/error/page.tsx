@@ -1,15 +1,7 @@
-'use client'
-import { useContent } from '@/store'
-import { useRouter } from 'next/navigation'
 import { Card, CardHeader, CardBody } from '@nextui-org/react'
 import Image from 'next/image'
 
 export default function Home () {
-  const router = useRouter()
-  const { isMaximumConnections } = useContent()
-
-  if (!isMaximumConnections) router.push('/')
-
   return (
     <main className='h-screen flex flex-col justify-center items-center'>
       <Image
