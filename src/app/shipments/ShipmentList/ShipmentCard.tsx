@@ -2,11 +2,9 @@
 'use client'
 import Image from 'next/image'
 import { Card, CardBody, Avatar } from '@nextui-org/react'
-import { useContent } from '@/store'
 
 export function ShipmentCard ({ shipment }: { shipment: any }) {
-  const { serviceFee, influencer } = useContent()
-  const { product: { name, price, preview, influencers: { avatar, full_name } } } = shipment
+  const { product: { name, preview, influencers: { avatar, full_name } }, transaction_amount: { total }, preferences } = shipment
 
   return (
     <Card>
@@ -21,7 +19,7 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
           />
           <div className='mr-5 flex flex-col gap-2'>
             <p className='text-lg'>
-              {name}
+              {name} x {preferences.length}
             </p>
             <div className='flex gap-2 justify-center items-center'>
               <Avatar src={avatar} />
@@ -29,7 +27,7 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
             </div>
             <p className='opacity-50'>
               {
-                (price + serviceFee + influencer).toLocaleString('es-Es', {
+                (total).toLocaleString('es-Es', {
                   style: 'currency',
                   currency: 'COP',
                   minimumFractionDigits: 0,
