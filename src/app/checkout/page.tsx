@@ -16,6 +16,7 @@ import { useDecrypt } from '@/hooks'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MisteryBurguerOptions } from './MisteryBurguerOptions'
+import { DiscountCoupon } from './DiscountCoupon'
 
 interface IPaymentInfo {
   card_number: string
@@ -71,6 +72,8 @@ export default function Checkout () {
   const [haveDelivery, setHaveDelivery] = useState(false)
   const [numberOfProducts, setNumberOfProducts] = useState(1)
 
+  const [haveCoupon, setHaveCoupon] = useState(false)
+  const [coupon, setCoupon] = useState('')
   const [error, setError] = useState<any>(false)
 
   function fetchMapsDistance (origin: any) {
@@ -225,6 +228,14 @@ export default function Checkout () {
     }
   })()
 
+  const discountPercent = haveCoupon ? 0.472 : 1
+  const firstProductPriceWithDiscount = product.price * discountPercent
+  const totalWithoutDiscount = product.price * (numberOfProducts - 1)
+  const totalProductPrice = firstProductPriceWithDiscount + totalWithoutDiscount
+
+  const mercadopago = calculateMercadoPagoComission(totalProductPrice + tip + shippingCost)
+  const productPriceWithCoupon = totalProductPrice + mercadopago
+
   return (
     <main
       className='flex justify-center items-start gap-5 mt-16 mb-14
@@ -283,11 +294,15 @@ export default function Checkout () {
         />
         <Summary
           productPrice={product.price}
-          numberOfProducts={numberOfProducts}
           shippingCost={shippingCost}
           tip={tip}
-          total={total}
-          calculateMercadoPagoComission={calculateMercadoPagoComission}
+          productPriceWithCoupon={productPriceWithCoupon}
+        />
+        <DiscountCoupon
+          haveCoupon={haveCoupon}
+          setHaveCoupon={setHaveCoupon}
+          coupon={coupon}
+          setCoupon={setCoupon}
         />
         <PaymentForm
           paymentError={paymentError}
@@ -300,7 +315,7 @@ export default function Checkout () {
           setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           error={error}
-          amount={total + calculateMercadoPagoComission((product.price * numberOfProducts) + tip + shippingCost)}
+          amount={productPriceWithCoupon + tip + shippingCost}
           product={product}
           shippingCost={shippingCost}
           tip={tip}
@@ -310,6 +325,8 @@ export default function Checkout () {
           preferences={preferences}
           numberOfProducts={numberOfProducts}
           serviceFee={serviceFee}
+          haveCoupon={haveCoupon}
+          coupon={coupon}
         />
       </div>
     </main>
