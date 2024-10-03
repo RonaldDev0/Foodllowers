@@ -5,12 +5,10 @@ type props = {
   productPrice: number
   shippingCost: number
   tip: number
-  total: number
-  numberOfProducts: number
-  calculateMercadoPagoComission: Function
+  productPriceWithCoupon: number
 }
 
-export function Summary ({ productPrice, shippingCost, tip, total, numberOfProducts, calculateMercadoPagoComission }: props) {
+export function Summary ({ shippingCost, tip, productPriceWithCoupon }: props) {
   function copFormat (value: number) {
     return value.toLocaleString('es-Es', {
       style: 'currency',
@@ -36,11 +34,11 @@ export function Summary ({ productPrice, shippingCost, tip, total, numberOfProdu
             <p className='font-bold mt-4'>Total</p>
           </div>
           <div className='text-right font-bold text-green-600'>
-            <p>{copFormat((productPrice * numberOfProducts) + calculateMercadoPagoComission((productPrice * numberOfProducts) + tip + shippingCost))}</p>
+            <p>{copFormat(productPriceWithCoupon)}</p>
             <p>{copFormat(shippingCost)}</p>
             <p>{copFormat(tip)}</p>
             <p className='mt-4'>
-              {copFormat(total + calculateMercadoPagoComission((productPrice * numberOfProducts) + tip + shippingCost))}
+              {copFormat(productPriceWithCoupon + tip + shippingCost)}
             </p>
           </div>
         </div>
