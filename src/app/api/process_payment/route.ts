@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { NextRequest, NextResponse } from 'next/server'
-import { MercadoPagoConfig, Payment } from 'mercadopago'
 import { createClient } from '@supabase/supabase-js'
+import { Pay } from './pay-mercadopago'
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
@@ -29,39 +29,28 @@ function generarCodigoCupon () {
 }
 
 export async function POST (req: NextRequest) {
-  const client = new MercadoPagoConfig({
-    accessToken: process.env.MP_ACCESS_TOKEN!,
-    options: { timeout: 5000, idempotencyKey: crypto.randomUUID() }
-  })
+  const {
+    product,
+    shippingCost,
+    tip,
+    influencer,
+    userId,
+    user,
+    addressSelect,
+    paymentInfo,
+    card,
+    preferences,
+    numberOfProducts,
+    serviceFee,
+    haveCoupon,
+    coupon
+  } = await req.json()
 
-  const payment = new Payment(client)
+  // Pay(card, paymentInfo, user, product)
+  // return NextResponse.json({ error: 'transacción rechazada' })
 
   try {
-    const { product, shippingCost, tip, influencer, userId, user, addressSelect, paymentInfo, card, preferences, numberOfProducts, serviceFee, haveCoupon, coupon } = await req.json()
-
-    const token = await fetch('https://api.mercadopago.com/v1/card_tokens', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${client.accessToken}`
-      },
-      body: JSON.stringify({
-        card_number: card.card_number.replace(/\s+/g, ''),
-        expiration_month: card.expiration_date.slice(0, 2),
-        expiration_year: '20' + card.expiration_date.slice(5, 7),
-        security_code: card.cvv,
-        cardholder: { name: user.name }
-      })
-    })
-      .then(res => res.json())
-      .then(res => res.id)
-      .catch(err => console.log(err))
-
-    const { id, status, transaction_amount, fee_details }: any = await payment.create({
-      body: { ...paymentInfo, token, installments: 1 }
-    })
-
-    // console.log({ id, status, transaction_amount, fee_details })
+    const { id, status, transaction_amount, fee_details } = await Pay(card, paymentInfo, user)
 
     if (status !== 'approved') return NextResponse.json({ error: 'Transacción rechazada' })
 
@@ -154,6 +143,7 @@ export async function POST (req: NextRequest) {
 
     return NextResponse.json(response)
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: 'transacción rechazada' })
   }
 }

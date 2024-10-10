@@ -238,7 +238,7 @@ export default function Checkout () {
 
   return (
     <main
-      className='flex justify-center items-start gap-5 mt-16 mb-14
+      className='flex justify-center items-start gap-3 mt-16 mb-14
         [@media(max-width:800px)]:flex-col
         [@media(max-width:800px)]:items-center
         [@media(max-width:800px)]:w-96
@@ -267,7 +267,7 @@ export default function Checkout () {
         />
       </Link>
       <div
-        className='flex flex-col gap-5
+        className='flex flex-col gap-3
           [@media(min-width:800px)]:w-[522px]
           [@media(min-width:800px)]:pt-32
           [@media(max-width:800px)]:pt-6'
@@ -283,7 +283,7 @@ export default function Checkout () {
         <Tip setTip={setTip} amount={product.price} />
       </div>
       <div
-        className='flex flex-col gap-5 top-5
+        className='flex flex-col gap-3 top-5
           [@media(min-width:800px)]:sticky
           [@media(min-width:800px)]:pt-32'
       >
