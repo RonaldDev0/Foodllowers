@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Card, CardBody, CardHeader, CardFooter, Divider, Button, Checkbox, Accordion, AccordionItem, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Pagination } from '@nextui-org/react'
+import { Card, CardBody, CardHeader, CardFooter, Divider, Button, Checkbox, Accordion, AccordionItem, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Pagination, Chip } from '@nextui-org/react'
 import { Info, X, PlusCircle, MinusCircle } from 'lucide-react'
 import { useUser } from '@/store'
 
@@ -13,74 +13,88 @@ type ICategory = {
   }[]
 }
 
+type IPreferences = {
+  isCombo: boolean
+  categories: ICategory[]
+}
+
 type IProps = {
   setValue: Function
   numberOfProducts: number
   setNumberOfProducts: Function
 }
 
-const initialPreferences: ICategory[] = [
-  // {
-  //   category: 'Pan',
-  //   items: [
-  //     { name: 'Pan brioche a base de papa', checked: false },
-  //     { name: 'Pan brioche a base de papa de colores', checked: false }
-  //   ]
-  // },
-  {
-    category: 'Carnes',
-    items: [
-      { name: 'Carne 150gr 100% res', checked: false },
-      { name: 'Carne de cerdo desmechada 120gr', checked: false },
-      { name: 'Pechuga de pollo apanada 120gr', checked: false },
-      { name: 'Falafel (opción vegetariana)', checked: false }
-    ]
-  },
-  {
-    category: 'Quesos',
-    items: [
-      { name: 'Lonja de queso campesino', checked: false },
-      { name: 'Queso doble crema tajado', checked: false }
-    ]
-  },
-  {
-    category: 'Vegetales',
-    items: [
-      { name: 'Lechuga romana', checked: false },
-      { name: 'Lechuga crespa', checked: false },
-      { name: 'Cebollín', checked: false },
-      { name: 'Pico de gallo', checked: false },
-      { name: 'Cebolla encurtida', checked: false },
-      { name: 'Cole slaw', checked: false }
-    ]
-  },
-  {
-    category: 'Extras',
-    items: [
-      { name: 'Tocineta', checked: false },
-      { name: 'Piña caramelizada', checked: false },
-      { name: 'Piña en almíbar', checked: false },
-      { name: 'Plátanos maduros', checked: false }
-    ]
-  },
-  {
-    category: 'Salsas',
-    items: [
-      { name: 'Salsa de vino', checked: false },
-      { name: 'Sour cream', checked: false },
-      { name: 'Queso cheddar', checked: false },
-      { name: 'Salsa BBQ', checked: false },
-      { name: 'Tres quesos (de la casa)', checked: false }
-    ]
-  },
-  {
-    category: 'Acompañantes',
-    items: [
-      { name: 'Papas a la francesa', checked: false },
-      { name: 'Totopos', checked: false }
-    ]
-  }
-]
+const initialPreferences: IPreferences = {
+  isCombo: false,
+  categories: [
+    {
+      category: 'Carnes',
+      items: [
+        { name: 'Carne 150gr 100% res', checked: false },
+        { name: 'Carne de cerdo desmechada 120gr', checked: false },
+        { name: 'Pechuga de pollo apanada 120gr', checked: false },
+        { name: 'Falafel (opción vegetariana)', checked: false }
+      ]
+    },
+    {
+      category: 'Quesos',
+      items: [
+        { name: 'Lonja de queso campesino', checked: false },
+        { name: 'Queso doble crema tajado', checked: false }
+      ]
+    },
+    {
+      category: 'Vegetales',
+      items: [
+        { name: 'Lechuga romana', checked: false },
+        { name: 'Lechuga crespa', checked: false },
+        { name: 'Cebollín', checked: false },
+        { name: 'Pico de gallo', checked: false },
+        { name: 'Cebolla encurtida', checked: false },
+        { name: 'Cole slaw', checked: false }
+      ]
+    },
+    {
+      category: 'Extras',
+      items: [
+        { name: 'Tocineta', checked: false },
+        { name: 'Piña caramelizada', checked: false },
+        { name: 'Piña en almíbar', checked: false },
+        { name: 'Plátanos maduros', checked: false }
+      ]
+    },
+    {
+      category: 'Salsas',
+      items: [
+        { name: 'Salsa de vino', checked: false },
+        { name: 'Sour cream', checked: false },
+        { name: 'Queso cheddar', checked: false },
+        { name: 'Salsa BBQ', checked: false },
+        { name: 'Tres quesos (de la casa)', checked: false }
+      ]
+    },
+    {
+      category: 'Acompañantes',
+      items: [
+        { name: 'Papas a la francesa', checked: true },
+        { name: 'Totopos', checked: true }
+      ]
+    },
+    {
+      category: 'Bebidas',
+      items: [
+        { name: 'jugo de Mora', checked: true },
+        { name: 'jugo de Mango', checked: true },
+        { name: 'jugo de Lulo', checked: true },
+        { name: 'jugo de Maracuyá', checked: true },
+        { name: 'jugo de Fresa', checked: true },
+        { name: 'Quatro', checked: true },
+        { name: 'Coca Cola', checked: true },
+        { name: 'Kola Roman', checked: true }
+      ]
+    }
+  ]
+}
 
 export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOfProducts }: IProps) {
   const { darkMode } = useUser()
@@ -95,34 +109,37 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
 
   const [error, setError] = useState<any>(false)
 
-  const handleChange: (category: string, itemName: string) => void = (category, itemName) => {
+  function handleChange (category: string, itemName: string) {
     setError(false)
 
-    setPreferences((prevPreferences: any[][]) =>
-      prevPreferences.map((innerArray, index) =>
+    setPreferences((prevPreferences: IPreferences[]) =>
+      prevPreferences.map((innerObject, index) =>
         index === step
-          ? innerArray.map((categoryObj) =>
-            categoryObj.category === category
-              ? {
-                  ...categoryObj,
-                  items: categoryObj.items.map((item: { name: string; checked: any }) =>
-                    item.name === itemName
-                      ? { ...item, checked: !item.checked }
-                      : item
-                  )
-                }
-              : categoryObj
-          )
-          : innerArray
+          ? {
+              ...innerObject,
+              categories: innerObject.categories.map(categoryObj =>
+                categoryObj.category === category
+                  ? {
+                      ...categoryObj,
+                      items: categoryObj.items.map((item: { name: string; checked: any }) =>
+                        item.name === itemName
+                          ? { ...item, checked: !item.checked }
+                          : item
+                      )
+                    }
+                  : categoryObj
+              )
+            }
+          : innerObject
       )
     )
   }
 
   function validation () {
     // Mínimo 5 ingredientes
-    const errors = preferences.map((innerArray: any[], index: number) => {
-      const ingredients = innerArray
-        .filter(({ category }: any) => category !== 'Salsas' && category !== 'Acompañantes' && category !== 'Pan')
+    const errors = preferences.map((innerObject: IPreferences, index: number) => {
+      const ingredients = innerObject.categories
+        .filter(({ category }: any) => category !== 'Salsas' && category !== 'Acompañantes' && category !== 'Pan' && category !== 'Bebidas')
         .flatMap(({ items }: ICategory) => items)
         .filter(({ checked }: any) => checked === false)
         .length
@@ -144,13 +161,15 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
     if (validation()) return
     const preferencesSaved = preferences[0]
 
-    const formattedByProducts = preferences.map((innerArray: any[]) =>
-      innerArray.map(({ items }: ICategory) =>
-        items
-          .filter(({ checked }: any) => checked)
-          .map(({ name }: any) => name)
-      ).flat()
-    )
+    const formattedByProducts = preferences
+      .filter((item: IPreferences) => item.isCombo)
+      .map((innerObject: IPreferences) =>
+        innerObject.categories.map(({ items }: ICategory) =>
+          items
+            .filter(({ checked }: any) => checked)
+            .map(({ name }: any) => name)
+        ).flat()
+      )
     setShowPreferences(formattedByProducts)
     setValue(preferences)
     onClose()
@@ -164,22 +183,27 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
   const minus = () => {
     if (numberOfProducts > 1) {
       setNumberOfProducts(numberOfProducts - 1)
+      if (step + 1 === numberOfProducts) setStep(step - 1)
     }
   }
 
   const plus = () => {
     if (numberOfProducts < 5) {
       setNumberOfProducts(numberOfProducts + 1)
+      if (step + 1 === numberOfProducts) setTimeout(() => setStep(step + 1), 50)
     }
   }
 
   useEffect(() => {
-    setValue(Array.from({ length: numberOfProducts }, () => initialPreferences))
+    setValue([initialPreferences])
     onOpen()
   }, [])
 
   useEffect(() => {
-    setPreferences(Array.from({ length: numberOfProducts }, () => initialPreferences))
+    setPreferences((prev: any) => Array.from({ length: numberOfProducts }, (_, index) => {
+      if (index <= prev.length - 1) return prev[index]
+      return initialPreferences
+    }))
   }, [numberOfProducts])
 
   if (!isMisteryBurguer) return null
@@ -239,25 +263,71 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                   <div>
                     <p className='text-pink-800 font-bold'>{error || ''}</p>
                     <Accordion>
-                      {preferences[step].map(({ category, items }: any) => (
-                        <AccordionItem key={category} aria-label={category} title={category}>
-                          <div className='flex flex-col'>
-                            {items.map(({ name, checked }: any) => (
-                              <Checkbox
-                                key={name}
-                                color='danger'
-                                lineThrough
-                                icon={<X size={20} />}
-                                isSelected={checked}
-                                onChange={() => handleChange(category, name)}
-                              >
-                                {name}
-                              </Checkbox>
-                            ))}
-                          </div>
-                        </AccordionItem>
-                      ))}
+                      {preferences[step]?.categories
+                        .filter(({ category }: ICategory) => !(category === 'Acompañantes' || category === 'Bebidas') || preferences[step].isCombo)
+                        .map(({ category, items }: ICategory) => (
+                          <AccordionItem
+                            key={category}
+                            aria-label={category}
+                            title={(
+                              <div className='flex justify-between'>
+                                <p>{category}</p>
+                                {preferences[step].isCombo && (category === 'Bebidas' || category === 'Acompañantes') && (
+                                  <Chip size='sm' color='primary'>
+                                    combo
+                                  </Chip>
+                                )}
+                              </div>
+                            )}
+                          >
+                            <div className='flex flex-col'>
+                              {items.map(({ name, checked }) => (
+                                <Checkbox
+                                  key={name}
+                                  color='danger'
+                                  lineThrough
+                                  icon={<X size={20} />}
+                                  isSelected={checked}
+                                  onChange={() => handleChange(category, name)}
+                                >
+                                  {name}
+                                </Checkbox>
+                              ))}
+                            </div>
+                          </AccordionItem>
+                        ))}
                     </Accordion>
+                  </div>
+                  <div>
+                    <Checkbox
+                      isSelected={preferences[step]?.isCombo}
+                      onChange={() => {
+                        setPreferences(preferences.map((item: any, index: number) => index === step
+                          ? {
+                              ...item,
+                              isCombo: !item.isCombo,
+                              categories: item.categories.map((categoryObject: ICategory) => {
+                                const newValue = {
+                                  ...categoryObject,
+                                  items: categoryObject.items.map((item: any) => ({ ...item, checked: !item.checked }))
+                                }
+
+                                switch (categoryObject.category) {
+                                  case 'Acompañantes':
+                                    return newValue
+                                  case 'Bebidas':
+                                    return newValue
+                                  default:
+                                    return categoryObject
+                                }
+                              })
+                            }
+                          : item))
+                      }}
+                    >
+                      Quieres la hamburguesa en combo?
+                    </Checkbox>
+                    <p className='opacity-60'>Esto te genera un costo de 6.000 COP</p>
                   </div>
                   <div className='flex justify-between items-center gap-6 mb-2 w-full h-full'>
                     <p>cantidad:</p>
@@ -290,7 +360,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                       !allTheSame && (
                         <Pagination
                           total={numberOfProducts}
-                          initialPage={step + 1}
+                          page={step + 1}
                           onChange={(page: number) => setStep(page - 1)}
                         />
                       )
