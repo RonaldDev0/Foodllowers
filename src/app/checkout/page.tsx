@@ -233,8 +233,10 @@ export default function Checkout () {
   const totalWithoutDiscount = product.price * (numberOfProducts - 1)
   const totalProductPrice = firstProductPriceWithDiscount + totalWithoutDiscount
 
-  const mercadopago = calculateMercadoPagoComission(totalProductPrice + tip + shippingCost)
-  const productPriceWithCoupon = totalProductPrice + mercadopago
+  const priceIncrease = preferences?.filter(({ isCombo }: any) => isCombo).length * 6000
+
+  const mercadopago = calculateMercadoPagoComission(totalProductPrice + tip + shippingCost + priceIncrease)
+  const productPriceWithCoupon = totalProductPrice + mercadopago + priceIncrease
 
   return (
     <main
