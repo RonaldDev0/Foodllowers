@@ -317,7 +317,7 @@ export default function Checkout () {
           setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           error={error}
-          amount={productPriceWithCoupon + tip + shippingCost}
+          amount={Math.round(productPriceWithCoupon + tip + shippingCost)}
           product={product}
           shippingCost={shippingCost}
           tip={tip}

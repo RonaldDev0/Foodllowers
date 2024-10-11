@@ -60,9 +60,9 @@ export async function POST (req: NextRequest) {
 
     const kitchenFirstProductEarnings = (product.price - influencer - serviceFee) * discountPercent
     const kitchenOtherProductsEarnings = (product.price - influencer - serviceFee) * (numberOfProducts - 1)
-    const kitchen = kitchenFirstProductEarnings + kitchenOtherProductsEarnings
+    const kitchen = Math.round(kitchenFirstProductEarnings + kitchenOtherProductsEarnings)
 
-    const earnings = transaction_amount - kitchen - influencerEarnings - mercadopago - shippingCost - tip
+    const earnings = Math.round(transaction_amount - kitchen - influencerEarnings - mercadopago - shippingCost - tip)
 
     const response = await supabase
       .from('orders')
