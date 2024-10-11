@@ -161,15 +161,16 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
     if (validation()) return
     const preferencesSaved = preferences[0]
 
-    const formattedByProducts = preferences
-      .filter((item: IPreferences) => item.isCombo)
-      .map((innerObject: IPreferences) =>
-        innerObject.categories.map(({ items }: ICategory) =>
-          items
-            .filter(({ checked }: any) => checked)
-            .map(({ name }: any) => name)
-        ).flat()
-      )
+    const formattedByProducts = preferences.map((innerObject: IPreferences) =>
+      innerObject.categories.map(({ category, items }: ICategory) =>
+        items
+          .filter(({ checked }: any) =>
+            checked && (innerObject.isCombo || (category !== 'Acompañantes' && category !== 'Bebidas'))
+          )
+          .map(({ name }: any) => name)
+      ).flat()
+    )
+
     setShowPreferences(formattedByProducts)
     setValue(preferences)
     onClose()
