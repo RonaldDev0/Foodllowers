@@ -32,7 +32,7 @@ export const useContent = create<State & Actions>(set => ({
   productList: null,
   currentInfluencer: null,
   currentProduct: null,
-  preparationTime: 20,
+  preparationTime: 15,
   pricePerKm: 0,
   minima: 0,
   serviceFee: 0,

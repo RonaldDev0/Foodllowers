@@ -28,6 +28,8 @@ interface IPaymentInfo {
 const MAX_SUPABASE_REALTIME = 100
 const MAX_KITCHEN_LIMIT = 5
 
+const MAX_DISTANCE = 6
+
 // Note: This is a temporary limit to prevent abuse
 const MAX_NUMBER_OF_PURCHASES = 100
 
@@ -75,6 +77,7 @@ export default function Checkout () {
   const [haveCoupon, setHaveCoupon] = useState(false)
   const [coupon, setCoupon] = useState('')
   const [error, setError] = useState<any>(false)
+  const [isMaxDistance, setIsMaxDistance] = useState(false)
 
   function fetchMapsDistance (origin: any) {
     if (!addressSelect) return
@@ -88,11 +91,14 @@ export default function Checkout () {
       .then(data => {
         const { distance: { text: distance }, duration: { text: duration } } = data.rows[0].elements[0]
 
-        const convertion = parseFloat(distance) * pricePerKm
+        const km = parseFloat(distance)
+
+        const convertion = km * pricePerKm
         const operation = convertion > minima ? convertion : minima
         setShippingCost(operation)
 
         setEstimationTime(parseFloat(duration) + preparationTime)
+        setIsMaxDistance(km >= MAX_DISTANCE)
       })
   }
 
@@ -215,7 +221,7 @@ export default function Checkout () {
   if (!product || !total) return null
 
   const AlertMessage = (() => {
-    if (!haveDelivery) {
+    if (!haveDelivery || isMaxDistance) {
       return 'Actualmente no tenemos deliverys en tu zona'
     } else if (!product?.kitchens.open) {
       return 'Este restaurante esta cerrado!!'
@@ -329,6 +335,7 @@ export default function Checkout () {
           serviceFee={serviceFee}
           haveCoupon={haveCoupon}
           coupon={coupon}
+          isMaxDistance={isMaxDistance}
         />
       </div>
     </main>
