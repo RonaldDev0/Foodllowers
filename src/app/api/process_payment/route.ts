@@ -58,9 +58,11 @@ export async function POST (req: NextRequest) {
     const discountPercent = haveCoupon ? 0.472 : 1
     const influencerEarnings = (influencer * discountPercent) + (influencer * (numberOfProducts - 1))
 
+    const priceIncrease = preferences?.filter(({ isCombo }: any) => isCombo).length * 6000
+
     const kitchenFirstProductEarnings = (product.price - influencer - serviceFee) * discountPercent
     const kitchenOtherProductsEarnings = (product.price - influencer - serviceFee) * (numberOfProducts - 1)
-    const kitchen = Math.round(kitchenFirstProductEarnings + kitchenOtherProductsEarnings)
+    const kitchen = Math.round(kitchenFirstProductEarnings + kitchenOtherProductsEarnings + priceIncrease)
 
     const earnings = Math.round(transaction_amount - kitchen - influencerEarnings - mercadopago - shippingCost - tip)
 
