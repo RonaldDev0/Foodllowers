@@ -36,7 +36,24 @@ const paymentInfoSchema = z.object({
     .max(4, 'CVV debe tener 3 o 4 dígitos')
 })
 
-export function PaymentButton ({ amount, error, product, shippingCost, tip, influencer, isMaximumOrders, isMaximumNumberOfPurchases, paymentInfo, setPaymentError, preferences, haveDelivery, numberOfProducts, serviceFee, haveCoupon, coupon }: props) {
+export function PaymentButton ({
+  amount,
+  error,
+  product,
+  shippingCost,
+  tip,
+  influencer,
+  isMaximumOrders,
+  isMaximumNumberOfPurchases,
+  paymentInfo,
+  setPaymentError,
+  preferences,
+  haveDelivery,
+  numberOfProducts,
+  serviceFee,
+  haveCoupon,
+  coupon
+}: props) {
   const { supabase } = useSupabase()
   const { addressSelect, userId, user, darkMode } = useUser()
   const router = useRouter()
