@@ -350,7 +350,10 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                       numberOfProducts > 1 && (
                         <Checkbox
                           isSelected={allTheSame}
-                          onChange={() => setAllTheSame(!allTheSame)}
+                          onChange={() => {
+                            setAllTheSame(!allTheSame)
+                            setStep(0)
+                          }}
                         >
                           Todas las hamburguesas comparten preferencias?
                         </Checkbox>
