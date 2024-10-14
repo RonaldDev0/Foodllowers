@@ -21,8 +21,8 @@ export async function Pay (card: any, paymentInfo: any, user: any) {
       expiration_year: '20' + card.expiration_date.slice(5, 7),
       security_code: card.cvv,
       cardholder: {
-        // name: user.name
-        name: 'APRO'
+        name: user.name
+        // name: 'APRO'
       }
     })
   })
