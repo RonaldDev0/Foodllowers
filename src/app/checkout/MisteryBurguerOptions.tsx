@@ -191,7 +191,6 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
   const plus = () => {
     if (numberOfProducts < 5) {
       setNumberOfProducts(numberOfProducts + 1)
-      if (step + 1 === numberOfProducts) setTimeout(() => setStep(step + 1), 50)
     }
   }
 
