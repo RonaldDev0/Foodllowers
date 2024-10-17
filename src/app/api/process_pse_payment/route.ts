@@ -15,23 +15,22 @@ export async function POST (req: NextRequest) {
     user,
     addressSelect,
     paymentInfo,
-    card,
     preferences,
     numberOfProducts,
     serviceFee,
     haveCoupon,
-    coupon
+    coupon,
+    mercadopagoComision
   } = await req.json()
 
   try {
-    const { id, status, transaction_amount, fee_details } = await Pay(card, paymentInfo, user)
+    const { id, status_detail, transaction_amount, external_resource_url } = await Pay(paymentInfo)
 
-    if (status !== 'approved') {
-      return NextResponse.json({ error: 'Transacción rechazada' })
+    if (status_detail !== 'pending_waiting_transfer') {
+      return NextResponse.json({ error: 'Transacción rechazada', line: 31 })
     }
 
     const { influencerEarnings, kitchen, earnings, mercadopago } = amounts(
-      fee_details,
       haveCoupon,
       influencer,
       numberOfProducts,
@@ -40,7 +39,8 @@ export async function POST (req: NextRequest) {
       serviceFee,
       shippingCost,
       tip,
-      transaction_amount
+      transaction_amount,
+      mercadopagoComision
     )
 
     const response = await supabase
@@ -56,7 +56,7 @@ export async function POST (req: NextRequest) {
         kitchen_address: product.kitchens.address,
         invoice_id: id,
         user_email: user.email,
-        payment_status: 'approved',
+        payment_status: 'pending...',
         preferences,
         transaction_amount: {
           mercadopago,
@@ -70,7 +70,7 @@ export async function POST (req: NextRequest) {
       .select('id')
       .then(({ error }) => {
         if (error) return { error: 'transacción rechazada', line: 73 }
-        return { error: false }
+        return { error: false, external_resource_url }
       })
 
     coupons(haveCoupon, coupon)

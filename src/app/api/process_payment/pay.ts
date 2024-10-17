@@ -21,8 +21,8 @@ export async function Pay (card: any, paymentInfo: any, user: any) {
       expiration_year: '20' + card.expiration_date.slice(5, 7),
       security_code: card.cvv,
       cardholder: {
-        // name: user.name
-        name: 'APRO'
+        name: user.name
+        // name: 'APRO'
       }
     })
   })
@@ -30,9 +30,10 @@ export async function Pay (card: any, paymentInfo: any, user: any) {
     .then(res => res.id)
     .catch(err => console.log(err))
 
-  const { id, status, transaction_amount, fee_details, status_detail }: any = await payment
-    .create({ body: { ...paymentInfo, token, installments: 1 } })
+  const { id, status, transaction_amount, fee_details }: any = await payment
+    .create({
+      body: { ...paymentInfo, token, installments: 1 }
+    })
 
-  console.log({ id, status, transaction_amount, fee_details, status_detail })
   return { id, status, transaction_amount, fee_details }
 }

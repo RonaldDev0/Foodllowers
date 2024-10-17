@@ -18,7 +18,7 @@ type props = {
   isMaximumNumberOfPurchases: boolean
   paymentInfo: any
   setPaymentError: Function
-  preferences: null | string
+  preferences: any[]
   haveDelivery: boolean
   numberOfProducts: number
   serviceFee: number
@@ -68,9 +68,11 @@ export function PaymentButton ({
     setAlert(message)
     onOpen()
     setIsLoading(false)
-    if (route === '/') router.push(route)
-    else if (route === '/currentshipment') router.push(route)
-    else if (route === 'refresh') router.refresh()
+    setTimeout(() => {
+      if (route === '/') router.push(route)
+      else if (route === '/currentshipment') router.push(route)
+      else if (route === 'refresh') router.refresh()
+    }, 3000)
   }
 
   function validatePaymentInfo () {
@@ -167,7 +169,6 @@ export function PaymentButton ({
         coupon,
         paymentInfo: {
           transaction_amount: amount,
-          callback_url: 'https://foodllowers.vercel.app/currentshipment',
           description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
           additional_info: { ip_address: ip },
           payer: { email: user.email }
@@ -195,12 +196,8 @@ export function PaymentButton ({
         isDisabled={isLoading}
         color={darkMode ? 'secondary' : 'warning'}
         className={`
+          w-full
           text-lg font-semibold ${isLoading ? 'opacity-60' : ''}
-          [@media(max-width:800px)]:fixed
-          [@media(max-width:800px)]:z-40
-          [@media(max-width:800px)]:bottom-5
-          [@media(max-width:800px)]:w-96
-          [@media(max-width:365px)]:!w-80
         `}
       >
         {isLoading ? 'Comprando...' : 'Comprar'}
