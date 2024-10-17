@@ -138,9 +138,20 @@ export function PaymentButton ({
 
     const order = await supabase
       .from('orders')
-      .select('id')
+      .select('id, payment_status')
       .eq('user_id', userId)
-      .then(({ data }: any) => data)
+      .then(({ data }: any) => {
+        if (data[0].payment_status === 'pending...') {
+          supabase
+            .from('orders')
+            .delete()
+            .eq('user_id', userId)
+            .eq('id', data[0].id)
+            .then(() => console.log('.'))
+          return []
+        }
+        return data
+      })
 
     if (order.length) {
       showAlert('ya tienes un pedido en camino!, no puedes hacer mas de un pedido al mismo tiempo')
