@@ -24,7 +24,7 @@ export async function POST (req: NextRequest) {
   } = await req.json()
 
   try {
-    const { id, status, transaction_amount, fee_details } = await Pay(card, paymentInfo, user)
+    const { id, status, transaction_amount, fee_details } = await Pay(card, paymentInfo)
 
     if (status !== 'approved') {
       return NextResponse.json({ error: 'Transacción rechazada' })

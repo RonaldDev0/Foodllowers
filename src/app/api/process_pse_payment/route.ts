@@ -20,7 +20,8 @@ export async function POST (req: NextRequest) {
     serviceFee,
     haveCoupon,
     coupon,
-    mercadopagoComision
+    mercadopagoComision,
+    influencer_id
   } = await req.json()
 
   try {
@@ -51,7 +52,7 @@ export async function POST (req: NextRequest) {
         product,
         order_state: 'buscando cocina...',
         kitchen_id: product.id_kitchen,
-        influencer_id: product.influencers.id,
+        influencer_id,
         user_address: addressSelect,
         kitchen_address: product.kitchens.address,
         invoice_id: id,

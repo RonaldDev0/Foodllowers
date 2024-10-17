@@ -152,6 +152,7 @@ export function PseButton ({
         haveCoupon,
         coupon,
         mercadopagoComision,
+        influencer_id: product.influencers.id,
         paymentInfo: {
           transaction_amount: amount,
           callback_url: 'https://foodllowers.vercel.app/currentshipment',

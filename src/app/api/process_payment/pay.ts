@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 
-export async function Pay (card: any, paymentInfo: any, user: any) {
+export async function Pay (card: any, paymentInfo: any) {
   const client = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN!,
     options: { timeout: 5000, idempotencyKey: crypto.randomUUID() }
@@ -20,10 +20,7 @@ export async function Pay (card: any, paymentInfo: any, user: any) {
       expiration_month: card.expiration_date.slice(0, 2),
       expiration_year: '20' + card.expiration_date.slice(5, 7),
       security_code: card.cvv,
-      cardholder: {
-        name: user.name
-        // name: 'APRO'
-      }
+      cardholder: { name: card.card_holder }
     })
   })
     .then(res => res.json())

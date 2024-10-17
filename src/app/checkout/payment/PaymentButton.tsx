@@ -34,7 +34,9 @@ const paymentInfoSchema = z.object({
     .length(7, 'La fecha de expiración es invalida'),
   cvv: z.string()
     .min(3, 'CVV debe tener almenos 3 dígitos')
-    .max(4, 'CVV debe tener 3 o 4 dígitos')
+    .max(4, 'CVV debe tener 3 o 4 dígitos'),
+  card_holder: z.string()
+    .min(3, 'Ingresa un nombre valido')
 })
 
 export function PaymentButton ({
@@ -116,6 +118,8 @@ export function PaymentButton ({
       return
     } else if (errorMessages.cvv) {
       showAlert('El CVV no es válido')
+    } else if (errorMessages.card_holder) {
+      showAlert('El nombre del titular de la tarjeta no es válido')
     } else if (isMaximumOrders) {
       showAlert('La cocina está procesando el máximo de pedidos posibles. Regresa más tarde.')
       return
