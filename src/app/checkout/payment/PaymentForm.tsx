@@ -1,16 +1,16 @@
 /* eslint-disable camelcase */
 'use client'
-import { Card, CardHeader, CardBody, Divider, Input } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
 import Image from 'next/image'
 
-interface props {
+export interface IProps {
   paymentInfo: any
   setPaymentInfo: Function
   paymentError: any
   setPaymentError: Function
 }
 
-export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPaymentError }: props) {
+export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPaymentError }: IProps) {
   const getCardType = (cardNumber: string) => {
     // Eliminar espacios en blanco del número de tarjeta y convertir a cadena
     const cardNumberCleaned = cardNumber.replace(/\D/g, '')
@@ -107,71 +107,63 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
   }
 
   return (
-    <>
-      <Card className='[@media(max-width:365px)]:!w-80'>
-        <CardHeader>
-          Información de pago
-        </CardHeader>
-        <Divider />
-        <CardBody className='w-96 [@media(max-width:365px)]:!w-80 flex flex-col gap-4'>
-          <span>Número de la tarjeta</span>
-          <div className='relative'>
+    <div className='flex flex-col gap-4'>
+      <span>Número de la tarjeta</span>
+      <div className='relative'>
+        <Input
+          name='card_number'
+          value={paymentInfo.card_number}
+          onChange={handleChange}
+          type='text'
+          placeholder='1234 1234 1234 1234'
+          isInvalid={!!paymentError.card_number}
+          errorMessage={paymentError.card_number}
+        />
+        {paymentInfo.card_type && (
+          <Image
+            src={paymentInfo.card_type}
+            width={33}
+            height={33}
+            alt='cvv'
+            className={`absolute right-2 ${paymentInfo.card_type === '/icons/amex.svg' ? 'top-1' : 'top-2'} pointer-events-none`}
+          />
+        )}
+      </div>
+      <div className='flex gap-8'>
+        <div>
+          <span>Fecha de expiración</span>
+          <Input
+            name='expiration_date'
+            value={paymentInfo.expiration_date}
+            onChange={handleChange}
+            type='text'
+            placeholder='MM/YY'
+            isInvalid={!!paymentError.expiration_date}
+            errorMessage={paymentError.expiration_date}
+          />
+        </div>
+        <div>
+          <span>CVV</span>
+          <div className='relative [@media(max-width:365px)]:!top-6'>
             <Input
-              name='card_number'
-              value={paymentInfo.card_number}
+              name='cvv'
+              value={paymentInfo.cvv}
               onChange={handleChange}
               type='text'
-              placeholder='1234 1234 1234 1234'
-              isInvalid={!!paymentError.card_number}
-              errorMessage={paymentError.card_number}
+              placeholder='123'
+              isInvalid={!!paymentError.cvv}
+              errorMessage={paymentError.cvv}
             />
-            {paymentInfo.card_type && (
-              <Image
-                src={paymentInfo.card_type}
-                width={33}
-                height={33}
-                alt='cvv'
-                className={`absolute right-2 ${paymentInfo.card_type === '/icons/amex.svg' ? 'top-1' : 'top-2'} pointer-events-none`}
-              />
-            )}
+            <Image
+              src='/icons/cvv.png'
+              width={33}
+              height={33}
+              alt='cvv'
+              className='absolute right-2 top-1 pointer-events-none'
+            />
           </div>
-          <div className='flex gap-8'>
-            <div>
-              <span>Fecha de expiración</span>
-              <Input
-                name='expiration_date'
-                value={paymentInfo.expiration_date}
-                onChange={handleChange}
-                type='text'
-                placeholder='MM/YY'
-                isInvalid={!!paymentError.expiration_date}
-                errorMessage={paymentError.expiration_date}
-              />
-            </div>
-            <div>
-              <span>CVV</span>
-              <div className='relative [@media(max-width:365px)]:!top-6'>
-                <Input
-                  name='cvv'
-                  value={paymentInfo.cvv}
-                  onChange={handleChange}
-                  type='text'
-                  placeholder='123'
-                  isInvalid={!!paymentError.cvv}
-                  errorMessage={paymentError.cvv}
-                />
-                <Image
-                  src='/icons/cvv.png'
-                  width={33}
-                  height={33}
-                  alt='cvv'
-                  className='absolute right-2 top-1 pointer-events-none'
-                />
-              </div>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
-    </>
+        </div>
+      </div>
+    </div>
   )
 }

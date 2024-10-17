@@ -20,7 +20,7 @@ export function Summary ({ shippingCost, tip, productPriceWithCoupon }: props) {
   }
 
   return (
-    <Card className='w-96 [@media(max-width:365px)]:!w-80'>
+    <Card className='w-full [@media(max-width:365px)]:!w-80'>
       <CardHeader>
         Resumen
       </CardHeader>

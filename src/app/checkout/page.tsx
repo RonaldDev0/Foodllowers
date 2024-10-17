@@ -6,17 +6,16 @@ import { useUser, useContent } from '@/store'
 import { useState, useEffect } from 'react'
 import { AddressSelect } from './AddressSelect'
 import { ProductDetails } from './ProductDetails'
-import { PaymentForm } from './PaymentForm'
 import { Tip } from './Tip'
 import { Summary } from './Summary'
 import { Alert } from '@/components/Alert'
 import { EstimationTime } from './EstimationTime'
-import { PaymentButton } from './PaymentButton'
 import { useDecrypt } from '@/hooks'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MisteryBurguerOptions } from './MisteryBurguerOptions'
 import { DiscountCoupon } from './DiscountCoupon'
+import { Payment } from './payment'
 
 interface IPaymentInfo {
   card_number: string
@@ -312,16 +311,12 @@ export default function Checkout () {
           coupon={coupon}
           setCoupon={setCoupon}
         />
-        <PaymentForm
+        <Payment
           paymentError={paymentError}
           setPaymentError={setPaymentError}
           paymentInfo={paymentInfo}
           setPaymentInfo={setPaymentInfo}
-        />
-        <PaymentButton
           haveDelivery={haveDelivery}
-          setPaymentError={setPaymentError}
-          paymentInfo={paymentInfo}
           error={error}
           amount={Math.round(productPriceWithCoupon + tip + shippingCost)}
           product={product}
@@ -336,6 +331,7 @@ export default function Checkout () {
           haveCoupon={haveCoupon}
           coupon={coupon}
           isMaxDistance={isMaxDistance}
+          mercadopagoComision={mercadopago}
         />
       </div>
     </main>

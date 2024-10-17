@@ -30,9 +30,10 @@ export async function Pay (card: any, paymentInfo: any, user: any) {
     .then(res => res.id)
     .catch(err => console.log(err))
 
-  const { id, status, transaction_amount, fee_details, status_detail }: any = await payment
-    .create({ body: { ...paymentInfo, token, installments: 1 } })
+  const { id, status, transaction_amount, fee_details }: any = await payment
+    .create({
+      body: { ...paymentInfo, token, installments: 1 }
+    })
 
-  console.log({ id, status, transaction_amount, fee_details, status_detail })
   return { id, status, transaction_amount, fee_details }
 }
