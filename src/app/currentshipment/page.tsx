@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 'use client'
 import { useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
@@ -41,40 +42,54 @@ export default function CurrentShipment () {
       body: JSON.stringify({ paymentId: query })
     })
       .then(res => res.json())
-      .then(({ id, status, error }) => {
+      .then(({ id, status, error, mercadopago }) => {
         if (error) return
 
-        switch (status) {
-          case 'approved':
-            supabase
-              .from('orders')
-              .update({ payment_status: 'approved' })
-              .eq('invoice_id', id)
-              .eq('user_id', userId)
-              .select('id, product, order_state, payment_status')
-              .then(({ data }: any) => {
-                if (!data?.length) return
-                setProduct(data[0].product)
-                setActiveStep(data[0].order_state)
+        supabase
+          .from('orders')
+          .select('id, product, order_state, payment_status, transaction_amount')
+          .eq('user_id', userId)
+          .eq('invoice_id', id)
+          .then(({ data, error }) => {
+            if (error) return
+            const transaction_amount = data[0].transaction_amount
+            const earnings = transaction_amount.earnings + (transaction_amount.mercadopago - mercadopago)
 
-                subscribeChannel()
-              })
-            break
-          case 'rejected':
-            supabase
-              .from('orders')
-              .delete()
-              .eq('invoice_id', id)
-              .eq('user_id', userId)
-            break
-          default:
-            break
-        }
+            const newTransactionAmount = { ...transaction_amount, mercadopago, earnings }
+
+            switch (status) {
+              case 'approved':
+                supabase
+                  .from('orders')
+                  .update({ payment_status: 'approved', transaction_amount: newTransactionAmount })
+                  .eq('invoice_id', id)
+                  .eq('user_id', userId)
+                  .select('id, product, order_state, payment_status')
+                  .then(({ data }: any) => {
+                    if (!data?.length) return
+                    setProduct(data[0].product)
+                    setActiveStep(data[0].order_state)
+
+                    subscribeChannel()
+                  })
+                break
+              case 'rejected':
+                supabase
+                  .from('orders')
+                  .delete()
+                  .eq('invoice_id', id)
+                  .eq('user_id', userId)
+                  .then(() => console.log('.'))
+                break
+              default:
+                break
+            }
+          })
       })
   }, [userId, query])
 
   useEffect(() => {
-    if (!userId) return
+    if (!userId || query) return
 
     supabase
       .from('orders')
