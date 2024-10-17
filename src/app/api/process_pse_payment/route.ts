@@ -24,8 +24,7 @@ export async function POST (req: NextRequest) {
   } = await req.json()
 
   try {
-    const { id, fee_details, status_detail, transaction_amount, external_resource_url } = await Pay(paymentInfo)
-    console.log({ id, fee_details, status_detail, transaction_amount, external_resource_url })
+    const { id, status_detail, transaction_amount, external_resource_url } = await Pay(paymentInfo)
 
     if (status_detail !== 'pending_waiting_transfer') {
       return NextResponse.json({ error: 'Transacción rechazada', line: 31 })

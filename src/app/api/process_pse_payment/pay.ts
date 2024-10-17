@@ -8,8 +8,8 @@ export async function Pay (paymentInfo: any) {
   })
 
   const payment = new Payment(client)
-  const { id, status_detail, transaction_amount, fee_details, transaction_details: { external_resource_url } }: any = await payment
+  const { id, status_detail, transaction_amount, transaction_details: { external_resource_url } }: any = await payment
     .create({ body: { ...paymentInfo, installments: 1 } })
 
-  return { id, fee_details, status_detail, transaction_amount, external_resource_url }
+  return { id, status_detail, transaction_amount, external_resource_url }
 }
