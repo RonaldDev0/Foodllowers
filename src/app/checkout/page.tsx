@@ -22,6 +22,7 @@ interface IPaymentInfo {
   card_type: any
   expiration_date: string
   cvv: string
+  card_holder: string
 }
 
 const MAX_SUPABASE_REALTIME = 100
@@ -59,13 +60,15 @@ export default function Checkout () {
     card_number: '',
     card_type: false,
     expiration_date: '',
-    cvv: ''
+    cvv: '',
+    card_holder: ''
   })
   const [paymentError, setPaymentError] = useState<any>({
     card_number: false,
     card_type: false,
     expiration_date: false,
-    cvv: false
+    cvv: false,
+    card_holder: false
   })
   const [shippingCost, setShippingCost] = useState(0)
   const [tip, setTip] = useState(0)

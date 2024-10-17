@@ -104,12 +104,16 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
       const cleanedValue = value.replace(/\D/g, '')
       setPaymentInfo({ ...paymentInfo, [name]: cleanedValue })
     }
+
+    if (name === 'card_holder' && value.length <= 20) {
+      setPaymentInfo({ ...paymentInfo, [name]: value })
+    }
   }
 
   return (
     <div className='flex flex-col gap-4'>
-      <span>Número de la tarjeta</span>
       <div className='relative'>
+        <span>Número de la tarjeta</span>
         <Input
           name='card_number'
           value={paymentInfo.card_number}
@@ -163,6 +167,18 @@ export function PaymentForm ({ paymentInfo, setPaymentInfo, paymentError, setPay
             />
           </div>
         </div>
+      </div>
+      <div>
+        <span>Nombre del titular de la tarjeta</span>
+        <Input
+          name='card_holder'
+          type='text'
+          placeholder='Nombre del titular de la tarjeta'
+          value={paymentInfo.card_holder}
+          isInvalid={!!paymentError.card_holder}
+          errorMessage={paymentError.card_holder}
+          onChange={handleChange}
+        />
       </div>
     </div>
   )
