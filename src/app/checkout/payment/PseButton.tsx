@@ -114,7 +114,7 @@ export function PseButton ({
       .select('id, payment_status')
       .eq('user_id', userId)
       .then(({ data }: any) => {
-        if (data[0].payment_status === 'pending...') {
+        if (data.length && data[0].payment_status === 'pending...') {
           supabase
             .from('orders')
             .delete()
