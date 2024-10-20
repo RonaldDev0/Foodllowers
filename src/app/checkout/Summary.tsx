@@ -2,7 +2,6 @@
 import { Card, CardHeader, CardBody, Divider } from '@nextui-org/react'
 
 type props = {
-  productPrice: number
   shippingCost: number
   tip: number
   productPriceWithCoupon: number

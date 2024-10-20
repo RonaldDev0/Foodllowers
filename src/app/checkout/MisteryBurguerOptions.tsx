@@ -158,8 +158,8 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
   }
 
   const handleSubmit = (onClose: Function) => {
+    setAllTheSame(false)
     if (validation()) return
-    const preferencesSaved = preferences[0]
 
     const formattedByProducts = preferences.map((innerObject: IPreferences) =>
       innerObject.categories.map(({ category, items }: ICategory) =>
@@ -174,11 +174,6 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
     setShowPreferences(formattedByProducts)
     setValue(preferences)
     onClose()
-
-    if (allTheSame) {
-      setStep(0)
-      setPreferences(Array.from({ length: numberOfProducts }, () => preferencesSaved))
-    }
   }
 
   const minus = () => {
@@ -346,7 +341,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                     </div>
                   </div>
                   <div className='w-full flex flex-col gap-8 items-center justify-center'>
-                    {
+                    {/* {
                       numberOfProducts > 1 && (
                         <Checkbox
                           isSelected={allTheSame}
@@ -358,7 +353,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                           Todas las hamburguesas comparten preferencias?
                         </Checkbox>
                       )
-                    }
+                    } */}
                     {
                       !allTheSame && (
                         <Pagination

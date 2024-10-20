@@ -7,13 +7,13 @@ import { useContent } from '@/store'
 function calculateMercadoPagoComission (amount: number) {
   const porcentajeComision = 0.0279
   const IVA = 0.19
-  const costoFijo = 952.00
+  const costoFijo = 952
 
   const comision = amount * porcentajeComision
   const IVAComision = comision * IVA
   const totalComision = comision + IVAComision + costoFijo
 
-  return Math.floor(totalComision + 155)
+  return Math.floor(totalComision + 101)
 }
 
 export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => void }) {
@@ -61,7 +61,7 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
             </div>
             <p className='opacity-80'>
               {
-                (product.price + calculateMercadoPagoComission(product.price + 10000)).toLocaleString('es-Es', {
+                (product.price + calculateMercadoPagoComission(product.price)).toLocaleString('es-Es', {
                   style: 'currency',
                   currency: 'COP',
                   minimumFractionDigits: 0,

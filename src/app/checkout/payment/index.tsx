@@ -31,6 +31,8 @@ interface IProps {
   mercadopagoComision: number
 }
 
+const cardDisabled = false
+
 export function Payment ({
   paymentError,
   setPaymentError,
@@ -55,7 +57,7 @@ export function Payment ({
 }: IProps) {
   const { darkMode } = useUser()
 
-  const [method, setMethod] = useState('tarjeta')
+  const [method, setMethod] = useState('pse')
   const [type, setType] = useState('')
   const [number, setNumber] = useState('')
   const [pseError, setPseError] = useState<any>({
@@ -116,18 +118,29 @@ export function Payment ({
               </ModalHeader>
               <Divider />
               <ModalBody>
-                <div className='flex flex-col gap-10'>
-                  <p>Antes de realizar el pago, asegúrate de que tu pedido esté configurado correctamente.</p>
-                  <PaymentForm
-                    paymentError={paymentError}
-                    setPaymentError={setPaymentError}
-                    paymentInfo={paymentInfo}
-                    setPaymentInfo={setPaymentInfo}
-                  />
-                </div>
+                {
+                  cardDisabled
+                    ? (
+                      <div className='flex flex-col justify-center items-center my-4'>
+                        <p>Los pagos con tarjeta están deshabilitados en este momento.</p>
+                      </div>
+                      )
+                    : (
+                      <div className='flex flex-col gap-10'>
+                        <p>Antes de realizar el pago, asegúrate de que tu pedido esté configurado correctamente.</p>
+                        <PaymentForm
+                          paymentError={paymentError}
+                          setPaymentError={setPaymentError}
+                          paymentInfo={paymentInfo}
+                          setPaymentInfo={setPaymentInfo}
+                        />
+                      </div>
+                      )
+                }
               </ModalBody>
               <ModalFooter>
                 <PaymentButton
+                  isDisabled={cardDisabled}
                   haveDelivery={haveDelivery}
                   setPaymentError={setPaymentError}
                   paymentInfo={paymentInfo}
