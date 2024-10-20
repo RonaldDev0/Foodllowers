@@ -36,13 +36,13 @@ const MAX_NUMBER_OF_PURCHASES = 100
 function calculateMercadoPagoComission (amount: number) {
   const porcentajeComision = 0.0279
   const IVA = 0.19
-  const costoFijo = 952.00
+  const costoFijo = 952
 
   const comision = amount * porcentajeComision
   const IVAComision = comision * IVA
   const totalComision = comision + IVAComision + costoFijo
 
-  return Math.floor(totalComision + 155)
+  return Math.floor(totalComision + 101)
 }
 
 export default function Checkout () {
@@ -243,7 +243,7 @@ export default function Checkout () {
 
   const priceIncrease = preferences?.filter(({ isCombo }: any) => isCombo).length * 6000
 
-  const mercadopago = calculateMercadoPagoComission(totalProductPrice + tip + shippingCost + priceIncrease)
+  const mercadopago = calculateMercadoPagoComission(totalProductPrice + priceIncrease)
   const productPriceWithCoupon = totalProductPrice + mercadopago + priceIncrease
 
   return (
@@ -290,7 +290,7 @@ export default function Checkout () {
           setNumberOfProducts={setNumberOfProducts}
         />
         <EstimationTime time={estimationTime} />
-        <Tip setTip={setTip} amount={product.price} />
+        <Tip setTip={setTip} amount={product.price + 1092} />
       </div>
       <div
         className='flex flex-col gap-3 top-5
@@ -303,9 +303,8 @@ export default function Checkout () {
           setNumberOfProducts={setNumberOfProducts}
         />
         <Summary
-          productPrice={product.price}
-          shippingCost={shippingCost}
-          tip={tip}
+          shippingCost={shippingCost + (shippingCost * 0.03)}
+          tip={tip + (tip * 0.03)}
           productPriceWithCoupon={productPriceWithCoupon}
         />
         <DiscountCoupon
@@ -321,7 +320,7 @@ export default function Checkout () {
           setPaymentInfo={setPaymentInfo}
           haveDelivery={haveDelivery}
           error={error}
-          amount={Math.round(productPriceWithCoupon + tip + shippingCost)}
+          amount={Math.round(productPriceWithCoupon + (tip + tip * 0.03) + (shippingCost + shippingCost * 0.03))}
           product={product}
           shippingCost={shippingCost}
           tip={tip}

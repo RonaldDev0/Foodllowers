@@ -25,6 +25,7 @@ type props = {
   haveCoupon: boolean
   coupon: string
   isMaxDistance: boolean
+  isDisabled: boolean
 }
 
 const paymentInfoSchema = z.object({
@@ -56,7 +57,8 @@ export function PaymentButton ({
   serviceFee,
   haveCoupon,
   coupon,
-  isMaxDistance
+  isMaxDistance,
+  isDisabled
 }: props) {
   const { supabase } = useSupabase()
   const { addressSelect, userId, user, darkMode } = useUser()
@@ -173,7 +175,7 @@ export function PaymentButton ({
         preferences,
         product,
         shippingCost,
-        tip,
+        tip: Math.floor(tip),
         influencer,
         userId,
         user,
@@ -209,7 +211,7 @@ export function PaymentButton ({
     <>
       <Button
         onClick={onSubmit}
-        isDisabled={isLoading}
+        isDisabled={isLoading || isDisabled}
         color={darkMode ? 'secondary' : 'warning'}
         className={`
           w-full
