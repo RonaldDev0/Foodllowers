@@ -8,13 +8,13 @@ import { useContent } from '@/store'
 function calculateMercadoPagoComission (amount: number) {
   const porcentajeComision = 0.0279
   const IVA = 0.19
-  const costoFijo = 952.00
+  const costoFijo = 952
 
   const comision = amount * porcentajeComision
   const IVAComision = comision * IVA
   const totalComision = comision + IVAComision + costoFijo
 
-  return Math.floor(totalComision + 155)
+  return Math.floor(totalComision + 101)
 }
 
 export function ProductList () {
