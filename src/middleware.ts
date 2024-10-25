@@ -26,11 +26,11 @@ export async function middleware (req: NextRequest) {
     req.nextUrl.pathname !== '/manifest.json' &&
     !req.nextUrl.searchParams.has('code')
 
-  const isNotErrorPage = !req.nextUrl.pathname.startsWith('/_next') &&
-    !isStaticFile &&
-    req.nextUrl.pathname !== '/error' &&
-    req.nextUrl.pathname !== '/manifest.json' &&
-    !req.nextUrl.searchParams.has('code')
+  // const isNotErrorPage = !req.nextUrl.pathname.startsWith('/_next') &&
+  //   !isStaticFile &&
+  //   req.nextUrl.pathname !== '/error' &&
+  //   req.nextUrl.pathname !== '/manifest.json' &&
+  //   !req.nextUrl.searchParams.has('code')
 
   if (req.url.endsWith('/install')) return
 
