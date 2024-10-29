@@ -26,6 +26,7 @@ type props = {
   coupon: string
   isMaxDistance: boolean
   isDisabled: boolean
+  pickUpInStore: boolean
 }
 
 const paymentInfoSchema = z.object({
@@ -58,7 +59,8 @@ export function PaymentButton ({
   haveCoupon,
   coupon,
   isMaxDistance,
-  isDisabled
+  isDisabled,
+  pickUpInStore
 }: props) {
   const { supabase } = useSupabase()
   const { addressSelect, userId, user, darkMode } = useUser()
@@ -109,7 +111,7 @@ export function PaymentButton ({
 
     const errorMessages: any = validatePaymentInfo()
 
-    if (!haveDelivery || isMaxDistance) {
+    if ((!haveDelivery || isMaxDistance) && !pickUpInStore) {
       showAlert('Actualmente no tenemos deliverys en tu zona')
       return
     } else if (errorMessages.card_number) {
@@ -184,6 +186,7 @@ export function PaymentButton ({
         serviceFee,
         haveCoupon,
         coupon,
+        pickUpInStore,
         influencer_id: product.influencers.id,
         paymentInfo: {
           transaction_amount: amount,

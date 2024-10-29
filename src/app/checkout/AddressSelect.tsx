@@ -1,17 +1,18 @@
 'use client'
 import { useUser } from '@/store'
-import { Card, CardBody, CardHeader, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
+import { Card, CardBody, CardHeader, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Select, SelectItem } from '@nextui-org/react'
 import { useEffect } from 'react'
 import Link from 'next/link'
 
-export function AddressSelect ({ setError }: { setError: Function }) {
-  const { addressList, addressSelect, setStore } = useUser()
-  const { onOpen, isOpen, onOpenChange } = useDisclosure()
+type IProps = {
+  setError: Function
+  pickUpInStore: boolean
+  setPickUpInStore: Function
+}
 
-  const handleChangeAddress = (onClose: Function, address: any) => {
-    setStore('addressSelect', address)
-    onClose()
-  }
+export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore }: IProps) {
+  const { addressList, addressSelect, darkMode, setStore } = useUser()
+  const { onOpen, isOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
     if (addressList) {
@@ -37,27 +38,36 @@ export function AddressSelect ({ setError }: { setError: Function }) {
           </Button>
         </CardHeader>
         <Divider />
-        <CardBody className='p-5 rounded-lg flex flex-col gap-5'>
-          {(!addressList || addressList.length === 0)
+        <CardBody className='p-3 rounded-lg'>
+          {pickUpInStore
             ? (
-              <div className='flex flex-col gap-5'>
-                <p>No tienes ninguna dirección registrada</p>
-                <Link className='dark:text-purple-800 text-yellow-400 font-semibold' href='/adresses'>Agregar dirección</Link>
-              </div>
+              <p>Recojer en la cocina</p>
               )
-            : (
-              <>
-                <div className='flex w-full justify-between'>
-                  <p className='font-bold'>
-                    {addressSelect?.user}
-                  </p>
-                  <p>{addressSelect?.numberPrefix + ' ' + addressSelect?.number}</p>
+            : addressList?.length
+              ? (
+                <>
+                  <div className='flex w-full justify-between'>
+                    <p className='font-bold'>
+                      {addressSelect?.user}
+                    </p>
+                    <p>{addressSelect?.numberPrefix + ' ' + addressSelect?.number}</p>
+                  </div>
+                  <div className='flex w-full gap-2 justify-between'>
+                    <p>{addressSelect?.formatted_address}</p>
+                  </div>
+                </>
+                )
+              : (
+                <div className='flex flex-col gap-5'>
+                  <p>No tienes ninguna dirección registrada</p>
+                  <Link
+                    className='dark:text-purple-800 text-yellow-400 font-semibold'
+                    href='/adresses'
+                  >
+                    Agregar dirección
+                  </Link>
                 </div>
-                <div className='flex w-full gap-2 justify-between'>
-                  <p>{addressSelect?.formatted_address}</p>
-                </div>
-              </>
-              )}
+                )}
         </CardBody>
       </Card>
       <Modal
@@ -68,37 +78,67 @@ export function AddressSelect ({ setError }: { setError: Function }) {
         <ModalContent>
           {onClose => (
             <>
-              <ModalHeader>
+              <ModalHeader className='justify-center'>
                 Selecciona tu dirección de envio
               </ModalHeader>
               <ModalBody>
-                {addressList?.map(address => (
-                  <div
-                    key={address.id}
-                    onClick={() => handleChangeAddress(onClose, address)}
-                    className='bg-purple-800 bg-opacity-20 hover:bg-opacity-40 transition-all rounded-lg p-3 cursor-pointer flex justify-between'
-                  >
-                    <div>
-                      <p>{address.user}</p>
-                      <p>{address.formatted_address}</p>
-                    </div>
-                    <p>{address.numberPrefix + ' ' + address.number}</p>
+                <div className='flex flex-col gap-8'>
+                  {addressList?.length
+                    ? (
+                      <Select
+                        isDisabled={pickUpInStore}
+                        placeholder='Selecciona una dirección'
+                        defaultSelectedKeys={[addressSelect?.id.toString() || '']}
+                        onChange={({ target: { value } }) => {
+                          const address = addressList?.filter((item: any) => item.id === Number(value))[0]
+                          setStore('addressSelect', address)
+                        }}
+                      >
+                        {addressList.map((address: any) => (
+                          <SelectItem
+                            key={address.id}
+                            value={address.id}
+                            textValue={addressSelect?.user + ' - ' + addressSelect?.formatted_address}
+                          >
+                            <div className='flex justify-between'>
+                              <div>
+                                <p>{address.user}</p>
+                                <p>{address.formatted_address}</p>
+                              </div>
+                              <p>{address.numberPrefix + ' ' + address.number}</p>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </Select>
+                      )
+                    : (
+                      <div className='flex flex-col w-full justify-center items-center'>
+                        <p>No tienes ninguna dirección registrada</p>
+                        <Link
+                          className='dark:text-purple-800 text-yellow-400 font-semibold'
+                          href='/adresses'
+                        >
+                          Agregar dirección
+                        </Link>
+                      </div>
+                      )}
+                  <div className='w-full flex items-center justify-center'>
+                    <Checkbox
+                      isSelected={pickUpInStore}
+                      onChange={() => setPickUpInStore(!pickUpInStore)}
+                    >
+                      Recojer en la cocina
+                    </Checkbox>
                   </div>
-                ))}
-                {(!addressList || addressList.length === 0) && (
-                  <div className='flex flex-col gap-5'>
-                    <p>No tienes ninguna dirección registrada</p>
-                    <Link className='dark:text-purple-800 text-yellow-400 font-semibold' href='/adresses'>Agregar dirección</Link>
-                  </div>
-                )}
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button
-                  color='danger'
-                  variant='light'
+                  color={darkMode ? 'secondary' : 'warning'}
                   onPress={onClose}
+                  className='w-full font-semibold text-lg'
                 >
-                  Cancelar
+                  Guardar
                 </Button>
               </ModalFooter>
             </>

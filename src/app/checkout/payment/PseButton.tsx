@@ -29,6 +29,7 @@ interface IProps {
   setPseError: Function
   financial_institution: number | null
   mercadopagoComision: number
+  pickUpInStore: boolean
 }
 
 export function PseButton ({
@@ -51,7 +52,8 @@ export function PseButton ({
   pseError,
   setPseError,
   financial_institution,
-  mercadopagoComision
+  mercadopagoComision,
+  pickUpInStore
 }: IProps) {
   const { addressSelect, userId, user, darkMode } = useUser()
   const router = useRouter()
@@ -89,7 +91,7 @@ export function PseButton ({
       setPseError({ ...pseError, number: 'Número de documento inválido' })
       showAlert('Número de documento inválido')
       return
-    } else if (!haveDelivery || isMaxDistance) {
+    } else if ((!haveDelivery || isMaxDistance) && !pickUpInStore) {
       showAlert('Actualmente no tenemos deliverys en tu zona')
       return
     } else if (isMaximumOrders) {
@@ -152,6 +154,7 @@ export function PseButton ({
         haveCoupon,
         coupon,
         mercadopagoComision,
+        pickUpInStore,
         influencer_id: product.influencers.id,
         paymentInfo: {
           transaction_amount: amount,
