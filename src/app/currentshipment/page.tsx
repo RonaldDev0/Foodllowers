@@ -47,7 +47,7 @@ export default function CurrentShipment () {
 
         supabase
           .from('orders')
-          .select('id, product, order_state, payment_status, transaction_amount')
+          .select('transaction_amount')
           .eq('user_id', userId)
           .eq('invoice_id', id)
           .then(({ data, error }) => {
@@ -64,10 +64,15 @@ export default function CurrentShipment () {
                   .update({ payment_status: 'approved', transaction_amount: newTransactionAmount })
                   .eq('invoice_id', id)
                   .eq('user_id', userId)
-                  .select('id, product, order_state, payment_status')
+                  .select(`id, order_state, payment_status, pickUpInStore, invoice_id,
+                    product->preview,
+                    product->name,
+                    product->influencers->full_name,
+                    product->influencers->avatar
+                    `)
                   .then(({ data }: any) => {
                     if (!data?.length) return
-                    setProduct(data[0].product)
+                    setProduct(data[0])
                     setActiveStep(data[0].order_state)
 
                     subscribeChannel()
@@ -93,12 +98,17 @@ export default function CurrentShipment () {
 
     supabase
       .from('orders')
-      .select('id, product, order_state, payment_status')
+      .select(`id, order_state, payment_status, pickUpInStore, invoice_id,
+        product->preview,
+        product->name,
+        product->influencers->full_name,
+        product->influencers->avatar
+        `)
       .eq('user_id', userId)
       .eq('payment_status', 'approved')
       .then(({ data }: any) => {
         if (!data?.length) return
-        setProduct(data[0].product)
+        setProduct(data[0])
         setActiveStep(data[0].order_state)
 
         subscribeChannel()

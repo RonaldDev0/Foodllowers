@@ -80,9 +80,11 @@ export default function Checkout () {
   const [coupon, setCoupon] = useState('')
   const [error, setError] = useState<any>(false)
   const [isMaxDistance, setIsMaxDistance] = useState(false)
+  const [pickUpInStore, setPickUpInStore] = useState<boolean>(false)
 
   function fetchMapsDistance (origin: any) {
     if (!addressSelect) return
+
     fetch('/api/maps_distance', {
       cache: 'no-cache',
       method: 'POST',
@@ -220,10 +222,16 @@ export default function Checkout () {
       })
   }, [product])
 
+  useEffect(() => {
+    if (!pickUpInStore) return
+    setShippingCost(0)
+    setTip(0)
+  }, [pickUpInStore])
+
   if (!product || !total) return null
 
   const AlertMessage = (() => {
-    if (!haveDelivery || isMaxDistance) {
+    if ((!haveDelivery || isMaxDistance) && !pickUpInStore) {
       return 'Actualmente no tenemos deliverys en tu zona'
     } else if (!product?.kitchens.open) {
       return 'Este restaurante esta cerrado!!'
@@ -283,14 +291,18 @@ export default function Checkout () {
           [@media(max-width:800px)]:pt-6'
       >
         <Alert message={AlertMessage} />
-        <AddressSelect setError={setError} />
+        <AddressSelect
+          setError={setError}
+          pickUpInStore={pickUpInStore}
+          setPickUpInStore={setPickUpInStore}
+        />
         <ProductDetails
           product={product}
           numberOfProducts={numberOfProducts}
           setNumberOfProducts={setNumberOfProducts}
         />
-        <EstimationTime time={estimationTime} />
-        <Tip setTip={setTip} amount={product.price + 1092} />
+        <EstimationTime time={pickUpInStore ? preparationTime : estimationTime} />
+        <Tip setTip={setTip} amount={product.price + 1092} pickUpInStore={pickUpInStore} />
       </div>
       <div
         className='flex flex-col gap-3 top-5
@@ -334,6 +346,7 @@ export default function Checkout () {
           coupon={coupon}
           isMaxDistance={isMaxDistance}
           mercadopagoComision={mercadopago}
+          pickUpInStore={pickUpInStore}
         />
       </div>
     </main>

@@ -5,9 +5,10 @@ import { useUser } from '@/store'
 interface IProps {
   amount: number
   setTip: Function
+  pickUpInStore: boolean
 }
 
-export function Tip ({ amount, setTip }: IProps) {
+export function Tip ({ amount, setTip, pickUpInStore }: IProps) {
   const { darkMode } = useUser()
   const handleChangeTip = (e: any) => {
     setTip(amount * e)
@@ -34,6 +35,7 @@ export function Tip ({ amount, setTip }: IProps) {
             formatOptions={{ style: 'percent' }}
             maxValue={1}
             minValue={0}
+            isDisabled={pickUpInStore}
             marks={[
               {
                 value: 0.2,

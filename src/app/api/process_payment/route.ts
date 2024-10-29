@@ -21,7 +21,8 @@ export async function POST (req: NextRequest) {
     serviceFee,
     haveCoupon,
     coupon,
-    influencer_id
+    influencer_id,
+    pickUpInStore
   } = await req.json()
 
   try {
@@ -59,6 +60,7 @@ export async function POST (req: NextRequest) {
         user_email: user.email,
         payment_status: 'approved',
         preferences,
+        pickUpInStore,
         transaction_amount: {
           mercadopago,
           influencer: influencerEarnings,

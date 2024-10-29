@@ -29,6 +29,7 @@ interface IProps {
   coupon: string
   isMaxDistance: boolean
   mercadopagoComision: number
+  pickUpInStore: boolean
 }
 
 const cardDisabled = false
@@ -53,7 +54,8 @@ export function Payment ({
   haveCoupon,
   coupon,
   isMaxDistance,
-  mercadopagoComision
+  mercadopagoComision,
+  pickUpInStore
 }: IProps) {
   const { darkMode } = useUser()
 
@@ -158,6 +160,7 @@ export function Payment ({
                   haveCoupon={haveCoupon}
                   coupon={coupon}
                   isMaxDistance={isMaxDistance}
+                  pickUpInStore={pickUpInStore}
                 />
               </ModalFooter>
             </>
@@ -208,6 +211,7 @@ export function Payment ({
                   setPseError={setPseError}
                   financial_institution={financial_institution}
                   mercadopagoComision={mercadopagoComision}
+                  pickUpInStore={pickUpInStore}
                 />
               </ModalFooter>
             </>
