@@ -77,7 +77,7 @@ export function PseButton ({
   const handleSubmit = async () => {
     setIsLoading(true)
 
-    if (!addressSelect) {
+    if (!addressSelect && !pickUpInStore) {
       showAlert('Debes agregar una dirección')
       return
     } else if (financial_institution === null) {

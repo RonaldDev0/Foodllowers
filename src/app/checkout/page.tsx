@@ -202,6 +202,10 @@ export default function Checkout () {
         .from('orders')
         .select('id', { count: 'exact', head: true })
         .eq('kitchen_id', product.id_kitchen)
+        .neq('order_state', 'buscando delivery...')
+        .neq('order_state', 'recogiendo...')
+        .neq('order_state', 'entregando...')
+        .neq('order_state', 'entregado')
         .then(({ count, error }) => {
           if (error || !count) return
           setIsMaximumOrders(count >= MAX_KITCHEN_LIMIT)
@@ -295,6 +299,7 @@ export default function Checkout () {
           setError={setError}
           pickUpInStore={pickUpInStore}
           setPickUpInStore={setPickUpInStore}
+          kitchenAddress={product?.kitchens.address.formatted_address}
         />
         <ProductDetails
           product={product}

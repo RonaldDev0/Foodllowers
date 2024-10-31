@@ -102,7 +102,8 @@ export default function CurrentShipment () {
         product->preview,
         product->name,
         product->influencers->full_name,
-        product->influencers->avatar
+        product->influencers->avatar,
+        kitchen_address->formatted_address
         `)
       .eq('user_id', userId)
       .eq('payment_status', 'approved')

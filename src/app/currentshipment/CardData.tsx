@@ -49,7 +49,17 @@ export function CardData ({ activeStep, product }: props) {
                     ? <p>Ya puedes recoger tu pedido</p>
                     : <p>Tu pedido se esta cocinando</p>
                 }
-                <p>Codigo: {product.invoice_id.slice(6, 10)}</p>
+                <p>Codigo: {product.invoice_id.slice(-3)}</p>
+                <div className='flex gap-2'>
+                  <p>Dirección: </p>
+                  <Link
+                    href={`https://maps.google.com/?q=${product.formatted_address}`}
+                    className='text-purple-800'
+                    target='_blank'
+                  >
+                    {product.formatted_address}
+                  </Link>
+                </div>
               </div>
               )
             : <Stepper activeStep={steps.indexOf(activeStep)} steps={steps} />
