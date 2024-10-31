@@ -64,12 +64,7 @@ export default function CurrentShipment () {
                   .update({ payment_status: 'approved', transaction_amount: newTransactionAmount })
                   .eq('invoice_id', id)
                   .eq('user_id', userId)
-                  .select(`id, order_state, payment_status, pickUpInStore, invoice_id,
-                    product->preview,
-                    product->name,
-                    product->influencers->full_name,
-                    product->influencers->avatar
-                    `)
+                  .select('*, influencers(full_name, avatar)')
                   .then(({ data }: any) => {
                     if (!data?.length) return
                     setProduct(data[0])
@@ -98,13 +93,7 @@ export default function CurrentShipment () {
 
     supabase
       .from('orders')
-      .select(`id, order_state, payment_status, pickUpInStore, invoice_id,
-        product->preview,
-        product->name,
-        product->influencers->full_name,
-        product->influencers->avatar,
-        kitchen_address->formatted_address
-        `)
+      .select('*, influencers(full_name, avatar)')
       .eq('user_id', userId)
       .eq('payment_status', 'approved')
       .then(({ data }: any) => {
