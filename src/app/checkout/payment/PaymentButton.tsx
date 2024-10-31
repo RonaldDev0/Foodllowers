@@ -104,7 +104,7 @@ export function PaymentButton ({
   const onSubmit = async () => {
     setIsLoading(true)
 
-    if (!addressSelect) {
+    if (!addressSelect && !pickUpInStore) {
       showAlert('Debes agregar una dirección')
       return
     }

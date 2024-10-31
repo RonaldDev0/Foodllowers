@@ -8,9 +8,10 @@ type IProps = {
   setError: Function
   pickUpInStore: boolean
   setPickUpInStore: Function
+  kitchenAddress: string
 }
 
-export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore }: IProps) {
+export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore, kitchenAddress }: IProps) {
   const { addressList, addressSelect, darkMode, setStore } = useUser()
   const { onOpen, isOpen, onOpenChange } = useDisclosure()
 
@@ -32,7 +33,13 @@ export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore }: IP
     <>
       <Card>
         <CardHeader className='flex w-full justify-around z-0'>
-          <p>Dirección de envio</p>
+          {pickUpInStore
+            ? (
+              <p>Dirección de entrega</p>
+              )
+            : (
+              <p>Dirección de envio</p>
+              )}
           <Button onPress={onOpen} variant='faded'>
             Cambiar
           </Button>
@@ -41,7 +48,16 @@ export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore }: IP
         <CardBody className='p-3 rounded-lg'>
           {pickUpInStore
             ? (
-              <p>Recojer en la cocina</p>
+              <div className='flex justify-around'>
+                <p>Recoger en: </p>
+                <Link
+                  href={`https://maps.google.com/?q=${kitchenAddress}`}
+                  className='text-purple-800'
+                  target='_blank'
+                >
+                  {kitchenAddress}
+                </Link>
+              </div>
               )
             : addressList?.length
               ? (
