@@ -16,13 +16,13 @@ export function Tip ({ amount, setTip, pickUpInStore }: IProps) {
 
   useEffect(() => {
     setTip(amount * 0.05)
-  }, [])
+  }, [pickUpInStore])
 
   return (
     <Card>
-      <CardHeader className='flex justify-between z-0'>
+      <CardHeader className='flex justify-between gap-4 z-0'>
         <p>Añade una propina</p>
-        <p className='text-sm'>Esta recompensa va para el Domiciliario</p>
+        <p className='text-sm opacity-70'>Esta recompensa va para el Domiciliario</p>
       </CardHeader>
       <Divider />
       <CardBody>

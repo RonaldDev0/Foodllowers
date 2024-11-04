@@ -12,7 +12,7 @@ export default function Home () {
   }, [])
 
   return (
-    <main className='flex flex-col w-full mb-16 items-center gap-12'>
+    <main className='flex flex-col w-full mb-10 items-center gap-12'>
       <SearchBarr message />
       <InfluencerList />
       <ProductList />

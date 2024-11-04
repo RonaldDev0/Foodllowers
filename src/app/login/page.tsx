@@ -1,20 +1,24 @@
 'use client'
+import { useState } from 'react'
 import Image from 'next/image'
-import { Button, Card, CardHeader, CardBody, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from '@nextui-org/react'
+import { Button, Card, CardHeader, CardBody, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, Checkbox } from '@nextui-org/react'
 import { ClipboardList } from 'lucide-react'
 import { useSupabase } from '../Providers'
 
 export default function Login () {
   const { supabase } = useSupabase()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen: isOpenModal, onOpen: onOpenModal, onOpenChange: onOpenChangeModal } = useDisclosure()
+  const [checked, setChecked] = useState(false)
 
-  const Login = async () => await supabase
-    .auth
-    .signInWithOAuth(
-      {
-        provider: 'google'
-      }
-    )
+  function login () {
+    if (!checked) {
+      onOpenModal()
+      return
+    }
+
+    supabase.auth.signInWithOAuth({ provider: 'google' })
+  }
 
   return (
     <main className='h-screen flex flex-col justify-center items-center'>
@@ -44,7 +48,7 @@ export default function Login () {
         </CardHeader>
         <CardBody className='justify-center items-center flex flex-col gap-6'>
           <Button
-            onPress={Login}
+            onPress={() => login()}
             className='flex justify-center items-center gap-2 w-80 py-6 text-lg bg-zinc-950'
           >
             <Image
@@ -57,9 +61,10 @@ export default function Login () {
               Continuar con Google
             </p>
           </Button>
-          <div>
+          <div className='flex justify-center items-center gap-2'>
+            <Checkbox isSelected={checked} onChange={() => setChecked(!checked)} />
             <p className='text-purple-500 cursor-pointer' onClick={onOpen}>
-              Al continuar estas aceptando los <br /> Terminos y Condiciones de Uso
+              Terminos y Condiciones de Uso
             </p>
           </div>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -100,6 +105,25 @@ export default function Login () {
                       <b>8. Comprobación Antifraude:</b> <br /><br />
                       Foodllowers se reserva el derecho de aplazar cualquier compra para una comprobación antifraude.  <br /><br />En caso de sospecha, la transacción puede ser suspendida para una investigación más rigurosa. <br /><br />
                     </div>
+                  </ModalBody>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
+          <Modal isOpen={isOpenModal} onOpenChange={onOpenChangeModal}>
+            <ModalContent>
+              {() => (
+                <>
+                  <ModalHeader>
+                    <div className='flex flex-col gap-3 justify-center items-center w-full'>
+                      <ClipboardList size={30} />
+                      <p className='font-semibold text-lg'>
+                        Términos y Condiciones de Uso
+                      </p>
+                    </div>
+                  </ModalHeader>
+                  <ModalBody>
+                    para continuar debes aceptar los términos y condiciones de uso
                   </ModalBody>
                 </>
               )}

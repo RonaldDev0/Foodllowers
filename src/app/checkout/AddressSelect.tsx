@@ -1,17 +1,16 @@
 'use client'
 import { useUser } from '@/store'
-import { Card, CardBody, CardHeader, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Select, SelectItem } from '@nextui-org/react'
+import { Card, CardBody, CardHeader, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Select, SelectItem } from '@nextui-org/react'
 import { useEffect } from 'react'
 import Link from 'next/link'
 
 type IProps = {
   setError: Function
   pickUpInStore: boolean
-  setPickUpInStore: Function
   kitchenAddress: string
 }
 
-export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore, kitchenAddress }: IProps) {
+export function AddressSelect ({ setError, kitchenAddress, pickUpInStore }: IProps) {
   const { addressList, addressSelect, darkMode, setStore } = useUser()
   const { onOpen, isOpen, onOpenChange } = useDisclosure()
 
@@ -22,9 +21,7 @@ export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore, kitc
   }, [])
 
   useEffect(() => {
-    if (!addressList || !addressSelect) {
-      return
-    }
+    if (!addressList || !addressSelect) return
 
     setError(false)
   }, [addressList, addressSelect])
@@ -34,15 +31,15 @@ export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore, kitc
       <Card>
         <CardHeader className='flex w-full justify-around z-0'>
           {pickUpInStore
-            ? (
-              <p>Dirección de entrega</p>
-              )
+            ? <p>Dirección de entrega</p>
             : (
-              <p>Dirección de envio</p>
+              <>
+                <p>Dirección de envio</p>
+                <Button onPress={onOpen} variant='faded'>
+                  Cambiar
+                </Button>
+              </>
               )}
-          <Button onPress={onOpen} variant='faded'>
-            Cambiar
-          </Button>
         </CardHeader>
         <Divider />
         <CardBody className='p-3 rounded-lg'>
@@ -99,33 +96,44 @@ export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore, kitc
               </ModalHeader>
               <ModalBody>
                 <div className='flex flex-col gap-8'>
+                  <p>Asegúrate de que la dirección esté correcta, ya que allí se entregará tu pedido.</p>
                   {addressList?.length
                     ? (
-                      <Select
-                        isDisabled={pickUpInStore}
-                        placeholder='Selecciona una dirección'
-                        defaultSelectedKeys={[addressSelect?.id.toString() || '']}
-                        onChange={({ target: { value } }) => {
-                          const address = addressList?.filter((item: any) => item.id === Number(value))[0]
-                          setStore('addressSelect', address)
-                        }}
-                      >
-                        {addressList.map((address: any) => (
-                          <SelectItem
-                            key={address.id}
-                            value={address.id}
-                            textValue={addressSelect?.user + ' - ' + addressSelect?.formatted_address}
-                          >
-                            <div className='flex justify-between'>
-                              <div>
-                                <p>{address.user}</p>
-                                <p>{address.formatted_address}</p>
+                      <>
+                        <Select
+                          isDisabled={pickUpInStore}
+                          placeholder='Selecciona una dirección'
+                          defaultSelectedKeys={[addressSelect?.id.toString() || '']}
+                          onChange={({ target: { value } }) => {
+                            const address = addressList?.filter((item: any) => item.id === Number(value))[0]
+                            setStore('addressSelect', address)
+                          }}
+                        >
+                          {addressList.map((address: any) => (
+                            <SelectItem
+                              key={address.id}
+                              value={address.id}
+                              textValue={addressSelect?.user + ' - ' + addressSelect?.formatted_address}
+                            >
+                              <div className='flex justify-between'>
+                                <div>
+                                  <p>{address.user}</p>
+                                  <p>{address.formatted_address}</p>
+                                </div>
+                                <p>{address.numberPrefix + ' ' + address.number}</p>
                               </div>
-                              <p>{address.numberPrefix + ' ' + address.number}</p>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </Select>
+                            </SelectItem>
+                          ))}
+                        </Select>
+                        <div className='w-full flex justify-center'>
+                          <Link
+                            className='dark:text-purple-800 text-yellow-400 font-semibold'
+                            href='/adresses'
+                          >
+                            Agregar dirección
+                          </Link>
+                        </div>
+                      </>
                       )
                     : (
                       <div className='flex flex-col w-full justify-center items-center'>
@@ -138,14 +146,6 @@ export function AddressSelect ({ setError, pickUpInStore, setPickUpInStore, kitc
                         </Link>
                       </div>
                       )}
-                  <div className='w-full flex items-center justify-center'>
-                    <Checkbox
-                      isSelected={pickUpInStore}
-                      onChange={() => setPickUpInStore(!pickUpInStore)}
-                    >
-                      Recojer en la cocina
-                    </Checkbox>
-                  </div>
                 </div>
               </ModalBody>
               <ModalFooter>

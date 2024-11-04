@@ -68,7 +68,7 @@ const initialPreferences: IPreferences = {
       items: [
         { name: 'Salsa de vino', checked: false },
         { name: 'Sour cream', checked: false },
-        { name: 'Queso cheddar', checked: false },
+        { name: 'Salsa cheddar', checked: false },
         { name: 'Salsa BBQ', checked: false },
         { name: 'Tres quesos (de la casa)', checked: false }
       ]
@@ -250,7 +250,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
                 ¡Tu Sorpresa Gastronómica!
               </ModalHeader>
               <ModalBody>
-                <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-4 overflow-y-auto max-h-[72vh] pr-2'>
                   <div className='flex gap-3 items-center text-sm'>
                     <Info size={60} />
                     <p>Marca los ingredientes que prefieres evitar. <br /> Si no te importa, simplemente deja todas las opciones sin marcar y déjate sorprender.</p>

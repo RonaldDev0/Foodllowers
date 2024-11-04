@@ -22,7 +22,7 @@ export function SearchBarr ({ message }: { message: boolean }) {
 
   return (
     <div className={`flex flex-col items-center
-      ${message ? 'mt-24' : 'my-10 [@media(max-width:800px)]:mt-16'}`}
+      ${message ? 'mt-16' : 'my-10 [@media(max-width:800px)]:mt-16'}`}
     >
       <Image
         src='/img/LogName-light.png'
@@ -39,7 +39,7 @@ export function SearchBarr ({ message }: { message: boolean }) {
         className='hidden dark:block'
       />
       {message && (
-        <p className={`${skranji.className} m-2 text-[1.5rem] text-[#f4ca44] font-bold [@media(max-width:365px)]:text-center`}>
+        <p className={`${skranji.className} m-2 text-[1.4rem] text-[#f4ca44] font-bold [@media(max-width:365px)]:text-center ml-4`}>
           El dia esta muy lindo pa' no comer algo rico :3
         </p>
       )}

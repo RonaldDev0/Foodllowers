@@ -13,7 +13,7 @@ export default function ShipmentList () {
     if (!userId || shipmentList) return
     supabase
       .from('shipments')
-      .select('id, product, transaction_amount, preferences')
+      .select('id, product, transaction_amount, preferences, invoice_id')
       .eq('user_id', userId)
       .eq('payment_status', 'approved')
       .then(({ data, error }) => {
