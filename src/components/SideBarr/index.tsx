@@ -63,13 +63,9 @@ export function SideBarr () {
           ? (
             <div className='mt-3 fixed left-0 z-40 w-full flex justify-center items-center'>
               <Card className='w-96'>
-                <CardBody>
+                <CardBody onClick={() => setOpen(!open)}>
                   <div className='flex justify-between items-center'>
-                    <Menu
-                      size={40}
-                      onClick={() => setOpen(!open)}
-                      className='cursor-pointer'
-                    />
+                    <Menu size={40} className='cursor-pointer' />
                     <p>{currentProduct?.name}</p>
                     <div className='w-10' />
                   </div>
@@ -90,14 +86,11 @@ export function SideBarr () {
             )
       }
       <motion.div
-        className='fixed z-50 w-[100vw] top-0 left-0 h-screen rounded-none rounded-r-lg flex'
-        variants={{
-          open: { x: 0 },
-          closed: { x: '-100%' }
-        }}
+        className={`fixed z-50 top-0 left-0 h-screen rounded-none rounded-r-lg flex ${isMobile ? 'w-[100vw]' : 'w-[300px]'}`}
+        variants={{ open: { x: 0 }, closed: { x: '-100%' } }}
         initial='closed'
         animate={open ? 'open' : 'closed'}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: isMobile ? 0.5 : 0.7 }}
       >
         <Card className='w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'>
           <CardBody className='p-0'>
