@@ -5,14 +5,9 @@ import { Menu, X } from 'lucide-react'
 import Profile from './Profile'
 import Pages from './Pages'
 import Logout from './Logout'
-import { useUser } from '@/store'
+import { useUser, useContent } from '@/store'
 import { Card, CardBody, Switch } from '@nextui-org/react'
 import { usePathname } from 'next/navigation'
-
-const sidebarVariants = {
-  open: { x: 0 },
-  closed: { x: '-100%' }
-}
 
 const MoonIcon = (props: any) => (
   <svg aria-hidden='true' focusable='false' height='1em' role='presentation' viewBox='0 0 24 24' width='1em' {...props}>
@@ -32,7 +27,11 @@ const SunIcon = (props: any) => (
 export function SideBarr () {
   const pathname = usePathname()
   const [open, setOpen] = useState<boolean>(typeof window !== 'undefined' && JSON.parse(localStorage.getItem('sidebarOpen') || 'true'))
+  const [isMobile, setIsMobile] = useState(true)
   const { user, darkMode, setStore } = useUser()
+  const { currentProduct } = useContent()
+
+  const [color, setcolor] = useState('transparent')
 
   useEffect(() => {
     localStorage.setItem('sidebarOpen', JSON.stringify(open))
@@ -46,18 +45,56 @@ export function SideBarr () {
     localStorage.setItem('darkMode', JSON.stringify(darkMode))
   }, [darkMode])
 
+  useEffect(() => {
+    setIsMobile(/mobile/i.test(navigator.userAgent))
+  }, [])
+
+  useEffect(() => {
+    if (!open) return setcolor('transparent')
+    setTimeout(() => setcolor('rgba(0, 0, 0, 0.5)'), 430)
+  }, [open])
+
   if (!user || pathname === '/error') return null
 
   return (
     <>
-      <Menu
-        size={40}
-        className='m-3 cursor-pointer fixed left-0 z-40'
-        onClick={() => setOpen(!open)}
-      />
+      {
+        (isMobile && pathname === '/checkout')
+          ? (
+            <div className='mt-3 fixed left-0 z-40 w-full flex justify-center items-center'>
+              <Card className='w-96'>
+                <CardBody>
+                  <div className='flex justify-between items-center'>
+                    <Menu
+                      size={40}
+                      onClick={() => setOpen(!open)}
+                      className='cursor-pointer'
+                    />
+                    <p>{currentProduct?.name}</p>
+                    <div className='w-10' />
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
+            )
+          : (
+            <Card className='m-3 fixed left-0 z-40'>
+              <CardBody className='p-1'>
+                <Menu
+                  size={40}
+                  className='cursor-pointer'
+                  onClick={() => setOpen(!open)}
+                />
+              </CardBody>
+            </Card>
+            )
+      }
       <motion.div
-        className='fixed z-50 w-[300px] top-0 left-0 h-screen rounded-none rounded-r-lg'
-        variants={sidebarVariants}
+        className='fixed z-50 w-[100vw] top-0 left-0 h-screen rounded-none rounded-r-lg flex'
+        variants={{
+          open: { x: 0 },
+          closed: { x: '-100%' }
+        }}
         initial='closed'
         animate={open ? 'open' : 'closed'}
         transition={{ duration: 0.5 }}
@@ -84,11 +121,18 @@ export function SideBarr () {
             </div>
             <div className='h-full w-full flex flex-col justify-around items-center'>
               <Profile user={user} />
-              <Pages />
+              <Pages isMobile={isMobile} setOpen={setOpen} />
               <Logout />
             </div>
           </CardBody>
         </Card>
+        {isMobile && (
+          <div
+            className={`w-[130px] ${open && `transition-all bg-[${color}]`}`}
+            style={{ backgroundColor: color }}
+            onClick={() => setOpen(false)}
+          />
+        )}
       </motion.div>
     </>
   )

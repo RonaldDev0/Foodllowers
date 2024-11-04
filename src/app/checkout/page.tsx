@@ -16,6 +16,7 @@ import Link from 'next/link'
 import { MisteryBurguerOptions } from './MisteryBurguerOptions'
 import { DiscountCoupon } from './DiscountCoupon'
 import { Payment } from './payment'
+import { DeliveryOption } from './DeliveryOption'
 
 interface IPaymentInfo {
   card_number: string
@@ -49,7 +50,7 @@ export default function Checkout () {
   const query = useSearchParams().get('q')
   const { supabase } = useSupabase()
   const { addressSelect, addressList, userId, setStore } = useUser()
-  const { currentProduct, pricePerKm, minima, serviceFee, influencer, preparationTime } = useContent()
+  const { currentProduct, pricePerKm, minima, serviceFee, influencer, preparationTime, setStore: setContentStore } = useContent()
 
   const [numberOfPurchases, setNumberOfPurchases] = useState(0)
   const [isMaximumOrders, setIsMaximumOrders] = useState(false)
@@ -71,6 +72,7 @@ export default function Checkout () {
     card_holder: false
   })
   const [shippingCost, setShippingCost] = useState(0)
+  const [shipingCostBackup, setShipingCostBackup] = useState(0)
   const [tip, setTip] = useState(0)
   const [total, setTotal] = useState<any>(null)
   const [haveDelivery, setHaveDelivery] = useState(false)
@@ -100,6 +102,7 @@ export default function Checkout () {
         const convertion = km * pricePerKm
         const operation = convertion > minima ? convertion : minima
         setShippingCost(operation)
+        setShipingCostBackup(operation)
 
         setEstimationTime(parseFloat(duration) + preparationTime)
         setIsMaxDistance(km >= MAX_DISTANCE)
@@ -159,6 +162,7 @@ export default function Checkout () {
         }))
 
         setProduct(updatePrices[0])
+        setContentStore('currentProduct', updatePrices[0])
         if (addressSelect) {
           fetchMapsDistance(updatePrices[0].kitchens.address.geometry.location)
         }
@@ -227,10 +231,12 @@ export default function Checkout () {
   }, [product])
 
   useEffect(() => {
-    if (!pickUpInStore) return
+    if (!currentProduct) return
+    if (!pickUpInStore) return setShippingCost(shipingCostBackup)
+
     setShippingCost(0)
     setTip(0)
-  }, [pickUpInStore])
+  }, [pickUpInStore, currentProduct])
 
   if (!product || !total) return null
 
@@ -260,7 +266,7 @@ export default function Checkout () {
 
   return (
     <main
-      className='flex justify-center items-start gap-3 mt-16 mb-14
+      className='flex justify-center items-start gap-3 mt-20 mb-10
         [@media(max-width:800px)]:flex-col
         [@media(max-width:800px)]:items-center
         [@media(max-width:800px)]:w-96
@@ -295,10 +301,10 @@ export default function Checkout () {
           [@media(max-width:800px)]:pt-6'
       >
         <Alert message={AlertMessage} />
+        <DeliveryOption pickUpInStore={pickUpInStore} setPickUpInStore={setPickUpInStore} />
         <AddressSelect
           setError={setError}
           pickUpInStore={pickUpInStore}
-          setPickUpInStore={setPickUpInStore}
           kitchenAddress={product?.kitchens.address.formatted_address}
         />
         <ProductDetails
@@ -306,19 +312,19 @@ export default function Checkout () {
           numberOfProducts={numberOfProducts}
           setNumberOfProducts={setNumberOfProducts}
         />
-        <EstimationTime time={pickUpInStore ? preparationTime : estimationTime} />
-        <Tip setTip={setTip} amount={product.price + 1092} pickUpInStore={pickUpInStore} />
+        <MisteryBurguerOptions
+          setValue={setPreferences}
+          numberOfProducts={numberOfProducts}
+          setNumberOfProducts={setNumberOfProducts}
+        />
       </div>
       <div
         className='flex flex-col gap-3 top-5
           [@media(min-width:800px)]:sticky
           [@media(min-width:800px)]:pt-32'
       >
-        <MisteryBurguerOptions
-          setValue={setPreferences}
-          numberOfProducts={numberOfProducts}
-          setNumberOfProducts={setNumberOfProducts}
-        />
+        <EstimationTime time={pickUpInStore ? preparationTime : estimationTime} />
+        <Tip setTip={setTip} amount={product.price + 1092} pickUpInStore={pickUpInStore} />
         <Summary
           shippingCost={shippingCost + (shippingCost * 0.03)}
           tip={tip + (tip * 0.03)}

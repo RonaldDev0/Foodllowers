@@ -1,39 +1,30 @@
 import Link from 'next/link'
 import { Home, User, MapPin, Clock, Clipboard } from 'lucide-react'
 
-export default function Pages () {
+const routes = [
+  { name: 'Inicio', href: '/', icon: <Home /> },
+  { name: 'Perfil', href: '/profile', icon: <User /> },
+  { name: 'Direcciones', href: '/adresses', icon: <MapPin /> },
+  { name: 'Pedido actual', href: '/currentshipment', icon: <Clock /> },
+  { name: 'Pedidos', href: '/shipments', icon: <Clipboard /> }
+]
+
+export default function Pages ({ isMobile, setOpen }: { isMobile: boolean, setOpen: Function }) {
   return (
     <div className='flex flex-col gap-5'>
-      <Link href='/' className='flex items-center gap-2'>
-        <Home />
-        <span>
-          Inicio
-        </span>
-      </Link>
-      <Link href='/profile' className='flex items-center gap-2'>
-        <User />
-        <span>
-          Perfil
-        </span>
-      </Link>
-      <Link href='/adresses' className='flex items-center gap-2'>
-        <MapPin />
-        <span>
-          Direcciones
-        </span>
-      </Link>
-      <Link href='/currentshipment' className='flex items-center gap-2'>
-        <Clock />
-        <span>
-          Pedido actual
-        </span>
-      </Link>
-      <Link href='/shipments' className='flex items-center gap-2'>
-        <Clipboard />
-        <span>
-          Pedidos
-        </span>
-      </Link>
+      {routes.map(({ name, href, icon }) => (
+        <Link
+          key={href}
+          href={href}
+          className='flex items-center gap-2'
+          onClick={() => isMobile && setOpen(false)}
+        >
+          {icon}
+          <span>
+            {name}
+          </span>
+        </Link>
+      ))}
     </div>
   )
 }
