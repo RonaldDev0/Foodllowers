@@ -3,18 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
 import { useContent } from '@/store'
-
-function calculateMercadoPagoComission (amount: number) {
-  const porcentajeComision = 0.0279
-  const IVA = 0.19
-  const costoFijo = 952
-
-  const comision = amount * porcentajeComision
-  const IVAComision = comision * IVA
-  const totalComision = comision + IVAComision + costoFijo
-
-  return Math.floor(totalComision + 101)
-}
+import { useComission } from '@/hooks'
 
 export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => void }) {
   const { setStore } = useContent()
@@ -61,7 +50,7 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
             </div>
             <p className='opacity-80'>
               {
-                (product.price + calculateMercadoPagoComission(product.price)).toLocaleString('es-Es', {
+                (product.price + useComission(product.price)).toLocaleString('es-Es', {
                   style: 'currency',
                   currency: 'COP',
                   minimumFractionDigits: 0,

@@ -4,18 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ProductCard } from './ProductCard'
 import { useContent } from '@/store'
-
-function calculateMercadoPagoComission (amount: number) {
-  const porcentajeComision = 0.0279
-  const IVA = 0.19
-  const costoFijo = 952
-
-  const comision = amount * porcentajeComision
-  const IVAComision = comision * IVA
-  const totalComision = comision + IVAComision + costoFijo
-
-  return Math.floor(totalComision + 101)
-}
+import { useComission } from '@/hooks'
 
 export function ProductList () {
   const { supabase } = useSupabase()
@@ -43,7 +32,8 @@ export function ProductList () {
 
         const updatePrices = products.map((item: any) => ({
           ...item,
-          price: item.price + influencer + serviceFee + calculateMercadoPagoComission(item.price + influencer + serviceFee)
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          price: item.price + influencer + serviceFee + useComission(item.price + influencer + serviceFee)
         }))
 
         setProducts(updatePrices)

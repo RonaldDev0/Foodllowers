@@ -3,6 +3,7 @@ import { Card, CardBody, Chip, Modal, ModalContent, ModalHeader, ModalBody, Moda
 import Image from 'next/image'
 import Link from 'next/link'
 import { useContent } from '@/store'
+import { useComission } from '@/hooks'
 
 export type IProductCard = {
   id: number
@@ -14,18 +15,6 @@ export type IProductCard = {
   name: string
   description: string
   state: boolean
-}
-
-function calculateMercadoPagoComission (amount: number) {
-  const porcentajeComision = 0.0279
-  const IVA = 0.19
-  const costoFijo = 952.00
-
-  const comision = amount * porcentajeComision
-  const IVAComision = comision * IVA
-  const totalComision = comision + IVAComision + costoFijo
-
-  return Math.floor(totalComision + 155)
 }
 
 export function ProductCard ({ product }: { product: IProductCard }) {
@@ -63,7 +52,7 @@ export function ProductCard ({ product }: { product: IProductCard }) {
               </div>
               <p className='opacity-80'>
                 {
-                  (product.price + serviceFee + influencer + calculateMercadoPagoComission(product.price + serviceFee + influencer + 10000)).toLocaleString('es-Es', {
+                  (product.price + serviceFee + influencer + useComission(product.price + serviceFee + influencer + 10000)).toLocaleString('es-Es', {
                     style: 'currency',
                     currency: 'COP',
                     minimumFractionDigits: 0,
