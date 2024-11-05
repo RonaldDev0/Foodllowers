@@ -4,6 +4,8 @@ import { useUser } from '@/store'
 import { Card, CardBody, Button } from '@nextui-org/react'
 import { useSupabase } from '@/app/Providers'
 
+export const revalidate = 7 * 24 * 60 * 60
+
 export default function Profile () {
   const { user, setStore } = useUser()
   const { supabase } = useSupabase()

@@ -5,6 +5,8 @@ import { Button, Card, CardHeader, CardBody, Modal, ModalContent, ModalHeader, M
 import { ClipboardList } from 'lucide-react'
 import { useSupabase } from '../Providers'
 
+export const revalidate = 7 * 24 * 60 * 60
+
 export default function Login () {
   const { supabase } = useSupabase()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()

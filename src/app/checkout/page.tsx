@@ -314,7 +314,7 @@ export default function Checkout () {
         <EstimationTime time={pickUpInStore ? preparationTime : estimationTime} />
         <Tip setTip={setTip} amount={product.price + 1092} pickUpInStore={pickUpInStore} />
         <Summary
-          shippingCost={shippingCost + (shippingCost * 0.03)}
+          shippingCost={shippingCost + (shippingCost * 0.035)}
           tip={tip + (tip * 0.03)}
           productPriceWithCoupon={productPriceWithCoupon}
         />
