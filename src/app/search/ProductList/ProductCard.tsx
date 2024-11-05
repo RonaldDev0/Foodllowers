@@ -12,8 +12,8 @@ export function ProductCard ({ item }: { item: any }) {
         >
           <Image
             src={item.preview}
-            width='200'
-            height='200'
+            width='800'
+            height='800'
             alt='preview'
             className='w-[350px] h-[280px]'
           />

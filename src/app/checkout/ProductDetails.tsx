@@ -42,8 +42,8 @@ export function ProductDetails ({ product, numberOfProducts, setNumberOfProducts
         <div className='flex [@media(max-width:800px)]:flex-col'>
           <Image
             src={product.preview}
-            width='200'
-            height='200'
+            width='800'
+            height='800'
             alt='preview'
             className='w-72 aspect-video [@media(max-width:800px)]:w-full h-[280px]'
           />

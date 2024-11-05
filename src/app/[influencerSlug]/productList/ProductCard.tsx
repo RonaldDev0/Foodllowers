@@ -42,8 +42,8 @@ export function ProductCard ({ product }: { product: IProductCard }) {
           >
             <Image
               src={product.preview}
-              width='200'
-              height='200'
+              width='800'
+              height='800'
               alt='preview'
               className='w-[350px] h-[280px]'
             />

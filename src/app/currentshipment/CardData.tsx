@@ -51,8 +51,8 @@ export function CardData ({ activeStep, product }: props) {
           <div className='flex-col'>
             <Image
               src={product.product.preview}
-              width='200'
-              height='200'
+              width='800'
+              height='800'
               alt='preview'
               className='w-96'
             />

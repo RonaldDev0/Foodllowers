@@ -20,8 +20,8 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
             <Image
               src={preview}
               alt={name}
-              width={150}
-              height={200}
+              width='800'
+              height='800'
               className='h-[150px] w-[200px]'
             />
             <div className='mr-5 flex flex-col gap-2'>
