@@ -3,7 +3,7 @@ import { Card, CardBody } from '@nextui-org/react'
 
 export function EmptyCard () {
   return (
-    <Card>
+    <Card className='border border-white border-opacity-10'>
       <CardBody className='p-6 w-96'>
         <div className='flex flex-col gap-4 justify-center items-center'>
           <p>No tienes ningun pedido en camino.</p>

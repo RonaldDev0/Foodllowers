@@ -24,7 +24,7 @@ export function ProductCard ({ product }: { product: IProductCard }) {
   return (
     <>
       <Link href={product?.state ? `/checkout?q=${product.id}` : '#'}>
-        <Card>
+        <Card className='border border-white border-opacity-10'>
           <CardBody
             className='p-0 cursor-pointer'
             onClick={() => !product?.state && onOpen()}

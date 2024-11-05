@@ -9,7 +9,7 @@ export function InfluencerCard ({ item }: { item: any }) {
 
   return (
     <Link href={item.full_name}>
-      <Card>
+      <Card className='border border-white border-opacity-10'>
         <CardBody className='p-2'>
           <div className='grid grid-cols-3 gap-4 items-center'>
             <Image

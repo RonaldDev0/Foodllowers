@@ -18,7 +18,7 @@ export function Banner () {
         width='400'
         height='200'
         alt='banner image'
-        className='w-full h-[200px] bg-black rounded-lg'
+        className='w-full h-[200px] bg-black rounded-lg border border-white border-opacity-10'
       />
       {/* <Link
         href='/'
@@ -32,7 +32,7 @@ export function Banner () {
           src={avatar}
           width='250'
           height='250'
-          className='w-44 [@media(max-width:800px)]:w-32 rounded-full row-span-2'
+          className='w-44 [@media(max-width:800px)]:w-32 rounded-full row-span-2 border border-white border-opacity-10'
         />
         <div className='flex flex-col gap-8'>
           <p className='font-bold text-xl'>{full_name}</p>

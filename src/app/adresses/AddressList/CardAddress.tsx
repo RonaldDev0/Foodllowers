@@ -25,7 +25,7 @@ export function CardAddress ({ address }: { address: IAddress }) {
 
   return (
     <>
-      <Card>
+      <Card className='border border-white border-opacity-10'>
         <CardBody>
           <div className='rounded-lg w-72 flex flex-col gap-5'>
             <div className='flex w-full justify-between'>

@@ -16,7 +16,7 @@ export default function Profile ({ user }: props) {
         alt='avatar'
         width={200}
         height={200}
-        className='rounded-full h-[200px]'
+        className='rounded-full h-[200px] w-[200px]'
         priority
       />
       <span className='text-xl'>

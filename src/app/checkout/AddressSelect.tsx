@@ -28,7 +28,7 @@ export function AddressSelect ({ setError, kitchenAddress, pickUpInStore }: IPro
 
   return (
     <>
-      <Card>
+      <Card className='border border-white border-opacity-10'>
         <CardHeader className='flex w-full justify-around z-0'>
           {pickUpInStore
             ? <p>Dirección de entrega</p>

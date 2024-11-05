@@ -6,7 +6,7 @@ import Link from 'next/link'
 export function ProductCard ({ item }: { item: any }) {
   return (
     <Link href={`/checkout?q=${item.id}`} key={item.id}>
-      <Card>
+      <Card className='border border-white border-opacity-10'>
         <CardBody
           className='p-0'
         >

@@ -14,7 +14,7 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
 
   return (
     <>
-      <Card className='w-96'>
+      <Card className='w-96 border border-white border-opacity-10'>
         <CardBody onClick={onOpen} className='p-0'>
           <div className='flex items-center gap-5 rounded-lg cursor-pointer'>
             <Image

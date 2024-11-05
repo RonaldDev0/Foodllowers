@@ -44,7 +44,7 @@ export function SearchBarr ({ message }: { message: boolean }) {
         </p>
       )}
       <form onSubmit={handleSubmit}>
-        <Card className='[@media(max-width:800px)]:w-96 [@media(max-width:365px)]:!w-80 [@media(min-width:800px)]:focus:w-[600px] transition-all'>
+        <Card className='[@media(max-width:800px)]:w-96 [@media(max-width:365px)]:!w-80 [@media(min-width:800px)]:focus:w-[600px] transition-all border border-white border-opacity-10'>
           <CardBody className='p-0'>
             <div className='flex items-center'>
               <input
