@@ -1,54 +1,37 @@
 'use client'
+import { EmptyCard } from './EmptyCard'
 import { ProductCard } from './ProductCard'
-import { useSupabase } from '../../app/Providers'
 import { useContent } from '@/store'
 import { useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 
 export function ProductList () {
-  const { supabase } = useSupabase()
   const { productList, influencer, serviceFee, setStore } = useContent()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
-    if (influencer === 0 || serviceFee === 0) return
+    if (influencer === 0 || serviceFee === 0 || productList?.length) return
 
-    if (!productList) {
-      supabase
-        .from('products')
-        .select('id, id_kitchen, preview, name, price, state, influencers( avatar, full_name, bank_account ), kitchens( open, address, bank_account )')
-        .neq('preview', null)
-        .then(({ data, error }) => {
-          if (error || !data) return
-
-          const products = data
-            .filter((item: any) => item.influencers !== null)
-            .filter((item: any) =>
-              item.kitchens.address !== null &&
-              item.kitchens.bank_account !== null &&
-              item.influencers.bank_account !== null
-            )
-
-          const updatePrices = products.map((item: any) => ({
-            ...item,
-            price: item.price + influencer + serviceFee
-          }))
-
-          setStore('productList', updatePrices)
-        })
-    }
+    fetch('/api/content/products', {
+      method: 'POST',
+      body: JSON.stringify({ influencer, serviceFee })
+    })
+      .then(res => res.json())
+      .then(data => setStore('productList', data))
   }, [influencer, serviceFee])
 
   return (
     <>
       <div className='flex flex-wrap gap-5 justify-center max-w-7xl'>
-        {productList?.map((product: any) => (
-          <ProductCard
-            onOpen={onOpen}
-            product={product}
-            key={product.id}
-          />
-        ))}
+        {productList?.length
+          ? productList.map((product: any) => (
+            <ProductCard
+              onOpen={onOpen}
+              product={product}
+              key={product.id}
+            />
+          ))
+          : <EmptyCard />}
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
