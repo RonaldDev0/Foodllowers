@@ -10,7 +10,7 @@ import { Tip } from './Tip'
 import { Summary } from './Summary'
 import { Alert } from '@/components/Alert'
 import { EstimationTime } from './EstimationTime'
-import { useDecrypt } from '@/hooks'
+import { useDecrypt, useComission } from '@/hooks'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MisteryBurguerOptions } from './MisteryBurguerOptions'
@@ -33,18 +33,6 @@ const MAX_DISTANCE = 6
 
 // Note: This is a temporary limit to prevent abuse
 const MAX_NUMBER_OF_PURCHASES = 100
-
-function calculateMercadoPagoComission (amount: number) {
-  const porcentajeComision = 0.0279
-  const IVA = 0.19
-  const costoFijo = 952
-
-  const comision = amount * porcentajeComision
-  const IVAComision = comision * IVA
-  const totalComision = comision + IVAComision + costoFijo
-
-  return Math.floor(totalComision + 101)
-}
 
 export default function Checkout () {
   const query = useSearchParams().get('q')
@@ -261,7 +249,7 @@ export default function Checkout () {
 
   const priceIncrease = preferences?.filter(({ isCombo }: any) => isCombo).length * 6000
 
-  const mercadopago = calculateMercadoPagoComission(totalProductPrice + priceIncrease)
+  const mercadopago = useComission(totalProductPrice + priceIncrease)
   const productPriceWithCoupon = totalProductPrice + mercadopago + priceIncrease
 
   return (

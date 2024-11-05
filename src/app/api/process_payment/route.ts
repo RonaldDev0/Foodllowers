@@ -45,6 +45,16 @@ export async function POST (req: NextRequest) {
       transaction_amount
     )
 
+    // console.log({
+    //   mercadopago,
+    //   influencer: influencerEarnings,
+    //   kitchen,
+    //   delivery: { service: shippingCost, tip },
+    //   earnings,
+    //   total: transaction_amount
+    // })
+
+    // return NextResponse.json({ error: 'Error capa 8' })
     const response = await supabase
       .from('orders')
       .insert([{
