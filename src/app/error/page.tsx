@@ -1,6 +1,8 @@
 import { Card, CardHeader, CardBody } from '@nextui-org/react'
 import Image from 'next/image'
 
+export const revalidate = 7 * 24 * 60 * 60
+
 export default function Home () {
   return (
     <main className='h-screen flex flex-col justify-center items-center'>

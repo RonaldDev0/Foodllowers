@@ -4,6 +4,8 @@ import { Button, Card, CardHeader, CardBody, CardFooter } from '@nextui-org/reac
 import Image from 'next/image'
 import { Download } from 'lucide-react'
 
+export const revalidate = 7 * 24 * 60 * 60
+
 export default function Install () {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
 
