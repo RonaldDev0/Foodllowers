@@ -52,7 +52,7 @@ export function ProductCard ({ product }: { product: IProductCard }) {
               </div>
               <p className='opacity-80'>
                 {
-                  (product.price + serviceFee + influencer + useComission(product.price + serviceFee + influencer + 10000)).toLocaleString('es-Es', {
+                  (product.price + serviceFee + influencer + useComission(product.price + serviceFee + influencer)).toLocaleString('es-Es', {
                     style: 'currency',
                     currency: 'COP',
                     minimumFractionDigits: 0,
