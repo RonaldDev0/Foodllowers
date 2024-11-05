@@ -24,7 +24,7 @@ export function InfluencerList () {
             key={influencer.id}
           />
         ))
-        : <Skeleton className='rounded-full w-20 h-20' />}
+        : Array(3).fill(0).map((_, i) => <Skeleton key={i} className='rounded-full w-20 h-20' />)}
     </div>
   )
 }

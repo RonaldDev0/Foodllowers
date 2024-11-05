@@ -22,7 +22,7 @@ export function SearchBarr ({ message }: { message: boolean }) {
 
   return (
     <div className={`flex flex-col items-center
-      ${message ? 'mt-16' : 'my-10 [@media(max-width:800px)]:mt-16'}`}
+      ${message ? 'mt-16' : 'my-10 [@media(max-width:800px)]:mt-18'}`}
     >
       <Image
         src='/img/LogName-light.png'

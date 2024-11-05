@@ -1,11 +1,12 @@
-import { Card, CardBody, Skeleton } from '@nextui-org/react'
+import { Skeleton, Card, CardBody } from '@nextui-org/react'
 
 export function EmptyCard () {
   return (
-    <Card className='border border-white border-opacity-10'>
-      <CardBody className='p-0'>
-        <Skeleton className='w-[350px] h-[280px]' />
-        <div className='p-4 flex justify-between items-center'>
+    <Card className='border border-white border-opacity-10 w-96 [@media(max-width:365px)]:!w-80'>
+      <CardBody className='p-0 flex flex-row'>
+        <Skeleton className='w-[160px] h-[140px]' />
+        <div className='p-4 flex flex-col justify-around items-center'>
+          <Skeleton className='rounded-lg w-32 h-6' />
           <div className='flex gap-3 items-center'>
             <Skeleton className='rounded-full w-10 h-10' />
             <div>
@@ -13,7 +14,6 @@ export function EmptyCard () {
               <Skeleton className='rounded-lg w-32 h-6' />
             </div>
           </div>
-          <Skeleton className='rounded-lg w-24 h-6' />
         </div>
       </CardBody>
     </Card>
