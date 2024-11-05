@@ -20,7 +20,7 @@ export default function Profile () {
 
   return (
     <div className='w-full h-screen flex justify-center items-center'>
-      <Card className='rounded-xl'>
+      <Card className='rounded-xl border border-white border-opacity-10'>
         <CardBody className='p-0'>
           <div className='flex [@media(max-width:800px)]:flex-col items-center justify-center gap-44 [@media(min-width:800px)]:p-14 [@media(max-width:800px)]:flex [@media(max-width:800px)]:justify-center [@media(max-width:800px)]:w-screen [@media(max-width:800px)]:h-screen'>
             <Image

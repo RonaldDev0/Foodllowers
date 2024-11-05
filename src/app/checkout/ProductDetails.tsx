@@ -37,7 +37,7 @@ export function ProductDetails ({ product, numberOfProducts, setNumberOfProducts
   }
 
   return (
-    <Card>
+    <Card className='border border-white border-opacity-10'>
       <CardBody className='p-0'>
         <div className='flex [@media(max-width:800px)]:flex-col'>
           <Image

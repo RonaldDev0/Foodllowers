@@ -44,7 +44,7 @@ export default function Login () {
         [@media(max-width:1400px)]:top-28
         [@media(min-width:1500px)]:top-60'
       />
-      <Card className='p-10 [@media(max-width:800px)]:p-2'>
+      <Card className='p-10 [@media(max-width:800px)]:p-2 border border-white border-opacity-10'>
         <CardHeader className='justify-center text-2xl'>
           Iniciar sesión
         </CardHeader>

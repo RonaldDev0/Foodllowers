@@ -35,7 +35,7 @@ export function DiscountCoupon ({ haveCoupon, setHaveCoupon, coupon, setCoupon }
   }
 
   return (
-    <Card>
+    <Card className='border border-white border-opacity-10'>
       <CardHeader className='flex justify-between z-0'>
         tienes un cupón de descuento?
       </CardHeader>

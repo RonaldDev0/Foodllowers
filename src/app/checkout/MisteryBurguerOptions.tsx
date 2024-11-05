@@ -204,7 +204,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
   if (!isMisteryBurguer) return null
   return (
     <>
-      <Card>
+      <Card className='border border-white border-opacity-10'>
         <CardHeader className='flex w-full justify-around'>
           <p>Ingredientes a evitar</p>
           <Button

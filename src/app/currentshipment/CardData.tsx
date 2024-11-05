@@ -46,7 +46,7 @@ export function CardData ({ activeStep, product }: props) {
 
   return (
     <>
-      <Card>
+      <Card className='border border-white border-opacity-10'>
         <CardHeader className='p-0'>
           <div className='flex-col'>
             <Image

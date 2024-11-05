@@ -19,7 +19,7 @@ export function Tip ({ amount, setTip, pickUpInStore }: IProps) {
   }, [pickUpInStore])
 
   return (
-    <Card>
+    <Card className='border border-white border-opacity-10'>
       <CardHeader className='flex justify-between gap-4 z-0'>
         <p>Añade una propina</p>
         <p className='text-sm opacity-70'>Esta recompensa va para el Domiciliario</p>

@@ -81,7 +81,7 @@ export function Payment ({
 
   return (
     <>
-      <Card className='w-full [@media(max-width:365px)]:!w-80'>
+      <Card className='w-full [@media(max-width:365px)]:!w-80 border border-white border-opacity-10'>
         <CardHeader className='flex justify-between z-0'>
           Escoge tu metodo de pago
         </CardHeader>
