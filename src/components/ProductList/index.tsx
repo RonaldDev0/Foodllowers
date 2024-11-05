@@ -22,7 +22,7 @@ export function ProductList () {
 
   return (
     <>
-      <div className='flex flex-wrap gap-5 justify-center max-w-7xl'>
+      <div className='flex flex-wrap gap-3 justify-center max-w-7xl'>
         {productList?.length
           ? productList.map((product: any) => (
             <ProductCard
@@ -31,7 +31,7 @@ export function ProductList () {
               key={product.id}
             />
           ))
-          : <EmptyCard />}
+          : Array(3).fill(0).map((_, i) => <EmptyCard key={i} />)}
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
