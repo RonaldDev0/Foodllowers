@@ -24,9 +24,9 @@ export function ProductCard ({ product }: { product: IProductCard }) {
   return (
     <>
       <Link href={product?.state ? `/checkout?q=${product.id}` : '#'}>
-        <Card className='border border-white border-opacity-10'>
+        <Card className='border border-white border-opacity-10 w-96 [@media(max-width:365px)]:!w-80'>
           <CardBody
-            className='p-0 cursor-pointer'
+            className='p-0 flex flex-row'
             onClick={() => !product?.state && onOpen()}
           >
             <Image
@@ -34,14 +34,14 @@ export function ProductCard ({ product }: { product: IProductCard }) {
               width='800'
               height='800'
               alt='preview'
-              className='w-[350px] h-[280px]'
+              className='w-[160px] h-[150px]'
             />
             {!product?.state && (
               <Chip color='warning' className='dark:text-white opacity-90 absolute m-2'>
                 Agotado
               </Chip>
             )}
-            <div className='p-3 flex justify-between items-center'>
+            <div className='p-3 flex flex-col justify-around items-center w-full'>
               <div>
                 <p className='text-xl'>
                   {product.name}

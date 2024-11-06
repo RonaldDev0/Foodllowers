@@ -35,17 +35,6 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
             </Chip>
           )}
           <div className='p-4 flex flex-col justify-around items-center'>
-            <p className='opacity-80'>
-              {
-                (product.price + useComission(product.price)).toLocaleString('es-Es', {
-                  style: 'currency',
-                  currency: 'COP',
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                  useGrouping: true
-                })
-              }
-            </p>
             <div className='flex gap-3 items-center'>
               <Link href={'/' + product.influencers.full_name}>
                 <Avatar src={product.influencers.avatar} />
@@ -59,6 +48,17 @@ export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => 
                 </p>
               </div>
             </div>
+            <p className='opacity-80'>
+              {
+                (product.price + useComission(product.price)).toLocaleString('es-Es', {
+                  style: 'currency',
+                  currency: 'COP',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                  useGrouping: true
+                })
+              }
+            </p>
           </div>
         </CardBody>
       </Card>
