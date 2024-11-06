@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-// 'use client'
-import { Divider } from '@nextui-org/react'
-// import { useState } from 'react'
+'use client'
+import { Divider, Button } from '@nextui-org/react'
+import { useState } from 'react'
 import Image from 'next/image'
 // import Link from 'next/link'
 // import { ArrowLeft } from 'lucide-react'
@@ -9,13 +9,13 @@ import { useContent } from '@/store'
 
 export function Banner () {
   const { currentInfluencer: { banner, avatar, full_name } } = useContent()
-  // const [follow, setFollow] = useState<boolean>(false)
+  const [follow, setFollow] = useState<boolean>(false)
 
   return (
     <div className='w-[1000px] [@media(max-width:800px)]:w-full mt-5 [@media(max-width:800px)]:m-0'>
       <Image
         src={banner}
-        width='400'
+        width='1300'
         height='200'
         alt='banner image'
         className='w-full h-[200px] bg-black rounded-lg border border-white border-opacity-10'
@@ -36,12 +36,13 @@ export function Banner () {
         />
         <div className='flex flex-col gap-8'>
           <p className='font-bold text-xl'>{full_name}</p>
-          {/* <Button
-            color={follow ? 'primary' : 'secondary'}
+          <Button
+            color={follow ? 'default' : 'secondary'}
             onPress={() => setFollow(!follow)}
+            variant={follow ? 'faded' : 'solid'}
           >
-            {follow ? 'dejar de seguir' : 'seguir'}
-          </Button> */}
+            {follow ? 'siguiendo' : 'seguir'}
+          </Button>
         </div>
       </div>
       <Divider className='my-5' />

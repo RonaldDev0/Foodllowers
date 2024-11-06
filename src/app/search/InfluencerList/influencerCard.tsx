@@ -9,28 +9,26 @@ export function InfluencerCard ({ item }: { item: any }) {
 
   return (
     <Link href={item.full_name}>
-      <Card className='border border-white border-opacity-10'>
+      <Card className='border border-white border-opacity-10 w-96 [@media(max-width:365px)]:!w-80'>
         <CardBody className='p-2'>
-          <div className='grid grid-cols-3 gap-4 items-center'>
+          <div className='gap-4 flex items-center'>
             <Image
               alt='img'
               src={item.avatar}
               width='250'
               height='250'
-              className='w-[150px] h-[150px] [@media(max-width:800px)]:h-[120px] rounded-full row-span-2'
+              className='w-[120px] h-[120px] rounded-full row-span-2'
             />
-            <p>{item.full_name}</p>
-            <Link href='#' className='pt-4'>
+            <div className='w-full flex flex-col gap-7 justify-around'>
+              <p>{item.full_name}</p>
               <Button
-                color={follow ? 'primary' : 'secondary'}
+                color={follow ? 'default' : 'secondary'}
                 onPress={() => setFollow(!follow)}
+                variant={follow ? 'faded' : 'solid'}
               >
-                {follow ? 'dejar de seguir' : 'seguir'}
+                {follow ? 'siguiendo' : 'seguir'}
               </Button>
-            </Link>
-            <p className='opacity-60 w-72 [@media(max-width:800px)]:w-60 h-14 text-small col-span-2 overflow-hidden'>
-              {item.description}
-            </p>
+            </div>
           </div>
         </CardBody>
       </Card>
