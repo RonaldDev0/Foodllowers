@@ -75,7 +75,7 @@ export default function Checkout () {
   function fetchMapsDistance (origin: any) {
     if (!addressSelect) return
 
-    fetch('/api/maps_distance', {
+    fetch('/api/maps/distance', {
       cache: 'no-cache',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

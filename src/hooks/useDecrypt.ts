@@ -6,7 +6,7 @@ interface IUseDecrypt {
 
 export async function useDecrypt ({ key, data, ignore = ['user_id'] }: IUseDecrypt) {
   try {
-    return await fetch('/api/decript', {
+    return await fetch('/api/security/decript', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key, data, ignore })

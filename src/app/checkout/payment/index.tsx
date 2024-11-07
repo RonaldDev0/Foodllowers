@@ -74,7 +74,7 @@ export function Payment ({
 
   useEffect(() => {
     if (banks.length > 3) return
-    fetch('/api/get_payment_methods')
+    fetch('/api/payment/get_methods')
       .then(res => res.json())
       .then(res => setBanks(res.reverse()))
   }, [])

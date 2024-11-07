@@ -36,7 +36,7 @@ export default function CurrentShipment () {
   useEffect(() => {
     if (!query || !userId) return
 
-    fetch('/api/search_payment', {
+    fetch('/api/payment/search', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ paymentId: query })
