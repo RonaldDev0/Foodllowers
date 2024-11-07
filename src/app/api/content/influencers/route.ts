@@ -11,8 +11,7 @@ export async function GET () {
       if (error) return
 
       const influencers = data.filter(({ products }: any) => {
-        const { address } = products[0].kitchens
-        return address !== null
+        return products.length && products[0].kitchens && products[0].kitchens.address !== null
       })
       return influencers
     })
