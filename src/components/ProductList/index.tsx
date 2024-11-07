@@ -2,23 +2,11 @@
 import { EmptyCard } from './EmptyCard'
 import { ProductCard } from './ProductCard'
 import { useContent } from '@/store'
-import { useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react'
 
 export function ProductList () {
-  const { productList, influencer, serviceFee, setStore } = useContent()
+  const { productList } = useContent()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
-  useEffect(() => {
-    if (influencer === 0 || serviceFee === 0 || productList?.length) return
-
-    fetch('/api/content/products', {
-      method: 'POST',
-      body: JSON.stringify({ influencer, serviceFee })
-    })
-      .then(res => res.json())
-      .then(data => setStore('productList', data))
-  }, [influencer, serviceFee])
 
   return (
     <>
