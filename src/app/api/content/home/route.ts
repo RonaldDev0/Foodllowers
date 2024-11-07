@@ -50,7 +50,6 @@ export async function GET () {
       .filter((product: any) =>
         product.kitchens?.address !== null &&
         product.kitchens?.bank_account !== null &&
-        product.kitchens?.open &&
         product.preview !== null
       )
 
