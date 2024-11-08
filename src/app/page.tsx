@@ -12,7 +12,18 @@ export default function Home () {
   const loginCode = useSearchParams().get('code')
 
   useEffect(() => {
-    loginCode && setTimeout(() => router.push('/'), 200)
+    if (loginCode) {
+      setTimeout(() => {
+        router.push('/')
+        fetch('/api/content/home')
+          .then(res => res.json())
+          .then(({ influencers, products }: any) => {
+            setStore('influencerList', influencers)
+            setStore('productList', products)
+          })
+      }, 200)
+      return
+    }
 
     if (productList?.length) return
 
