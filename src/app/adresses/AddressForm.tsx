@@ -214,6 +214,7 @@ export function AddressForm ({ isEdit, value, HeadLabel, onOpen, isOpen, onOpenC
                 <Google addressError={addressError} setAddress={setAddress} setAddressError={setAddressError} address={address} />
                 <Input
                   label='Referencias adicionales de esta dirección'
+                  placeholder='torre 3, apt 201'
                   value={user.aditionalInfo}
                   onChange={(e: any) => handleChange('aditionalInfo', e)}
                   isInvalid={!!error.aditionalInfo}
