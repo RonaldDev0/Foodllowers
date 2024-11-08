@@ -169,7 +169,7 @@ export function PaymentButton ({
     const { ip }: any = await fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
 
-    fetch('/api/process_payment', {
+    fetch('/api/payment/process', {
       cache: 'no-store',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

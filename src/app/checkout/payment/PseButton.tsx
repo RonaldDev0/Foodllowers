@@ -136,7 +136,7 @@ export function PseButton ({
     const { ip }: any = await fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
 
-    fetch('/api/process_pse_payment', {
+    fetch('/api/payment/process_pse', {
       cache: 'no-store',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

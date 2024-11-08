@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from './supabase'
+import { supabase } from '@/lib/supabase'
 import { Pay } from './pay'
 import { amounts } from './amounts'
 import { coupons } from './coupons'

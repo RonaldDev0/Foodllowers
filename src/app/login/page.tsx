@@ -19,27 +19,21 @@ export default function Login () {
       return
     }
 
-    supabase.auth.signInWithOAuth({ provider: 'google' })
+    supabase.auth
+      .signInWithOAuth({
+        provider: 'google'
+        // options: { redirectTo: window.location.origin + '/api/auth/callback' }
+      })
   }
 
   return (
     <main className='h-screen flex flex-col justify-center items-center'>
       <Image
-        src='/img/LogName-light.png'
+        src='/img/LogName.svg'
         alt='Foodllowers'
-        width='450'
-        height='450'
-        className='fixed dark:hidden
-        [@media(max-width:800px)]:top-32
-        [@media(max-width:1400px)]:top-28
-        [@media(min-width:1500px)]:top-60'
-      />
-      <Image
-        src='/img/LogName.png'
-        alt='Foodllowers'
-        width='450'
-        height='450'
-        className='fixed hidden dark:block
+        width='500'
+        height='120'
+        className='fixed bg-zinc-950 rounded-lg
         [@media(max-width:800px)]:top-32
         [@media(max-width:1400px)]:top-28
         [@media(min-width:1500px)]:top-60'

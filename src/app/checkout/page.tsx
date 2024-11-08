@@ -75,7 +75,7 @@ export default function Checkout () {
   function fetchMapsDistance (origin: any) {
     if (!addressSelect) return
 
-    fetch('/api/maps_distance', {
+    fetch('/api/maps/distance', {
       cache: 'no-cache',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -268,18 +268,11 @@ export default function Checkout () {
           [@media(min-width:800px)]:top-16'
       >
         <Image
-          src='/img/LogName-light.png'
+          src='/img/LogName.svg'
           alt='Foodllowers'
-          width='450'
-          height='450'
-          className='dark:hidden'
-        />
-        <Image
-          src='/img/LogName.png'
-          alt='Foodllowers'
-          width='450'
-          height='450'
-          className='hidden dark:block'
+          width='500'
+          height='120'
+          className='bg-zinc-950 rounded-lg'
         />
       </Link>
       <div

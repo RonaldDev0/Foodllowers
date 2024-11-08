@@ -36,7 +36,7 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
   function handleMapClick (latLng: any) {
     setMarkerPosition(latLng)
 
-    fetch('/api/maps_geo', {
+    fetch('/api/maps/geo', {
       cache: 'no-cache',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -59,7 +59,7 @@ export function Google ({ addressError, setAddress, setAddressError, address }: 
   }
 
   function handleSubmit () {
-    fetch('/api/maps_auto_complete', {
+    fetch('/api/maps/auto_complete', {
       cache: 'no-cache',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
