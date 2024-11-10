@@ -11,28 +11,26 @@ export default function Home () {
   const router = useRouter()
   const loginCode = useSearchParams().get('code')
 
-  useEffect(() => {
-    if (loginCode) {
-      setTimeout(() => {
-        router.push('/')
-        fetch('/api/content/home')
-          .then(res => res.json())
-          .then(({ influencers, products }: any) => {
-            setStore('influencerList', influencers)
-            setStore('productList', products)
-          })
-      }, 200)
-      return
-    }
-
-    if (productList?.length) return
-
-    fetch('/api/content/home')
+  function getContent () {
+    return fetch('/api/content/home')
       .then(res => res.json())
       .then(({ influencers, products }: any) => {
         setStore('influencerList', influencers)
         setStore('productList', products)
       })
+  }
+
+  useEffect(() => {
+    if (loginCode) {
+      setTimeout(() => {
+        router.push('/')
+        return getContent()
+      }, 200)
+      return
+    }
+
+    if (productList?.length) return
+    getContent()
   }, [])
 
   return (
