@@ -22,10 +22,8 @@ export default function Home () {
 
   useEffect(() => {
     if (loginCode) {
-      setTimeout(() => {
-        router.push('/')
-        return getData()
-      }, 200)
+      setTimeout(() => router.push('/'), 200)
+      setTimeout(() => getData(), 300)
       return
     }
 
