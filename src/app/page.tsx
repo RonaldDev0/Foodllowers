@@ -20,7 +20,8 @@ export default function Home () {
 
     fetch('/api/content/home')
       .then(res => res.json())
-      .then(({ influencers, products }: any) => {
+      .then(({ influencers, products, error }: any) => {
+        if (error) return
         setStore('influencerList', influencers)
         setStore('productList', products)
       })
