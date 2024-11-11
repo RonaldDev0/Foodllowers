@@ -20,10 +20,7 @@ export default function Login () {
     }
 
     supabase.auth
-      .signInWithOAuth({
-        provider: 'google'
-        // options: { redirectTo: window.location.origin + '/api/auth/callback' }
-      })
+      .signInWithOAuth({ provider: 'google' })
   }
 
   return (
