@@ -11,8 +11,8 @@ export default function Home () {
   const router = useRouter()
   const loginCode = useSearchParams().get('code')
 
-  function getContent () {
-    return fetch('/api/content/home')
+  function getData () {
+    fetch('/api/content/home')
       .then(res => res.json())
       .then(({ influencers, products }: any) => {
         setStore('influencerList', influencers)
@@ -24,13 +24,14 @@ export default function Home () {
     if (loginCode) {
       setTimeout(() => {
         router.push('/')
-        return getContent()
+        return getData()
       }, 200)
       return
     }
 
     if (productList?.length) return
-    getContent()
+
+    getData()
   }, [])
 
   return (

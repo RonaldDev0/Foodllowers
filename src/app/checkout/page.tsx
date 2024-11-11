@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 import { useSearchParams } from 'next/navigation'
@@ -126,33 +127,17 @@ export default function Checkout () {
       return
     }
 
-    supabase
-      .from('products')
-      .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers( id, full_name, avatar, bank_account ), kitchens( open, address, bank_account )')
-      .eq('id', query)
-      .then(({ data, error }) => {
-        if (error) {
-          setError({ message: 'Product does not exist' })
-          return
-        }
-
-        const products = data
-          .filter((item: any) => item.influencers !== null)
-          .filter((item: any) =>
-            item.kitchens.address !== null &&
-            item.kitchens.bank_account !== null &&
-            item.influencers.bank_account !== null
-          )
-
-        const updatePrices = products.map((item: any) => ({
-          ...item,
-          price: item.price + influencer + serviceFee
-        }))
-
-        setProduct(updatePrices[0])
-        setContentStore('currentProduct', updatePrices[0])
+    fetch('/api/content/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, influencer, serviceFee })
+    })
+      .then(res => res.json())
+      .then(data => {
+        setProduct(data)
+        setContentStore('currentProduct', data)
         if (addressSelect) {
-          fetchMapsDistance(updatePrices[0].kitchens.address.geometry.location)
+          fetchMapsDistance(data.kitchens.address.geometry.location)
         }
       })
   }, [addressSelect, serviceFee, influencer])

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
 
@@ -30,7 +31,6 @@ export async function GET () {
       influencer.products.map((product: any) => ({
         ...product,
         influencers: {
-          id: influencer.id,
           full_name: influencer.full_name,
           avatar: influencer.avatar
         },
@@ -43,5 +43,15 @@ export async function GET () {
       product.preview !== null
     )
 
-  return NextResponse.json({ influencers, products })
+  return NextResponse.json({
+    influencers: influencers.map(({ avatar, full_name }) => ({ avatar, full_name })),
+    products: products.map(({ preview, name, price, state, influencers, id }) => ({
+      id,
+      preview,
+      name,
+      price,
+      state,
+      influencers
+    }))
+  })
 }
