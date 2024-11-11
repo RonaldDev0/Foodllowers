@@ -2,17 +2,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardBody, Avatar, Chip } from '@nextui-org/react'
-import { useContent } from '@/store'
 import { useComission } from '@/hooks'
 
 export function ProductCard ({ product, onOpen }: { product: any, onOpen: () => void }) {
-  const { setStore } = useContent()
-
   return (
     <Link
       href={product.state ? `/checkout?q=${product.id}` : ''}
       key={product.id}
-      onClick={() => setStore('currentProduct', product)}
     >
       <Card className='border border-white border-opacity-10 w-96 [@media(max-width:365px)]:!w-80'>
         <CardBody
