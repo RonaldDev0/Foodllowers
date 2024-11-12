@@ -7,7 +7,11 @@ export async function POST (req: NextRequest) {
 
   const { data, error } = await supabase
     .from('products')
-    .select('id, id_influencer, id_kitchen, category, preview, name, description, price, state, influencers(full_name, avatar, bank_account ), kitchens( open, address, bank_account )')
+    .select(`
+      id, id_influencer, id_kitchen, category, preview, name, description, price, state,
+      influencers(full_name, avatar, bank_account ),
+      kitchens( open, address, bank_account )`
+    )
     .eq('id', query)
 
   if (error) return NextResponse.json({ error: true })
