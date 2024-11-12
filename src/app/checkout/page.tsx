@@ -329,7 +329,7 @@ export default function Checkout () {
           setPaymentInfo={setPaymentInfo}
           haveDelivery={haveDelivery}
           error={error}
-          amount={Math.round(productPriceWithCoupon + (tip + tip * 0.03) + (shippingCost + shippingCost * 0.03))}
+          amount={Math.round(productPriceWithCoupon + (tip + tip * 0.0329) + (shippingCost + shippingCost * 0.0329))}
           product={product}
           shippingCost={shippingCost}
           tip={tip}
