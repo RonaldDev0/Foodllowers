@@ -37,6 +37,7 @@ const MAX_NUMBER_OF_PURCHASES = 100
 
 export default function Checkout () {
   const query = useSearchParams().get('q')
+  const isMisteryBurguer = query === '471ba020-79b7-4204-9e9d-2e8ca2b0f216'
   const { supabase } = useSupabase()
   const { addressSelect, addressList, userId, setStore } = useUser()
   const { currentProduct, pricePerKm, minima, serviceFee, influencer, preparationTime, setStore: setContentStore } = useContent()
@@ -121,7 +122,7 @@ export default function Checkout () {
   useEffect(() => {
     if (serviceFee === 0 || influencer === 0) return
 
-    if (currentProduct && addressSelect) {
+    if (currentProduct && currentProduct.id === query && addressSelect) {
       setProduct(currentProduct)
       fetchMapsDistance(currentProduct.kitchens.address.geometry.location)
       return
@@ -232,7 +233,7 @@ export default function Checkout () {
   const totalWithoutDiscount = product.price * (numberOfProducts - 1)
   const totalProductPrice = firstProductPriceWithDiscount + totalWithoutDiscount
 
-  const priceIncrease = preferences?.filter(({ isCombo }: any) => isCombo).length * 6000
+  const priceIncrease = preferences ? (preferences.filter(({ isCombo }: any) => isCombo).length * 6000) : 0
 
   const mercadopago = useComission(totalProductPrice + priceIncrease)
   const productPriceWithCoupon = totalProductPrice + mercadopago + priceIncrease
@@ -261,7 +262,8 @@ export default function Checkout () {
         />
       </Link>
       <div
-        className='flex flex-col gap-3
+        className='flex flex-col gap-3 w-96
+          [@media(max-width:365px)]:!w-80
           [@media(min-width:800px)]:w-[522px]
           [@media(min-width:800px)]:pt-32
           [@media(max-width:800px)]:pt-6'
@@ -278,19 +280,37 @@ export default function Checkout () {
           numberOfProducts={numberOfProducts}
           setNumberOfProducts={setNumberOfProducts}
         />
-        <MisteryBurguerOptions
-          setValue={setPreferences}
-          numberOfProducts={numberOfProducts}
-          setNumberOfProducts={setNumberOfProducts}
-        />
+        {isMisteryBurguer
+          ? (
+            <MisteryBurguerOptions
+              setValue={setPreferences}
+              numberOfProducts={numberOfProducts}
+              setNumberOfProducts={setNumberOfProducts}
+              isMisteryBurguer={isMisteryBurguer}
+            />
+            )
+          : (
+            <Tip
+              setTip={setTip}
+              amount={product.price + 1092}
+              pickUpInStore={pickUpInStore}
+            />
+            )}
       </div>
       <div
-        className='flex flex-col gap-3 top-5
+        className={`flex flex-col gap-3 top-5
           [@media(min-width:800px)]:sticky
-          [@media(min-width:800px)]:pt-32'
+          [@media(min-width:800px)]:pt-32
+          ${!isMisteryBurguer && 'w-96 [@media(max-width:365px)]:!w-80'}`}
       >
         <EstimationTime time={pickUpInStore ? preparationTime : estimationTime} />
-        <Tip setTip={setTip} amount={product.price + 1092} pickUpInStore={pickUpInStore} />
+        {isMisteryBurguer && (
+          <Tip
+            setTip={setTip}
+            amount={product.price + 1092}
+            pickUpInStore={pickUpInStore}
+          />
+        )}
         <Summary
           shippingCost={shippingCost + (shippingCost * 0.035)}
           tip={tip + (tip * 0.03)}

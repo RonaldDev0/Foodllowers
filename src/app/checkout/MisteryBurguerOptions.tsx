@@ -1,6 +1,5 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { Card, CardBody, CardHeader, CardFooter, Divider, Button, Checkbox, Accordion, AccordionItem, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Pagination, Chip } from '@nextui-org/react'
 import { Info, X, PlusCircle, MinusCircle } from 'lucide-react'
 import { useUser } from '@/store'
@@ -22,6 +21,7 @@ type IProps = {
   setValue: Function
   numberOfProducts: number
   setNumberOfProducts: Function
+  isMisteryBurguer: boolean
 }
 
 const initialPreferences: IPreferences = {
@@ -96,10 +96,8 @@ const initialPreferences: IPreferences = {
   ]
 }
 
-export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOfProducts }: IProps) {
+export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOfProducts, isMisteryBurguer }: IProps) {
   const { darkMode } = useUser()
-  const query = useSearchParams().get('q')
-  const isMisteryBurguer = query === '471ba020-79b7-4204-9e9d-2e8ca2b0f216'
   const [preferences, setPreferences] = useState<any>(Array.from({ length: numberOfProducts }, () => initialPreferences))
   const [showPreferences, setShowPreferences] = useState<any>(null)
   const [step, setStep] = useState(0)
@@ -190,6 +188,7 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
   }
 
   useEffect(() => {
+    if (!isMisteryBurguer) return
     setValue([initialPreferences])
     onOpen()
   }, [])
