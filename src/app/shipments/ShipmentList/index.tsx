@@ -10,7 +10,7 @@ export default function ShipmentList () {
   const { userId, shipmentList, setStore } = useUser()
 
   useEffect(() => {
-    if (!userId || shipmentList) return
+    if (!userId) return
     supabase
       .from('shipments')
       .select('id, product, transaction_amount, preferences, invoice_id')
@@ -20,7 +20,7 @@ export default function ShipmentList () {
         if (error) return
         setStore('shipmentList', data)
       })
-  }, [userId, shipmentList])
+  }, [userId])
 
   return (
     <div className='flex flex-col gap-4'>

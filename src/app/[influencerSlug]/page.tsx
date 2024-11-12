@@ -33,7 +33,7 @@ export default function InfluencerPage ({ params: { influencerSlug } }: IProps) 
       })
   }, [influencerSlug])
 
-  if (!currentInfluencer) return null
+  if (!currentInfluencer || currentInfluencer?.full_name !== influencerSlug) return null
 
   return (
     <main className='flex flex-col w-full mb-16 items-center gap-8'>

@@ -15,7 +15,7 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
   return (
     <>
       <Card className='w-96 border border-white border-opacity-10'>
-        <CardBody onClick={onOpen} className='p-0'>
+        <CardBody onClick={() => preferences && onOpen()} className='p-0'>
           <div className='flex items-center gap-5 rounded-lg cursor-pointer'>
             <Image
               src={preview}
@@ -49,7 +49,7 @@ export function ShipmentCard ({ shipment }: { shipment: any }) {
       </Card>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
-          {onClose => (
+          {() => (
             <>
               <ModalHeader className='flex justify-center'>
                 <div className='flex gap-3'>
