@@ -98,7 +98,7 @@ const initialPreferences: IPreferences = {
 
 export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOfProducts, isMisteryBurguer }: IProps) {
   const { darkMode } = useUser()
-  const [preferences, setPreferences] = useState<any>(Array.from({ length: numberOfProducts }, () => initialPreferences))
+  const [preferences, setPreferences] = useState<any>(Array.from({ length: numberOfProducts }, () => isMisteryBurguer ? initialPreferences : {}))
   const [showPreferences, setShowPreferences] = useState<any>(null)
   const [step, setStep] = useState(0)
   const [allTheSame, setAllTheSame] = useState(false)
@@ -188,16 +188,17 @@ export function MisteryBurguerOptions ({ setValue, numberOfProducts, setNumberOf
   }
 
   useEffect(() => {
-    if (!isMisteryBurguer) return
-    setValue([initialPreferences])
+    setValue([isMisteryBurguer ? initialPreferences : {}])
     onOpen()
   }, [])
 
   useEffect(() => {
-    setPreferences((prev: any) => Array.from({ length: numberOfProducts }, (_, index) => {
+    const newValue = (prev: any) => Array.from({ length: numberOfProducts }, (_, index) => {
       if (index <= prev.length - 1) return prev[index]
-      return initialPreferences
-    }))
+      return isMisteryBurguer ? initialPreferences : {}
+    })
+    setPreferences(newValue)
+    setValue(newValue)
   }, [numberOfProducts])
 
   if (!isMisteryBurguer) return null
