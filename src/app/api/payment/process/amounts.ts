@@ -16,7 +16,7 @@ export function amounts (
   const discountPercent = haveCoupon ? 0.472 : 1
   const influencerEarnings = (influencer * discountPercent) + (influencer * (numberOfProducts - 1))
 
-  const priceIncrease = preferences?.filter(({ isCombo }: any) => isCombo).length * 6000
+  const priceIncrease = preferences ? preferences.filter(({ isCombo }: any) => isCombo).length * 6000 : 0
 
   const kitchenFirstProductEarnings = (product.price - influencer - serviceFee) * discountPercent
   const kitchenOtherProductsEarnings = (product.price - influencer - serviceFee) * (numberOfProducts - 1)
