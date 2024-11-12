@@ -187,7 +187,7 @@ export function PaymentButton ({
         haveCoupon,
         coupon,
         pickUpInStore,
-        influencer_id: product.influencers.id,
+        influencer_id: product.id_influencer,
         paymentInfo: {
           transaction_amount: amount,
           description: `Foodllowers: ${product.name} - ${product.influencers.full_name}`,
