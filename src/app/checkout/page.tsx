@@ -280,22 +280,20 @@ export default function Checkout () {
           numberOfProducts={numberOfProducts}
           setNumberOfProducts={setNumberOfProducts}
         />
-        {isMisteryBurguer
-          ? (
-            <MisteryBurguerOptions
-              setValue={setPreferences}
-              numberOfProducts={numberOfProducts}
-              setNumberOfProducts={setNumberOfProducts}
-              isMisteryBurguer={isMisteryBurguer}
-            />
-            )
-          : (
-            <Tip
-              setTip={setTip}
-              amount={product.price + 1092}
-              pickUpInStore={pickUpInStore}
-            />
-            )}
+        <MisteryBurguerOptions
+          setValue={setPreferences}
+          numberOfProducts={numberOfProducts}
+          setNumberOfProducts={setNumberOfProducts}
+          isMisteryBurguer={isMisteryBurguer}
+        />
+        {!isMisteryBurguer &&
+        (
+          <Tip
+            setTip={setTip}
+            amount={product.price + 1092}
+            pickUpInStore={pickUpInStore}
+          />
+        )}
       </div>
       <div
         className={`flex flex-col gap-3 top-5
