@@ -16,9 +16,9 @@ export async function POST (req: NextRequest) {
 
   if (error) return NextResponse.json({ error: true })
 
-  const products = data
-    .filter((item: any) => item.influencers !== null)
+  const updatePrice = data
     .filter((item: any) =>
+      item.influencers !== null &&
       item.kitchens.address !== null &&
       item.kitchens.bank_account !== null &&
       item.influencers.bank_account !== null
@@ -26,12 +26,10 @@ export async function POST (req: NextRequest) {
       ...{ id, id_influencer, id_kitchen, category, preview, name, description, price, state },
       influencers: { full_name: influencers.full_name, avatar: influencers.avatar },
       kitchens: { open: kitchens.open, address: kitchens.address }
-    }))
-
-  const updatePrice = products.map((item: any) => ({
-    ...item,
-    price: item.price + influencer + serviceFee
-  }))[0]
+    })).map((item: any) => ({
+      ...item,
+      price: item.price + influencer + serviceFee
+    }))[0]
 
   return NextResponse.json(updatePrice)
 }

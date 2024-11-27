@@ -30,7 +30,7 @@ interface IPaymentInfo {
 const MAX_SUPABASE_REALTIME = 100
 const MAX_KITCHEN_LIMIT = 10
 
-const MAX_DISTANCE = 6
+const MAX_DISTANCE = 15
 
 // Note: This is a temporary limit to prevent abuse
 const MAX_NUMBER_OF_PURCHASES = 100
