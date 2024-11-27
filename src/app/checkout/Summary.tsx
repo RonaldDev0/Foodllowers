@@ -1,5 +1,5 @@
 'use client'
-import { Card, CardHeader, CardBody, Divider, Tooltip } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Divider } from '@nextui-org/react'
 
 type props = {
   shippingCost: number
@@ -21,24 +21,23 @@ export function Summary ({ shippingCost, tip, productPriceWithCoupon }: props) {
   return (
     <Card className='w-full [@media(max-width:365px)]:!w-80 border border-white border-opacity-10'>
       <CardHeader>
-        Resumen
+        <div className='flex justify-between w-full'>
+          <p>Resumen</p>
+          <p className='opacity-40'>El envío cuesta según la distancia.</p>
+        </div>
       </CardHeader>
       <Divider />
       <CardBody>
         <div className='grid grid-cols-2'>
           <div className='text-left'>
             <p>Costo de producto</p>
-            <Tooltip showArrow content='El costo de envío es proporcional a la distancia de recorrido'>
-              <p>Costo de envío</p>
-            </Tooltip>
+            <p>Costo de envío</p>
             <p>Propina del Delivery</p>
             <p className='font-bold mt-4'>Total</p>
           </div>
           <div className='text-right font-bold text-green-600'>
             <p>{copFormat(productPriceWithCoupon)}</p>
-            <Tooltip showArrow content='El costo de envío es proporcional a la distancia de recorrido'>
-              <p>{copFormat(shippingCost)}</p>
-            </Tooltip>
+            <p>{copFormat(shippingCost)}</p>
             <p>{copFormat(tip)}</p>
             <p className='mt-4'>
               {copFormat(productPriceWithCoupon + tip + shippingCost)}
