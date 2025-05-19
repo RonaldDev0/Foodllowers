@@ -1,10 +1,42 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse, NextRequest } from 'next/server'
 
-export async function middleware (req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   const supabase = createMiddlewareClient({ req, res })
 
+  // Verificar si es una petición de la API
+  const isApiRequest = req.nextUrl.pathname.startsWith('/api/')
+  
+  // Si es una petición de la API, verificar el token de Supabase
+  if (isApiRequest) {
+    const authHeader = req.headers.get('authorization')
+    const supabaseAuthHeader = req.headers.get('x-supabase-auth')
+    
+    if (authHeader?.startsWith('Bearer ') || supabaseAuthHeader) {
+      const token = authHeader?.split(' ')[1] || supabaseAuthHeader
+      
+      // Verificar el token con Supabase
+      const { data: { session }, error } = await supabase.auth.getSession()
+      
+      if (error || !session) {
+        return NextResponse.json(
+          { error: 'No autorizado' },
+          { status: 401 }
+        )
+      }
+      
+      // Si el token es válido, continuar
+      return res
+    }
+    
+    return NextResponse.json(
+      { error: 'No autorizado' },
+      { status: 401 }
+    )
+  }
+
+  // Para rutas normales, mantener la lógica existente
   const { data: { session } } = await supabase.auth.getSession()
   const { pathname, searchParams } = req.nextUrl
 
@@ -22,5 +54,10 @@ export async function middleware (req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|manifest.json|icons/|img/).*)']
+  matcher: [
+    // Rutas de la API
+    '/api/:path*',
+    // Rutas normales (excluyendo archivos estáticos)
+    '/((?!_next/static|_next/image|favicon.ico|manifest.json|icons/|img/).*)'
+  ]
 }
